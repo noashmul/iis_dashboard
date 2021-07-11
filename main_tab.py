@@ -8,7 +8,9 @@ import plotly.graph_objs as go
 import folium
 import dash_table as dt
 
-df = pd.read_csv('df_main_dash.csv')
+dfs_dict = create_dfs_dict()
+df = create_df_main_dash(dfs_dict)
+# df = pd.read_csv('gal_data.csv')
 
 app = dash.Dash(__name__)
 colors = {'title': 'skyblue'}
