@@ -82,7 +82,7 @@ def create_df_main_dash(d: dict):
     return df_main_dash
 
 
-def main():
+def create_dfs_dict():
     url = 'https://drive.google.com/uc?id=1-s1881dNo8ksiRsBa_V18eEr6I4ckTdf'
     path_to_zip_file = 'allfiles.zip'
     gdown.download(url, path_to_zip_file, quiet=False)
@@ -113,8 +113,11 @@ def main():
                 'df_haredim_t0': df_haredim_t0, 'df_haredim_t1': df_haredim_t1,
                 'df_seniors_t0': df_seniors_t0, 'df_seniors_t1': df_seniors_t1,
                 'df_holocaust_t0': df_holocaust_t0, 'df_holocaust_t1': df_holocaust_t1}
+    return dfs_dict
 
 
+def main():
+    dfs_dict = create_dfs_dict()
     df_main_dash_out = create_df_main_dash(dfs_dict)
     print('hi')
 

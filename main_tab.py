@@ -9,21 +9,22 @@ import folium
 import dash_table as dt
 from pre_process import *
 
-df = pd.read_csv('gal_data.csv')
+dfs_dict = create_dfs_dict()
+df = create_df_main_dash(dfs_dict)
+# df = pd.read_csv('gal_data.csv')
 
 app = dash.Dash(__name__)
 
 app.layout = html.Div([
     html.Div(
-    html.H1('Hadar Neighborhood: Semi-annual report'),
-    html.Iframe(id='map', srcDoc=open('map.html', 'r').read(), width="90%", height="700")
-    ),
+            html.H1('Hadar Neighborhood: Semi-annual report'),
+            html.Iframe(id='map', srcDoc=open('map.html', 'r').read(), width="90%", height="700")
+            ),
     dt.DataTable(id="table",
-    columns = [{"name": i, "id": i} for i in df.columns],
-              data = df.to_dict('records')
-    )
+                columns= [{"name": i, "id": i} for i in df.columns],
+                data= df.to_dict('records')
+                )
     ])
-
 
 
 if __name__ == '__main__':
