@@ -7,6 +7,7 @@ from dash.dependencies import Input, Output
 import plotly.graph_objs as go
 import folium
 import dash_table as dt
+from pre_process import *
 
 dfs_dict = create_dfs_dict()
 df = create_df_main_dash(dfs_dict)
