@@ -11,7 +11,6 @@ from pre_process import *
 
 dfs_dict = create_dfs_dict()
 df = create_df_main_dash(dfs_dict)
-# df = pd.read_csv('gal_data.csv')
 
 app = dash.Dash(__name__)
 colors = {'title': 'skyblue'}
