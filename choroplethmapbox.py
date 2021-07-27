@@ -3,6 +3,7 @@ import pyproj
 import plotly.graph_objs as go
 import json
 import os
+import numpy as np
 
 
 def shape_file_to_featurecollection(shp_path, stat_zones_names, save_geojson_to_file=False) -> dict:
@@ -38,18 +39,34 @@ def shape_file_to_featurecollection(shp_path, stat_zones_names, save_geojson_to_
     return geo_json_dict
 
 
-def get_choroplethmap_fig(stat_zones_names_dict: dict, values_dict: dict, map_title: str,
+def get_choroplethmap_fig(values_dict: dict, map_title: str,
+                          stat_zones_names_dict: dict = {
+                              611: "הדר מערב - רח' אלמותנבי",
+                              612: 'גן הבהאים',
+                              613: "הדר מערב - רח' מסדה",
+                              621: 'הדר עליון -בי"ח בני ציון',
+                              622: "הדר עליון - רח' הפועל",
+                              623: "רמת הדר - רח' המיימוני",
+                              631: 'הדר מרכז - התיאטרון העירוני',
+                              632: "הדר מרכז - רח' הרצליה",
+                              633: 'הדר מרכז - בית העירייה',
+                              634: 'הדר מרכז - שוק תלפיות',
+                              641: 'הדר מזרח - רח\' יל"ג',
+                              642: 'הדר מזרח - גאולה',
+                              643: "רמת ויז'ניץ",
+                              644: 'מעונות גאולה'
+                          },
                           shp_path: str = os.path.join("StatZones", "Stat_Zones.shp")):
     """
     Creates and returns a plotly pig of Choroplethmapbox (map)
     Hadar StatZones polygons are used for the heatmap
 
-    :param stat_zones_names_dict: dictionary like {612: 'גן הבהאים' ...}
-    :type stat_zones_names_dict: dict
     :param values_dict: The heatmap values (can be any values)
     :type values_dict: dict
     :param map_title: The title of the map
     :type map_title: str
+    :param stat_zones_names_dict: dictionary like {612: 'גן הבהאים' ...}
+    :type stat_zones_names_dict: dict
     :param shp_path: path to shap file with polygons for Hadar statistical zones
     :type shp_path: str
     :return: plotly fig map
@@ -102,4 +119,11 @@ def get_choroplethmap_fig(stat_zones_names_dict: dict, values_dict: dict, map_ti
 
 
 if __name__ == "__main__":
-    pass
+    """Test the module"""
+    values_dict = dict.fromkeys([611, 612, 613, 621, 622, 623, 631, 632, 633, 634, 641, 642, 643, 644], 0.)
+    # Generate random number
+    for key in values_dict.keys():
+        values_dict[key] = np.random.randn()
+
+    fig = get_choroplethmap_fig(values_dict=values_dict, map_title="Exmple Title")
+    fig.show()
