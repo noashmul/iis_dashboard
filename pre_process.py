@@ -112,6 +112,8 @@ def create_dfs_dict():
     df_cameras_t0 = pd.read_csv('data/df_cameras_t0.csv')
     df_cameras_t1 = pd.read_csv('data/df_cameras_t1.csv')
 
+    df_stats_zone = pd.read_csv('data/df_stats_zone.csv')
+
     dfs_dict = {'df_crime_t0': df_crime_t0, 'df_crime_t1': df_crime_t1,
                 'df_crime_2010_to_2015': df_crime_2010_to_2015,
                 'df_conflicts_t0': df_conflicts_t0, 'df_conflicts_t1': df_conflicts_t1,
@@ -120,7 +122,8 @@ def create_dfs_dict():
                 'df_seniors_t0': df_seniors_t0, 'df_seniors_t1': df_seniors_t1,
                 'df_holocaust_t0': df_holocaust_t0, 'df_holocaust_t1': df_holocaust_t1,
                 'df_106_t0': df_106_t0, 'df_106_t1': df_106_t1,
-                'df_cameras_t0': df_cameras_t0, 'df_cameras_t1': df_cameras_t1}
+                'df_cameras_t0': df_cameras_t0, 'df_cameras_t1': df_cameras_t1,
+                'df_stats_zone': df_stats_zone}
     return dfs_dict
 
 
