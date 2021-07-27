@@ -30,8 +30,8 @@ def create_df_main_dash(d: dict):
     df_main_dash = pd.DataFrame(columns=['Subject', 'Description', 'Value', 'Percent_comparison'])
 
     # Crime || Total Crimes
-    d['df_crime_t0']['total_crimes'] = d['df_crime_t0'].sum(axis=1)
-    d['df_crime_t1']['total_crimes'] = d['df_crime_t1'].sum(axis=1)
+    d['df_crime_t0']['total_crimes'] = d['df_crime_t0'].drop(columns=['StatZone', 'Year']).sum(axis=1)
+    d['df_crime_t1']['total_crimes'] = d['df_crime_t1'].drop(columns=['StatZone', 'Year']).sum(axis=1)
     df_main_dash = add_row_to_main_dash(df_main_dash, 'Crime', 'Total Crimes in Current Semi-Year',
                          d['df_crime_t0']['total_crimes'].sum(), d['df_crime_t1']['total_crimes'].sum())
 
@@ -90,8 +90,8 @@ def create_dfs_dict():
     with zipfile.ZipFile(path_to_zip_file, 'r') as zip_ref:
         zip_ref.extractall("data")
 
-    df_crime_t0 = pd.read_csv('data/df_crime_t0.csv').drop(columns=['StatZone', 'Year'])
-    df_crime_t1 = pd.read_csv('data/df_crime_t1.csv').drop(columns=['StatZone', 'Year'])
+    df_crime_t0 = pd.read_csv('data/df_crime_t0.csv')
+    df_crime_t1 = pd.read_csv('data/df_crime_t1.csv')
     df_crime_2010_to_2015 = pd.read_csv('data/df_crime_2010_to_2015.csv')
     df_conflicts_t0 = pd.read_csv('data/df_conflicts_t0.csv')
     df_conflicts_t1 = pd.read_csv('data/df_conflicts_t1.csv')
