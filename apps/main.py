@@ -47,7 +47,7 @@ layout = html.Div(
             html.H6(children='This dashboard is interactive - make sure to hover / choose / click on the visualizations.',
                     style={'text-align': 'center'}),
             html.P(children='The data below is for the date range of X to Y.'),
-            html.Iframe(id='map', srcDoc=open('../map.html', 'r').read(), width="100%", height="300",
+            html.Iframe(id='map', srcDoc=open('map.html', 'r').read(), width="100%", height="300",
                         style={'justify-content': 'center'}),
             generate_table(df),
         ],

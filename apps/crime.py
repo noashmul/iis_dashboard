@@ -10,7 +10,7 @@ import plotly.express as px
 
 import folium
 import dash_table as dt
-from app import app
+from app_def import app
 from pre_process import *
 
 dfs_dict = create_dfs_dict()
@@ -131,16 +131,17 @@ layout = html.Div(
                             ],
                         className="mini_container",
                         ),
-                        html.Iframe(id='map', srcDoc=open('../map.html', 'r').read(), width="80%", height="300",
+                        html.Div(
+                        html.Iframe(id='map', srcDoc=open('map.html', 'r').read(), width="80%", height="300",
                                     style={'justify-content': 'center'}),
-                    ],
+                        className="map_container")],
                     id="info-container1",
                     className="row container-display",
                 ),
                 html.Div(
                     [
                         dcc.Graph(id='crime_trend_graph')
-                    ]
+                    ],className="mini_container"
                 ),
                 html.Div(
                     [
@@ -148,13 +149,13 @@ layout = html.Div(
                             [
                                 dcc.Graph(id='crime_location_type')
                             ],  # TODO fix the hebrew order, maybe with: lang='he',
-                            className="pretty_container six columns",
+                            className='narrow_container',
                         ),
                         html.Div(
                             [
                                 dcc.Graph(id='crime_type')
                             ],
-                            className="pretty_container six columns",
+                            className='narrow_container',
                         ),
                     ],
                     id="info-container2",
