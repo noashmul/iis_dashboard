@@ -204,7 +204,7 @@ def get_main_tab_map(show_text: bool):
 
     fig = go.Figure(go.Scattermapbox(
         mode="text",
-        textfont=dict(size=16, color='black'),
+        textfont=dict(size=10, color='black'),
         text=list(stat_zones_names_dict.keys()) if show_text else [''] * len(stat_zones_names_dict),
         lat=[Polygon(feature['geometry']['coordinates'][0]).centroid.y
              for feature in geo_json_dict['features']],
