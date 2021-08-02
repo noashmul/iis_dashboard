@@ -26,6 +26,13 @@ body {
     box-sizing: border-box;
 }
 
+.wide_container {
+    float: left;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
 .map_container {
     width: 70%;
     height: 50%;
