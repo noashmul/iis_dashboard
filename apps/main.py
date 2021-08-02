@@ -38,7 +38,6 @@ def generate_table(dataframe, max_rows=10):
     ], className="table table-hover")
 
 
-dfs_dict = create_dfs_dict()
 df = create_df_main_dash(dfs_dict)
 # \U000025B2 and \U000025BC are up and down arrows, \U0001F534 and \U0001F7E2 are red and green circles
 df['Percent change'] = df['Percent_comparison'].apply(lambda x: "\U000025BC" +

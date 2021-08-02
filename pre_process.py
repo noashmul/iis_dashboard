@@ -13,6 +13,7 @@ import plotly.figure_factory as ff
 import numpy as np
 import gdown
 import zipfile
+import os
 
 
 def percentage_change(a, b):
@@ -91,12 +92,13 @@ def create_df_main_dash(d: dict):
 
 
 def create_dfs_dict():
-    url = 'https://drive.google.com/uc?id=15VpXTC6CX791p313ugitIjhk2MIv-E5c'
-    path_to_zip_file = 'allfiles.zip'
-    gdown.download(url, path_to_zip_file, quiet=False)
+    if 'allfiles.zip' not in os.listdir():
+        url = 'https://drive.google.com/uc?id=15VpXTC6CX791p313ugitIjhk2MIv-E5c'
+        path_to_zip_file = 'allfiles.zip'
+        gdown.download(url, path_to_zip_file, quiet=False)
 
-    with zipfile.ZipFile(path_to_zip_file, 'r') as zip_ref:
-        zip_ref.extractall("data")
+        with zipfile.ZipFile(path_to_zip_file, 'r') as zip_ref:
+            zip_ref.extractall("data")
 
     df_crime_t0 = pd.read_csv('data/df_crime_t0.csv')
     df_crime_t1 = pd.read_csv('data/df_crime_t1.csv')
@@ -135,7 +137,7 @@ def create_dfs_dict():
                 'df_106_t0': df_106_t0, 'df_106_t1': df_106_t1,
                 'df_cameras_t0': df_cameras_t0, 'df_cameras_t1': df_cameras_t1,
                 'df_stats_zone': df_stats_zone, 'df_aband_t0': df_aband_t0,
-                'df_aband_t1':df_aband_t1}
+                'df_aband_t1': df_aband_t1}
     return dfs_dict
 
 
@@ -144,6 +146,9 @@ def main():
     df_main_dash_out = create_df_main_dash(dfs_dict)
     print('hi')
 
+
+global dfs_dict
+dfs_dict = create_dfs_dict()
 
 if __name__ == "__main__":
     main()

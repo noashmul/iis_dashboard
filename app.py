@@ -7,7 +7,9 @@ import dash_bootstrap_components as dbc
 from app_def import server
 from app_def import app
 # import all pages in the app
-from apps import main, safety, crime
+from apps import main, safety, crime, income
+import pre_process
+
 
 app.layout = html.Div(
     [html.H1('Hadar Neighborhood: Semi-annual report',
@@ -18,7 +20,8 @@ app.layout = html.Div(
              children=[
                  dbc.NavLink("main", href="/main", active="exact"),
                  dbc.NavLink("Safety", href="/safety", active="exact"),
-                 dbc.NavLink("Crime", href="/crime", active="exact")
+                 dbc.NavLink("Crime", href="/crime", active="exact"),
+                 dbc.NavLink("Income", href="/income", active="exact"),
              ],
              brand="Choose the wanted tab",
              color="primary",
@@ -45,6 +48,8 @@ def display_page(pathname):
         return safety.layout
     elif pathname == '/crime':
         return crime.layout
+    elif pathname == '/income':
+        return income.layout
     else:
         return main.layout
 
