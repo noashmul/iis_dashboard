@@ -32,7 +32,9 @@ statistic_area = {'גן הבהאים': 612,
                   "רמת ויז'ניץ": 643}
 options = list()
 for key, value in statistic_area.items():
-    options.append({'label': key + ' ' + str(value), 'value': value}) # TODO value need to be int or str? in Gal's function its int
+    options.append({'label': key + ' ' + str(value),
+                    'value': value})  # TODO value need to be int or str? in Gal's function its int
+
 
 def generate_table(dataframe, max_rows=10):
     return html.Table([
@@ -45,6 +47,7 @@ def generate_table(dataframe, max_rows=10):
             ]) for i in range(min(len(dataframe), max_rows))
         ])
     ], style={'justify-content': 'center'})
+
 
 @app.callback(
     Output(component_id='crime_trend_graph', component_property='figure'),
@@ -59,16 +62,16 @@ def get_graphs(statzone):
     df_total_crimes = df_crimes.groupby(by=["StatZone", "Month"]).count()[['Street']]
 
     fig1 = px.line(df_total_crimes, x=df_total_crimes.loc[statzone]['Street'].index
-                  , y=df_total_crimes.loc[statzone]['Street'].values)
+                   , y=df_total_crimes.loc[statzone]['Street'].values)
     fig1.update_layout(title_text=f"Amount of crimes per month in {statzone} stat zone)",
-                      yaxis=dict(
-                          titlefont_size=18,
-                          tickfont_size=18,
-                      ),
-                      xaxis=dict(
-                          titlefont_size=18,
-                          tickfont_size=18,
-                      ), xaxis_showgrid=True, yaxis_showgrid=True)
+                       yaxis=dict(
+                           titlefont_size=18,
+                           tickfont_size=18,
+                       ),
+                       xaxis=dict(
+                           titlefont_size=18,
+                           tickfont_size=18,
+                       ), xaxis_showgrid=True, yaxis_showgrid=True)
     fig1.update_yaxes(title='Amount of crimes')
     fig1.update_xaxes(title='month in 2012')
 
@@ -79,14 +82,14 @@ def get_graphs(statzone):
     fig2 = px.bar(df_location, x=df_location.index, y=df_location.Street)
     # for_title = "crimes per location" if graph_type == "CrimeLocType" else "crimes per type"
     fig2.update_layout(title_text=f"Amount of crimes per location in {statzone} stat zone",
-                      yaxis=dict(
-                          titlefont_size=18,
-                          tickfont_size=18,
-                      ),
-                      xaxis=dict(
-                          titlefont_size=18,
-                          tickfont_size=18,
-                      ), xaxis_showgrid=True, yaxis_showgrid=True)
+                       yaxis=dict(
+                           titlefont_size=18,
+                           tickfont_size=18,
+                       ),
+                       xaxis=dict(
+                           titlefont_size=18,
+                           tickfont_size=18,
+                       ), xaxis_showgrid=True, yaxis_showgrid=True)
     fig2.update_yaxes(title='Amount of crimes')
     fig2.update_xaxes(title='Crime location')
 
@@ -95,14 +98,14 @@ def get_graphs(statzone):
 
     fig3 = px.bar(df_type, x=df_type.index, y=df_type.Street)
     fig3.update_layout(title_text=f"Amount of crimes per type in {statzone} stat zone",
-                      yaxis=dict(
-                          titlefont_size=18,
-                          tickfont_size=18,
-                      ),
-                      xaxis=dict(
-                          titlefont_size=18,
-                          tickfont_size=18,
-                      ), xaxis_showgrid=True, yaxis_showgrid=True)
+                       yaxis=dict(
+                           titlefont_size=18,
+                           tickfont_size=18,
+                       ),
+                       xaxis=dict(
+                           titlefont_size=18,
+                           tickfont_size=18,
+                       ), xaxis_showgrid=True, yaxis_showgrid=True)
     fig3.update_yaxes(title='Amount of crimes')
     fig3.update_xaxes(title='Crime type')
 
@@ -124,24 +127,24 @@ layout = html.Div(
                     [
                         html.Div(
                             [
-                             'Choose area: ', dcc.RadioItems(id='areas',
-                                                             options=options,
-                                                             value=611
-                                                             ),
+                                'Choose area: ', dcc.RadioItems(id='areas',
+                                                                options=options,
+                                                                value=611
+                                                                ),
                             ],
-                        className="mini_container",
+                            className="mini_container",
                         ),
                         html.Div(
-                        html.Iframe(id='map', srcDoc=open('map.html', 'r').read(), width="80%", height="300",
-                                    style={'justify-content': 'center'}),
-                        className="map_container")],
+                            html.Iframe(id='map', srcDoc=open('map.html', 'r').read(), width="80%", height="300",
+                                        style={'justify-content': 'center'}),
+                            className="map_container")],
                     id="info-container1",
                     className="row container-display",
                 ),
                 html.Div(
                     [
                         dcc.Graph(id='crime_trend_graph')
-                    ],className="mini_container"
+                    ], className="mini_container"
                 ),
                 html.Div(
                     [

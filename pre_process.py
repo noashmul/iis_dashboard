@@ -5,7 +5,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.express as px
 import urllib.request as urllib
-#from urllib.request import urlopen
+# from urllib.request import urlopen
 import pandas as pd
 # import plotly.graph_objs as go
 # import statsmodels.api as sm
@@ -33,22 +33,25 @@ def create_df_main_dash(d: dict):
     d['df_crime_t0']['total_crimes'] = d['df_crime_t0'].drop(columns=['StatZone', 'Year']).sum(axis=1)
     d['df_crime_t1']['total_crimes'] = d['df_crime_t1'].drop(columns=['StatZone', 'Year']).sum(axis=1)
     df_main_dash = add_row_to_main_dash(df_main_dash, 'Crime', 'Total Crimes in Current Semi-Year',
-                         d['df_crime_t0']['total_crimes'].sum(), d['df_crime_t1']['total_crimes'].sum())
+                                        d['df_crime_t0']['total_crimes'].sum(), d['df_crime_t1']['total_crimes'].sum())
 
     # Population || Total Population
     df_main_dash = add_row_to_main_dash(df_main_dash, 'Demographics', 'Total Population',
-                         int(d['df_salaries_t0']['ResNum'].sum()), int(d['df_salaries_t1']['ResNum'].sum()))
+                                        int(d['df_salaries_t0']['ResNum'].sum()),
+                                        int(d['df_salaries_t1']['ResNum'].sum()))
 
     # Population || Total Haredim
     df_main_dash = add_row_to_main_dash(df_main_dash, 'Demographics', 'Total Haredi Population',
-                         int(d['df_haredim_t0']['TotHaredim'].sum()), int(d['df_haredim_t1']['TotHaredim'].sum()))
+                                        int(d['df_haredim_t0']['TotHaredim'].sum()),
+                                        int(d['df_haredim_t1']['TotHaredim'].sum()))
 
     # Income || Average Salary (Weighted sum of the five categories)
     Average_Salary_list = [0, 0]
 
     for i, df_salaries in enumerate([d['df_salaries_t0'], d['df_salaries_t1']]):
         df_salaries['ResNum_Salary'] = df_salaries['SalNoHKResNum'] + df_salaries['SalHKResNum'] + \
-        df_salaries['SalPenResNum'] + df_salaries['SalSHNoBTLResNum'] + df_salaries['IncSelfResNum']
+                                       df_salaries['SalPenResNum'] + df_salaries['SalSHNoBTLResNum'] + df_salaries[
+                                           'IncSelfResNum']
         df_salaries['weighted_salary'] = df_salaries.apply(
             lambda x: int((x.SalNoHKResNum / x.ResNum_Salary) * x.SalNoHKAve +
                           (x.SalHKResNum / x.ResNum_Salary) * x.SalHKAve +
@@ -59,26 +62,31 @@ def create_df_main_dash(d: dict):
         for ResNum, Salary in zip(df_salaries['ResNum_Salary'], df_salaries['weighted_salary']):
             Average_Salary_list[i] += (ResNum / (df_salaries['ResNum_Salary'].sum())) * Salary
 
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Demographics', 'Average Salary', int(Average_Salary_list[0]), int(Average_Salary_list[1]))
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'Demographics', 'Average Salary', int(Average_Salary_list[0]),
+                                        int(Average_Salary_list[1]))
 
     # Elderly || Senior Citizens || len(df_seniors)
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Senior Citizens', len(d['df_seniors_t0']), len(d['df_seniors_t0']))
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Senior Citizens', len(d['df_seniors_t0']),
+                                        len(d['df_seniors_t0']))
 
     # Elderly || Lone Senior Citizens
     df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Lone Senior Citizens',
-                         d['df_seniors_t0']['SeniorAlone'].sum(), d['df_seniors_t1']['SeniorAlone'].sum())
+                                        d['df_seniors_t0']['SeniorAlone'].sum(),
+                                        d['df_seniors_t1']['SeniorAlone'].sum())
 
     # Elderly || Senior Citizens That Recieve Food ||
     df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Recieving Food Senior Citizens',
-                         d['df_seniors_t0']['SeniorRecivFood'].sum(), d['df_seniors_t1']['SeniorRecivFood'].sum())
+                                        d['df_seniors_t0']['SeniorRecivFood'].sum(),
+                                        d['df_seniors_t1']['SeniorRecivFood'].sum())
 
     # Elderly || Holocaust Srvivors
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Holocaust Srvivors', len(d['df_holocaust_t0']), len(d['df_holocaust_t1']))
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Holocaust Srvivors',
+                                        len(d['df_holocaust_t0']), len(d['df_holocaust_t1']))
 
     # Elderly || Unrecognized Holocaust Survivors ||
     df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Unrecognized Holocaust Srvivors',
-                         sum(d['df_holocaust_t0']['HoloSurvKnwn'] == "לא מוכר"),
-                         sum(d['df_holocaust_t1']['HoloSurvKnwn'] == "לא מוכר"))
+                                        sum(d['df_holocaust_t0']['HoloSurvKnwn'] == "לא מוכר"),
+                                        sum(d['df_holocaust_t1']['HoloSurvKnwn'] == "לא מוכר"))
     return df_main_dash
 
 
