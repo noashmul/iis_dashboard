@@ -2,8 +2,6 @@ from choroplethmapbox import get_choroplethmap_fig
 from app_def import app
 from pre_process import *
 
-# TODO Gal don't forget to update the .zip through colab
-
 statistic_area = {'הכל': 0,
                   'גן הבהאים': 612,
                   'הדר מזרח - גאולה': 642,
@@ -169,7 +167,6 @@ def get_graphs(statzone):
 
     fig2 = px.bar(df_holocaust1_type, x=df_holocaust1_type.index, y=df_holocaust1_type['Amount of Holocaust Survivors'],
                   color_discrete_sequence=['#252E3F'])
-    # for_title = "crimes per location" if graph_type == "CrimeLocType" else "crimes per type"
     fig2.update_layout(title_text=f"Amount of holocaust survivors per needed help <br> type in{string}{statzone}",
                        title_x=0.5, yaxis=dict(
             titlefont_size=14,
@@ -188,16 +185,14 @@ layout = html.Div(
     children=[
         html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
                 style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                       'letter-spacing': '0em'}
-                ),
+                       'letter-spacing': '0em'}),
         html.Div(
             [
                 html.Div(
                     [
                         'Choose area: ', dcc.RadioItems(id='areas',
                                                         options=options,
-                                                        value=0
-                                                        ),
+                                                        value=0),
                     ],
                     className="mini_container",
                 ),
@@ -211,29 +206,21 @@ layout = html.Div(
         html.Div(
             [
                 html.Div(
-                    [
-                        dcc.Graph(id='seniors_type')
-                    ],
+                    [dcc.Graph(id='seniors_type')],
                     className='narrow_container',
                 ),
                 html.Div(
-                    [
-                        dcc.Graph(id='needed_help_type')
-                    ],
+                    [dcc.Graph(id='needed_help_type')],
                     className='narrow_container',
                 ),
             ],
             id="info-container2",
             className="row container-display",
         ),
-        # html.Div(id='num_holocaust_survivors'),
-
         html.Div(
             children=[
-                html.H4(
-                    [  # TODO maybe put "All stat.." / number of stat zone like in graphs
-                        "Number of Holocaust Survivors (for current area choose)",
-                    ],
+                html.H4(  # TODO maybe put "All stat.." / number of stat zone like in graphs
+                    ["Number of Holocaust Survivors (for current area choose)"],
                     className="container_title",
                 ),
                 dcc.Loading(
