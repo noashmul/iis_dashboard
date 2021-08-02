@@ -154,7 +154,8 @@ def get_graphs(statzone):
                        xaxis=dict(
                            titlefont_size=18,
                            tickfont_size=18,
-                       ), xaxis_showgrid=True, yaxis_showgrid=True, template='none')
+                       ), xaxis_showgrid=True, yaxis_showgrid=True,
+                       template='simple_white')
     fig2.update_xaxes(title='Crime location', tickangle=45)
 
     if statzone == 'All Statistical zones':
@@ -179,7 +180,7 @@ def get_graphs(statzone):
                            titlefont_size=18,
                            tickfont_size=18,
                        ), xaxis_showgrid=True, yaxis_showgrid=True,
-                       template='none',
+                       template='simple_white',
                        )
     fig3.update_xaxes(title='Crime type', tickangle=45)
 
