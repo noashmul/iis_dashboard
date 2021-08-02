@@ -14,8 +14,9 @@ def add_annotations_to_fig(fig, x, y, percentage_change_value):
     :param percentage_change_value: the text values to annotate
     """
     up, down = "\U000025B2", "\U000025BC"
-    percentage_change_value = [round(val, 1) for val in percentage_change_value]
-    text = [f'{up} +{val}%' if val > 0 else f'{down} {val}%' for val in percentage_change_value]
+    percentage_change_value = [round(val, 1) if not np.isnan(val) else val for val in percentage_change_value]
+    text = [(f'{up} +{val}%' if val > 0 else f'{down} {val}%') if not np.isnan(val) else ""
+            for val in percentage_change_value]
 
     fig.add_trace(go.Scatter(
         x=x,
@@ -25,7 +26,7 @@ def add_annotations_to_fig(fig, x, y, percentage_change_value):
         textposition="top center",
         textfont=dict(
             family="sans serif",
-            size=18,
+            size=18,  # TODO make sure this is good to all the graphs
             color="black"
         ),
         name=''

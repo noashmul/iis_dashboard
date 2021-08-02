@@ -152,10 +152,10 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
     else:
         z.append(0)
         z.append(100)
+        colorscale = 'greens'
 
     chosen_color_scale = colorscale if colorscale is not None else (
-        [[0, 'red'], [0.5, 'white'], [1, 'green']] if not is_safety_map
-        else [[0, '#670020'], [0.5, 'white'], [1, '#083669']])  # colorscale for safety)
+        [[0, 'red'], [0.5, 'white'], [1, 'green']])  # colorscale for safety tab
 
     # my mapbox_access_token must be used only for special mapbox style
     mapboxt = open(".mapbox_token").read()
@@ -268,12 +268,13 @@ if __name__ == "__main__":
     values_dict = dict.fromkeys([611, 612, 613, 621, 622, 623, 631, 632, 633, 634, 641, 642, 643, 644], 0.)
     # Generate random number
     for key in values_dict.keys():
-        values_dict[key] = np.random.randn()
+        values_dict[key] = max(0, min(100 * np.random.randn(), 100))
 
     """Heatmap"""
     fig1 = get_choroplethmap_fig(values_dict=values_dict, map_title="Example Title",
                                  colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
                                  hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{z}%<br>',
+                                 is_safety_map=True,
                                  add_stat_numbers_to_map=True
                                  )
     fig1.show()
