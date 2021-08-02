@@ -38,7 +38,12 @@ statistic_area = {'גן הבהאים': 612,
 
 options = list()
 for key, value in statistic_area.items():
-    options.append({'label': key + ' ' + str(value), 'value': str(value)})
+    if key != 'הכל':
+        options.append({'label': "  " + key + ' ' + str(value),
+                        'value': value})
+    else:
+        options.append({'label': "  " + key,
+                        'value': value})
 
 layout = html.Div([
     html.H3("Change the value to see callbacks in action!"),

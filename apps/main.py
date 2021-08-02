@@ -11,19 +11,6 @@ from pre_process import *
 from choroplethmapbox import get_main_tab_map
 
 
-def generate_table_old(dataframe, max_rows=10):
-    return html.Table([
-        html.Thead(
-            html.Tr([html.Th(col) for col in dataframe.columns])
-        ),
-        html.Tbody([
-            html.Tr([
-                html.Td(dataframe.iloc[i][col]) for col in dataframe.columns
-            ]) for i in range(min(len(dataframe), max_rows))
-        ])
-    ], style={'justify-content': 'center'})
-
-
 def generate_table(dataframe, max_rows=10):
     val = ['table-light', 'table-primary'] * 10
     return html.Table([

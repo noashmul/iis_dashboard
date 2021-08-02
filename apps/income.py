@@ -2,7 +2,6 @@ from app_def import app
 from choroplethmapbox import get_choroplethmap_fig
 from pre_process import *
 
-
 statistic_area = {'הכל': 0,
                   'גן הבהאים': 612,
                   'הדר מזרח - גאולה': 642,
@@ -39,28 +38,28 @@ stat_zones_names_dict = {
 options = list()
 for key, value in statistic_area.items():
     if key != 'הכל':
-        options.append({'label': key + ' ' + str(value),
+        options.append({'label': "  " + key + ' ' + str(value),
                         'value': value})
     else:
-        options.append({'label': key,
+        options.append({'label': "  " + key,
                         'value': value})
 
-crime0, crime1 = dfs_dict['df_salaries_t0'], dfs_dict['df_salaries_t1']
-for df in [crime0, crime1]:
+sal0, sal1 = dfs_dict['df_salaries_t0'], dfs_dict['df_salaries_t1']
+for df in [sal0, sal1]:
     df['SalNoHKResNum_avg'] = df['SalNoHKResNum'] * df['SalNoHKAve']
     df['SalHKResNum_avg'] = df['SalHKResNum'] * df['SalHKAve']
     df['SalPenResNum_avg'] = df['SalPenResNum'] * df['SalPenAve']
     df['SalSHNoBTLResNum_avg'] = df['SalSHNoBTLResNum'] * df['SalSHNoBTLAve']
     df['IncSelfResNum_avg'] = df['IncSelfResNum'] * df['IncSelfAve']
     df['tot_res'] = df[[col for col in
-                              ['SalNoHKResNum', 'SalHKResNum', 'SalPenResNum', 'SalSHNoBTLResNum',
-                               'IncSelfResNum']]].sum(axis=1)
+                        ['SalNoHKResNum', 'SalHKResNum', 'SalPenResNum', 'SalSHNoBTLResNum',
+                         'IncSelfResNum']]].sum(axis=1)
     df['total_sal_avg'] = df[[col for col in
                               ['SalNoHKResNum_avg', 'SalHKResNum_avg', 'SalPenResNum_avg', 'SalSHNoBTLResNum_avg',
                                'IncSelfResNum_avg']]].sum(axis=1) / df['tot_res']
 
 # percentage change in % units from time0 to time1
-percentage_change = 100 * (crime1.total_sal_avg - crime0.total_sal_avg) / crime0.total_sal_avg
+percentage_change = 100 * (sal1.total_sal_avg - sal0.total_sal_avg) / sal0.total_sal_avg
 values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
                       zip(stat_zones_names_dict.keys(), percentage_change)}
 map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
