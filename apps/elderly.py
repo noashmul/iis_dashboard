@@ -84,7 +84,7 @@ map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 @app.callback(
     Output(component_id='seniors_type', component_property='figure'),
     Output(component_id='needed_help_type', component_property='figure'),
-    Output(component_id='num_holocaust_survival', component_property='value'),
+    Output(component_id='num_holocaust_survivors', component_property='figure'),
     Input(component_id='areas', component_property='value')
 )
 def get_graphs(statzone):
@@ -128,6 +128,27 @@ def get_graphs(statzone):
     # yaxis_range=[0, max_y * 1.1])
 
     df_holocaust1 = dfs_dict['df_holocaust_t1']
+    if statzone == 'All Statistical zones':
+        text3 = len(df_holocaust1)
+    else:
+        text3 = len(df_holocaust1[df_holocaust1['StatZone'] == statzone])
+
+    text3 = int(text3)
+    text3_display = {
+        "data": [
+            {
+                "type": "indicator",
+                "value": text3,
+                "number": {"font": {"color": "#263238"}},
+            }
+        ],
+        "layout": {
+            # "template": template,
+            "height": 150,
+            "margin": {"l": 10, "r": 10, "t": 10, "b": 10},
+        },
+    }
+
     df_holocaust1["HoloSurvNdDesc"].dropna()
     df_holocaust1 = df_holocaust1.replace(
         {'בעיות הנובעות ממחלות אקוטיות או כרוניות (למעט בריאות הנפש)': 'מחלות אקוטיות או כרוניות',
@@ -136,7 +157,7 @@ def get_graphs(statzone):
          'בעיות בתקשורת בקליטה (עלייה)': 'בעיות בתקשורת וקליטה'})
     df_holocaust1["HoloSurvNdDesc"] = df_holocaust1["HoloSurvNdDesc"].apply(
         lambda x: str(x)[:-1] + '(' if str(x)[-1] == ')' else x)
-    if statzone == 'All Statistical zones':
+    if statzone == 'All Statistical zones' or statzone == 623:  # TODO delete or statzone==623
         df_holocaust1_type = df_holocaust1.groupby(by=["HoloSurvNdDesc"]).count()[['Street']]
         df_holocaust1_type = df_holocaust1_type.sort_values(by=['Street'], ascending=False).head(5)
     else:
@@ -144,12 +165,12 @@ def get_graphs(statzone):
         df_holocaust1_type = df_holocaust1_type.loc[statzone].sort_values(by=['Street'], ascending=False).head(5)
 
     df_holocaust1_type.index = [s[::-1].strip(' ') for s in df_holocaust1_type.index]
-    df_holocaust1_type.rename(columns={'Street': 'Amount of Holocaust Survivals'}, inplace=True)
+    df_holocaust1_type.rename(columns={'Street': 'Amount of Holocaust Survivors'}, inplace=True)
 
-    fig2 = px.bar(df_holocaust1_type, x=df_holocaust1_type.index, y=df_holocaust1_type['Amount of Holocaust Survivals'],
+    fig2 = px.bar(df_holocaust1_type, x=df_holocaust1_type.index, y=df_holocaust1_type['Amount of Holocaust Survivors'],
                   color_discrete_sequence=['#252E3F'])
     # for_title = "crimes per location" if graph_type == "CrimeLocType" else "crimes per type"
-    fig2.update_layout(title_text=f"Amount of holocaust survivals per needed help <br> type in{string}{statzone}",
+    fig2.update_layout(title_text=f"Amount of holocaust survivors per needed help <br> type in{string}{statzone}",
                        title_x=0.5, yaxis=dict(
             titlefont_size=14,
             tickfont_size=14,
@@ -160,12 +181,7 @@ def get_graphs(statzone):
                        ), xaxis_showgrid=True, yaxis_showgrid=True, template='simple_white')
     fig2.update_xaxes(title='Needed help type', tickangle=45)
 
-    if statzone == 'All Statistical zones':
-        text3 = len(df_holocaust1)
-    else:
-        text3 = len(df_holocaust1[df_holocaust1['StatZone'] == statzone])
-
-    return fig1, fig2, text3
+    return fig1, fig2, text3_display
 
 
 layout = html.Div(
@@ -210,17 +226,27 @@ layout = html.Div(
             id="info-container2",
             className="row container-display",
         ),
-        # html.Div(id='num_holocaust_survival'),
+        # html.Div(id='num_holocaust_survivors'),
 
         html.Div(
-            [
-                dcc.Graph(
-                    id="num_holocaust_survival",
-                    figure=blank_fig(150),
-                    config={"displayModeBar": False},
+            children=[
+                html.H4(
+                    [
+                        "Number of Holocaust Survivors (for current area choose)",
+                    ],
+                    className="container_title",
+                ),
+                dcc.Loading(
+                    dcc.Graph(
+                        id="num_holocaust_survivors",
+                        figure=blank_fig(150),
+                        config={"displayModeBar": False},
+                    ),
+                    className="svg-container",
+                    style={"height": 150},
                 ),
             ],
-            className='narrow_container',
+            className="pretty_container twelve columns",
         ),
     ],
     className="pretty_container twelve columns",

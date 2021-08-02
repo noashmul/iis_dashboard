@@ -20,7 +20,7 @@ df = create_df_main_dash(dfs_dict)
 # \U000025B2 and \U000025BC are up and down arrows, \U0001F534 and \U0001F7E2 are red and green circles
 df['Percent change'] = df['Percent_comparison'].apply(lambda x: "\U000025BC" +
                                                                 "\U0001F534" + "   " + str(x) + "%" if x < 0
-else "\U000025B2" + "\U0001F7E2 " + " " + str(x) + "%")
+else "\U000025B2" + "\U0001F7E2 " + " " + "+" + str(x) + "%")
 df = df.drop('Percent_comparison', axis=1)
 
 layout = html.Div(
