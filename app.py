@@ -8,6 +8,8 @@ from app_def import server
 from app_def import app
 # import all pages in the app
 from apps import main, safety, crime, income
+import pre_process
+
 
 app.layout = html.Div(
     [html.H1('Hadar Neighborhood: Semi-annual report',

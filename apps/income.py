@@ -1,7 +1,6 @@
 from app_def import app
 from pre_process import *
 
-dfs_dict = create_dfs_dict()
 
 # TODO add 'ALL' option
 statistic_area = {'הכל': 0,

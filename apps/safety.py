@@ -14,8 +14,6 @@ from choroplethmapbox import get_area_in_km2_for_stat_zones
 from pre_process import *
 
 
-dfs_dict = create_dfs_dict()
-
 # external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 

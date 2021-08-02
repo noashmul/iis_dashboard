@@ -13,8 +13,6 @@ import dash_table as dt
 from app_def import app
 from pre_process import *
 
-dfs_dict = create_dfs_dict()
-
 statistic_area = {'הכל': 0,
                   'גן הבהאים': 612,
                   'הדר מזרח - גאולה': 642,
