@@ -8,6 +8,7 @@ import plotly.graph_objs as go
 import folium
 import dash_table as dt
 from pre_process import *
+from choroplethmapbox import get_main_tab_map
 
 
 def generate_table_old(dataframe, max_rows=10):
@@ -72,3 +73,4 @@ layout = html.Div(
             id="cross-filter-options",
             style={"text-align": "justify"},
         )
+
