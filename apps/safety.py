@@ -39,44 +39,46 @@ layout = html.Div([
         id="app-container",
         children=[
             html.Div(className='narrow_container', children=[
-            html.Div(id="left-column",className="pretty_container", children=[
-                html.Div(className="slider-container",
-                         children=[
-                             html.P(id="slider-text1", children="Choose the wanted weight 1:", style={'color': 'black'},
-                                    ),
-                             dcc.Slider(id="Weight 1", min=0.0, max=1.0, value=0.5, step=None,
-                                        marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
-                                               for num in [0, 0.25, 0.5, 0.75, 1]
-                                               }),
-                             html.P(id="slider-text2" ,children="Choose the wanted weight 2:", style={'color': 'black'},
-                                    ),
-                             dcc.Slider(id="Weight 2", min=0.0, max=1.0, value=0.5, step=None,
-                                        marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
-                                               for num in [0, 0.25, 0.5, 0.75, 1]
-                                               }),
-                         ]),
-                html.Div(className="mini_container",
-                         children=[
-                             html.Div(
-                                 [
-                                 'Choose area: ', dcc.RadioItems(id='areas',
-                                                                 options=options,
-                                                                 value='MTL'
-                                                                 ),
-                                 # html.Br(),
-                                 # dcc.Graph(id='graph_with_slider'),
-                                 # dcc.Graph(id='graph_with_slider2')
+                html.Div(id="left-column", className="pretty_container", children=[
+                    html.Div(className="slider-container",
+                             children=[
+                                 html.P(id="slider-text1", children="Choose the wanted weight 1:",
+                                        style={'color': 'black'},
+                                        ),
+                                 dcc.Slider(id="Weight 1", min=0.0, max=1.0, value=0.5, step=None,
+                                            marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
+                                                   for num in [0, 0.25, 0.5, 0.75, 1]
+                                                   }),
+                                 html.P(id="slider-text2", children="Choose the wanted weight 2:",
+                                        style={'color': 'black'},
+                                        ),
+                                 dcc.Slider(id="Weight 2", min=0.0, max=1.0, value=0.5, step=None,
+                                            marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
+                                                   for num in [0, 0.25, 0.5, 0.75, 1]
+                                                   }),
+                             ]),
+                    html.Div(className="mini_container",
+                             children=[
+                                 html.Div(
+                                     [
+                                         'Choose area: ', dcc.RadioItems(id='areas',
+                                                                         options=options,
+                                                                         value='MTL'
+                                                                         ),
+                                         # html.Br(),
+                                         # dcc.Graph(id='graph_with_slider'),
+                                         # dcc.Graph(id='graph_with_slider2')
 
-                             ])])
-            ])]),
+                                     ])])
+                ])]),
             html.Div(className='narrow_container', children=[
-            html.Div(
-                id="graph-container",
-                children=[
-                    # html.P(id="chart-selector", children="Select chart:"),
-                    dcc.Graph(id='graph_with_slider')
-                ])
-        ])])])
+                html.Div(
+                    id="graph-container",
+                    children=[
+                        # html.P(id="chart-selector", children="Select chart:"),
+                        dcc.Graph(id='graph_with_slider')
+                    ])
+            ])])])
 
 
 @app.callback(

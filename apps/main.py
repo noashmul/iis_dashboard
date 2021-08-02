@@ -26,8 +26,8 @@ def generate_table(dataframe, max_rows=10):
 dfs_dict = create_dfs_dict()
 df = create_df_main_dash(dfs_dict)
 df['Percent_comparison'] = df['Percent_comparison'].apply(lambda x:
-              "⇩\U0001F534" + str(x) + "%" if x < 0
-              else "⇧\U0001F7E2 " + " " + str(x) + "%")
+                                                          "⇩\U0001F534" + str(x) + "%" if x < 0
+                                                          else "⇧\U0001F7E2 " + " " + str(x) + "%")
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -35,27 +35,28 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 colors = {'title': 'skyblue'}
 
 layout = html.Div(
-[
-    html.Div(
-        children=[
-            html.H3(children='Hadar Neighborhood: Semi-annual report',
-                    style={'text-align': 'center', 'font-family': ' sans-serif','color': colors['title']}),
-            html.H6(children='Welcome to our dashboard.',
+    [
+        html.Div(
+            children=[
+                html.H3(children='Hadar Neighborhood: Semi-annual report',
+                        style={'text-align': 'center', 'font-family': ' sans-serif', 'color': colors['title']}),
+                html.H6(children='Welcome to our dashboard.',
+                        style={'text-align': 'center'}),
+                html.H6(children='Above are different tabs, a tab for each subject.',
+                        style={'text-align': 'center'}),
+                html.H6(
+                    children='This dashboard is interactive - make sure to hover / choose / click on the visualizations.',
                     style={'text-align': 'center'}),
-            html.H6(children='Above are different tabs, a tab for each subject.',
-                    style={'text-align': 'center'}),
-            html.H6(children='This dashboard is interactive - make sure to hover / choose / click on the visualizations.',
-                    style={'text-align': 'center'}),
-            html.P(children='The data below is for the date range of X to Y.'),
-            html.Iframe(id='map', srcDoc=open('map.html', 'r').read(), width="100%", height="300",
-                        style={'justify-content': 'center'}),
-            generate_table(df),
-        ],
-        className="pretty_container twelve columns",
-        id="cross-filter-options",
-        style={"text-align": "justify"},
-    ),
-]
+                html.P(children='The data below is for the date range of X to Y.'),
+                html.Iframe(id='map', srcDoc=open('map.html', 'r').read(), width="100%", height="300",
+                            style={'justify-content': 'center'}),
+                generate_table(df),
+            ],
+            className="pretty_container twelve columns",
+            id="cross-filter-options",
+            style={"text-align": "justify"},
+        ),
+    ]
 )
 
 if __name__ == '__main__':
