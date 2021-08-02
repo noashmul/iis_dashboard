@@ -1,71 +1,73 @@
 .js-plotly-plot .plotly .modebar {
-  padding-top: 5%;
-  margin-right: 3.5%;
+    padding-top: 5%;
+    margin-right: 3.5%;
 }
 
 body {
-  background-color: #252e3f;
-  margin: 5%;
+    background-color: #252e3f;
+    margin: 5%;
     text-transform: none;
 }
 
 .two.columns {
-  width: 16.25%;
+    width: 16.25%;
 }
 
 .column,
 .columns {
-  margin-left: 0.5%;
+    margin-left: 0.5%;
 }
-.narrow_container{
+
+.narrow_container {
     width: 45%;
 }
 
-.map_container{
-    width: 60%;
+.map_container {
+    width: 70%;
+    height: 50%;
 }
 
 .pretty_container {
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  margin: 10px;
-  padding: 15px;
-  position: relative;
-  box-shadow: 2px 2px 2px lightgrey;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin: 10px;
+    padding: 15px;
+    position: relative;
+    box-shadow: 2px 2px 2px lightgrey;
 }
 
 .no_border_container {
-  border-radius: 0px;
-  background-color: #f9f9f9;
-  margin: 0px;
-  padding: 0px;
-  position: relative;
-  box-shadow: 2px 2px 2px lightgrey;
+    border-radius: 0px;
+    background-color: #f9f9f9;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    box-shadow: 2px 2px 2px lightgrey;
 }
 
 .bare_container {
-  margin: 0 0 0 0;
-  padding: 0 0 0 0;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
 }
 
 
 .rc-slider {
-  margin-left: 0px;
-  padding-left: 0px;
+    margin-left: 0px;
+    padding-left: 0px;
 }
 
 .flex-display {
-  display: flex;
+    display: flex;
 }
 
 .container-display {
-  display: flex;
+    display: flex;
 }
 
 .navbar {
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .areas-container {
@@ -74,7 +76,7 @@ body {
     height: 15rem;
 }
 
-.areas-container label{
+.areas-container label {
     display: block;
 }
 
@@ -84,8 +86,8 @@ body {
     height: 15rem;
 }
 
-.slider-container input{
-    width:20%;
+.slider-container input {
+    width: 20%;
 }
 
 /*#slider-container {*/
@@ -108,89 +110,110 @@ body {
 
 #individual_graph,
 #aggregate_graph {
-  width: calc(100% - 30px);
-  position: absolute;
+    width: calc(100% - 30px);
+    position: absolute;
 }
 
 #count_graph {
-  position: absolute;
-  height: calc(100% - 30px);
-  width: calc(100% - 30px);
+    position: absolute;
+    height: calc(100% - 30px);
+    width: calc(100% - 30px);
 }
 
 #countGraphContainer {
-  flex: 5;
-  position: relative;
+    flex: 5;
+    position: relative;
 }
 
 #header {
-  align-items: center;
+    align-items: center;
 }
 
 #learn-more-button {
-  text-align: center;
-  height: 100%;
-  padding: 0 20px;
-  text-transform: none;
-  font-size: 15px;
-  float: right;
-  margin-right: 10px;
-  margin-top: 30px;
+    text-align: center;
+    height: 100%;
+    padding: 0 20px;
+    text-transform: none;
+    font-size: 15px;
+    float: right;
+    margin-right: 10px;
+    margin-top: 30px;
 }
+
 #title {
-  text-align: center;
+    text-align: center;
+}
+
+#map {
+    margin-bottom: 30px;
 }
 
 .mini_container {
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  margin: 10px;
-  padding: 15px;
-  position: relative;
-  box-shadow: 2px 2px 2px lightgrey;
+    /*width: 100%;*/
+    height: 400px;
+    overflow: scroll;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin: 10px;
+    padding: 15px;
+    position: relative;
+    /*box-shadow: 2px 2px 2px lightgrey;*/
 }
+
 .mini_container label {
     display: block;
 }
 
+.graph_container {
+    width: 100%;
+    height: 40%;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin: 10px;
+    padding: 15px;
+    position: relative;
+    /*box-shadow: 2px 2px 2px lightgrey;*/
+}
+
+
 #right-column {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 #wells {
-  flex: 1;
+    flex: 1;
 }
 
 #gas {
-  flex: 1;
+    flex: 1;
 }
 
 #aggregate_data {
-  align-items: center;
+    align-items: center;
 }
 
 #oil {
-  flex: 1;
+    flex: 1;
 }
 
 #water {
-  flex: 1;
+    flex: 1;
 }
 
 #tripleContainer {
-  display: flex;
-  flex: 3;
+    display: flex;
+    flex: 3;
 }
 
 #mainContainer {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 #pie_graph > div > div > svg:nth-child(3) > g.infolayer > g.legend {
-  pointer-events: all;
-  transform: translate(30px, 349px);
+    pointer-events: all;
+    transform: translate(30px, 349px);
 }
 
 /* Placement

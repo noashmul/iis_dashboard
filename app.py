@@ -11,7 +11,7 @@ from apps import main, safety, crime
 
 app.layout = html.Div(
     [html.H1('Hadar Neighborhood: Semi-annual report',
-             style={'color': '#FFFFFF', 'text-align': 'left', 'text-transform': None}),
+             style={'color': '#FFFFFF', 'text-align': 'left', 'text-transform': 'none'}),
      html.Div([
          dcc.Location(id="url"),
          dbc.NavbarSimple(
@@ -23,7 +23,7 @@ app.layout = html.Div(
              brand="Choose the wanted tab",
              color="primary",
              dark=True,
-             style={'font-size': 15}
+             style={'font-size': 15},
          ),
          dbc.Container(id="page-content", className="pt-4"),
      ]
