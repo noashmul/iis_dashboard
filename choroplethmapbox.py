@@ -154,7 +154,6 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
         else [[0, '#670020'], [0.5, 'white'], [1, '#083669']])  # colorscale for safety)
 
     fig = go.Figure(go.Choroplethmapbox(z=z,
-                                        below=True,
                                         locations=locations,
                                         colorscale=chosen_color_scale,
                                         colorbar=dict(thickness=20, ticklen=3),
@@ -176,6 +175,21 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
                                   #  open-street-map, light, carto-positron, white-bg, dark
                                   style='carto-positron',
                                   zoom=13))
+
+    # TODO Yotam
+    # show_text = True
+    # fig.add_trace(go.Scattermapbox(
+    #     mode="text",
+    #     textfont=dict(size=10, color='black'),
+    #     text=list(stat_zones_names_dict.keys()) if show_text else [''] * len(stat_zones_names_dict),
+    #     lat=[Polygon(feature['geometry']['coordinates'][0]).centroid.y
+    #          for feature in geo_json_dict['features']],
+    #     lon=[Polygon(feature['geometry']['coordinates'][0]).centroid.x
+    #          for feature in geo_json_dict['features']],
+    #     customdata=[f"{feat['properties']['stat_zone_code']} - {feat['properties']['stat_zone_name'][::-1]}"
+    #                 for feat in geo_json_dict['features']],
+    #     name=''
+    # ))
 
     # TODO this is the format of the hover string - possibly change
     fig.data[0].hovertemplate = '<b>StatZone</b>: %{text}' + '<br><b>Value</b>: %{z}<br>' if hovertemplate is None \
