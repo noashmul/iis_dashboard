@@ -57,120 +57,99 @@ stat_zones_names_dict = {
 
 # Calculate % change in total amount of seniors from time t0 to t1
 seniors0, seniors1 = dfs_dict['df_seniors_t0'], dfs_dict['df_seniors_t1']
-for df in [seniors0, seniors1]:
-    df['total_crime_cases'] = df[[col for col in df.columns if col != 'StatZone' and col != 'Year']].sum(axis=1)
 
 # percentage change in % units from time0 to time1
-percentage_change = 100 * (crime1.total_crime_cases - crime0.total_crime_cases) / crime0.total_crime_cases
+seniors1_per_zone = seniors1.groupby(by=["StatZone"]).count()[['Street']]
+seniors0_per_zone = seniors0.groupby(by=["StatZone"]).count()[['Street']]
+
+percentage_change = 100 * ((seniors1_per_zone.Street - seniors0_per_zone.Street) / seniors0_per_zone.Street)
 values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
                       zip(stat_zones_names_dict.keys(), percentage_change)}
 
 map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
-                                map_title="% of change in total crime cases",
+                                map_title="% of change in seniors amount",
                                 colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
                                 hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Precentage of change</b>: %{z}%<br>')
 map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
 
 @app.callback(
-    Output(component_id='crime_trend_graph', component_property='figure'),
-    Output(component_id='crime_location_type', component_property='figure'),
-    Output(component_id='crime_type', component_property='figure'),
+    Output(component_id='seniors_type', component_property='figure'),
+    Output(component_id='needed_help_type', component_property='figure'),
     Input(component_id='areas', component_property='value')
 )
 def get_graphs(statzone):
-    df_crimes = dfs_dict['df_crime_2010_to_2015']
-    df_crimes = df_crimes[df_crimes['Year'] == 2012]
+    df_seniors1 = dfs_dict['df_seniors_t1']
+
     if statzone == 0:
         statzone = 'All Statistical zones'
 
-    if statzone == 'All Statistical zones':
-        df_total_crimes = df_crimes.groupby(by=["Month"]).count()[['Street']] / 14
-        df_total_crime_all = pd.DataFrame(columns=['Month', 'Amount of Crimes'])
-        df_total_crime_all['Month'] = df_total_crimes['Street'].index
-        df_total_crime_all['Amount of Crimes'] = df_total_crimes['Street'].values
-        fig1 = px.line(df_total_crime_all, x=df_total_crime_all['Month']
-                       , y=df_total_crime_all['Amount of Crimes'], color_discrete_sequence=['#252E3F'])
-        max_y = df_total_crime_all['Amount of Crimes'].max()
-    else:
-        df_total_crimes = df_crimes.groupby(by=["StatZone", "Month"]).count()[['Street']]
-        df_tot_crime_per_area = pd.DataFrame(columns=['Month', 'Amount of Crimes'])
-        df_tot_crime_per_area['Month'] = df_total_crimes.loc[statzone]['Street'].index
-        df_tot_crime_per_area['Amount of Crimes'] = df_total_crimes.loc[statzone]['Street'].values
-        fig1 = px.line(df_tot_crime_per_area, x=df_tot_crime_per_area['Month']
-                       , y=df_tot_crime_per_area['Amount of Crimes'], color_discrete_sequence=['#252E3F'])
-        max_y = df_tot_crime_per_area['Amount of Crimes'].max()
+    if statzone != 'All Statistical zones':
+        df_seniors1 = df_seniors1[df_seniors1['StatZone']==statzone]
+
+    food1_alone1 = len(df_seniors1[(df_seniors1['SeniorAlone'] == 1) &
+                       (df_seniors1['SeniorRecivFood'] == 1)])
+    food1_alone0 = len(df_seniors1[(df_seniors1['SeniorAlone'] == 0) &
+                       (df_seniors1['SeniorRecivFood'] == 1)])
+    food0_alone1 = len(df_seniors1[(df_seniors1['SeniorAlone'] == 1) &
+                       (df_seniors1['SeniorRecivFood'] == 0)])
+    food0_alone0 = len(df_seniors1[(df_seniors1['SeniorAlone'] == 0) &
+                       (df_seniors1['SeniorRecivFood'] == 0)])
+    pie_df = {'status': ['Recieve Food & Alone', 'Recieve Food', 'Alone', 'Else'],
+              'amount': [food1_alone1, food1_alone0, food0_alone1, food0_alone0]}
+
+    fig1 = px.pie(pie_df, values='amount', names='status', title='Status of seniors citizens')
 
     string = " stat zone " if statzone != 'All Statistical zones' else " "
 
     # TODO this title is not visible because of the margin 0, add a title to the html
-    fig1.update_layout(title_text=f"Amount of crimes per month in{string}{statzone}",
+    fig1.update_layout(title_text=f"Status of seniors citizens in{string}{statzone}",
                        yaxis=dict(
                            titlefont_size=18,
-                           tickfont_size=18,
+                           # tickfont_size=18,
                        ),
                        xaxis=dict(
                            titlefont_size=18,
-                           tickfont_size=18,
-                           tickvals=[i for i in range(13)],
-                           ticktext=[i for i in range(13)]
-                       ), xaxis_showgrid=True, yaxis_showgrid=True,
-                       template='none',
-                       yaxis_range=[0, max_y * 1.1])
-
-    if statzone == 'All Statistical zones':
-        df_location = df_crimes.groupby(by=["CrimeLocType"]).count()[['Street']] / 14
-        df_location = df_location.sort_values(by=['Street'], ascending=False).head(10)
-        df_location.index = [s[::-1].strip(' ') for s in df_location.index]
-        df_location.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
-    else:
-        df_location = df_crimes.groupby(by=["StatZone", "CrimeLocType"]).count()[['Street']]
-        df_location = df_location.loc[statzone].sort_values(by=['Street'], ascending=False).head(10)
-        df_location.index = [s[::-1].strip(' ') for s in df_location.index]
-        df_location.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
-
-    # TODO the next two graphs are not centered and are being cut from the bottom
-    fig2 = px.bar(df_location, x=df_location.index, y=df_location['Amount of Crimes'],
-                  color_discrete_sequence=['#252E3F'])
-    # for_title = "crimes per location" if graph_type == "CrimeLocType" else "crimes per type"
-    fig2.update_layout(title_text=f"Amount of crimes per location in<br> {string}{statzone}",
-                       yaxis=dict(
-                           titlefont_size=14,
-                           tickfont_size=14,
-                       ),
-                       xaxis=dict(
-                           titlefont_size=14,
-                           tickfont_size=14,
-                       ), xaxis_showgrid=True, yaxis_showgrid=True, template='none')
-    fig2.update_xaxes(title='Crime location', tickangle=45)
-
-    if statzone == 'All Statistical zones':
-        df_type = df_crimes.groupby(by=["CrimeType"]).count()[['Street']] / 14
-        df_type = df_type.sort_values(by=['Street'], ascending=False).head(10)
-        df_type.index = [s[::-1].strip(' ') for s in df_type.index]
-        df_type.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
-    else:
-        df_type = df_crimes.groupby(by=["StatZone", "CrimeType"]).count()[['Street']]
-        df_type = df_type.loc[statzone].sort_values(by=['Street'], ascending=False).head(10)
-        df_type.index = [s[::-1].strip(' ') for s in df_type.index]
-        df_type.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
-
-    fig3 = px.bar(df_type, x=df_type.index, y=df_type['Amount of Crimes'],
-                  color_discrete_sequence=['#252E3F'])
-    fig3.update_layout(title_text=f"Amount of crimes per type in<br> {string}{statzone}",
-                       yaxis=dict(
-                           titlefont_size=14,
-                           tickfont_size=14,
-                       ),
-                       xaxis=dict(
-                           titlefont_size=14,
-                           tickfont_size=14,
-                       ), xaxis_showgrid=True, yaxis_showgrid=True,
+                           # tickfont_size=18,
+                           # tickvals=[i for i in range(13)],
+                           # ticktext=[i for i in range(13)]
+                       ), #xaxis_showgrid=True, yaxis_showgrid=True,
                        template='none',
                        )
-    fig3.update_xaxes(title='Crime type', tickangle=45)
+                       # yaxis_range=[0, max_y * 1.1])
 
-    return fig1, fig2, fig3
+    df_holocaust1 = dfs_dict['df_holocaust_t1']
+    df_holocaust1["HoloSurvNdDesc"].dropna()
+    df_holocaust1 = df_holocaust1.replace({'בעיות הנובעות ממחלות אקוטיות או כרוניות (למעט בריאות הנפש)': 'מחלות אקוטיות או כרוניות',
+                          'בעיות הנובעות מרמת הכנסה נמוכה או מירידה ברמת הכנסה': 'רמת הכנסה נמוכה',
+                          'בעיות הנובעות ממומים ו/או מגבלות פיזיות (נכות)': 'נכות',
+                          'בעיות בתקשורת בקליטה (עלייה)': 'בעיות בתקשורת וקליטה'})
+    df_holocaust1["HoloSurvNdDesc"] = df_holocaust1["HoloSurvNdDesc"].apply(lambda x: str(x)[:-1]+'(' if str(x)[-1]==')' else x)
+    if statzone == 'All Statistical zones':
+        df_holocaust1_type = df_holocaust1.groupby(by=["HoloSurvNdDesc"]).count()[['Street']]
+        df_holocaust1_type = df_holocaust1_type.sort_values(by=['Street'], ascending=False).head(5)
+    else:
+        df_holocaust1_type = df_holocaust1.groupby(by=["StatZone", "HoloSurvNdDesc"]).count()[['Street']]
+        df_holocaust1_type = df_holocaust1_type.loc[statzone].sort_values(by=['Street'], ascending=False).head(5)
+
+    df_holocaust1_type.index = [s[::-1].strip(' ') for s in df_holocaust1_type.index]
+    df_holocaust1_type.rename(columns={'Street': 'Amount of Holocaust Survivals'}, inplace=True)
+
+    fig2 = px.bar(df_holocaust1_type, x=df_holocaust1_type.index, y=df_holocaust1_type['Amount of Holocaust Survivals'],
+                  color_discrete_sequence=['#252E3F'])
+    # for_title = "crimes per location" if graph_type == "CrimeLocType" else "crimes per type"
+    fig2.update_layout(title_text=f"Amount of holocaust survivals per needed help <br> type in{string}{statzone}",
+                       title_x=0.5, yaxis=dict(
+                           titlefont_size=14,
+                           tickfont_size=14,
+                       ),
+                       xaxis=dict(
+                           titlefont_size=14,
+                           tickfont_size=14,
+                       ), xaxis_showgrid=True, yaxis_showgrid=True, template='simple_white')
+    fig2.update_xaxes(title='Needed help type', tickangle=45)
+
+    return fig1, fig2#, fig3
 
 
 layout = html.Div(
@@ -199,20 +178,15 @@ layout = html.Div(
         ),
         html.Div(
             [
-                dcc.Graph(id='crime_trend_graph')
-            ], className="graph_container"
-        ),
-        html.Div(
-            [
                 html.Div(
                     [
-                        dcc.Graph(id='crime_location_type')
+                        dcc.Graph(id='seniors_type')
                     ],
                     className='narrow_container',
                 ),
                 html.Div(
                     [
-                        dcc.Graph(id='crime_type')
+                        dcc.Graph(id='needed_help_type')
                     ],
                     className='narrow_container',
                 ),
