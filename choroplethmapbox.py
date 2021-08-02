@@ -148,7 +148,7 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
     fig = go.Figure(go.Choroplethmapbox(z=z,
                                         locations=locations,
                                         colorscale=[[0, 'red'], [0.5, 'white'], [1, 'green']] if not is_safety_map
-                                        else [[0, '#670020'], [0.5, 'white'], [1, '#083669']],  # colorscale for crime
+                                        else [[0, '#670020'], [0.5, 'white'], [1, '#083669']],  # colorscale for safety
                                         colorbar=dict(thickness=20, ticklen=3),
                                         geojson=geo_json_dict,
                                         text=text,
