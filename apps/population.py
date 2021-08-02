@@ -1,6 +1,7 @@
 from app_def import app
 from choroplethmapbox import get_choroplethmap_fig
 from pre_process import *
+from utils import add_annotations_to_fig
 
 statistic_area = {'הכל': 0,
                   'גן הבהאים': 612,
@@ -142,11 +143,9 @@ def get_graphs(statzone):
 
     percentage_change = 100 * (age_group_df_new['Amount of citizen'] - age_group_df_old_new['Amount of citizen']) / \
                         age_group_df_old_new['Amount of citizen']
-    values_for_heatmap = {age_group: perc_change for age_group, perc_change in
-                          zip(['18-34','35-44','45-54','55-64','65-74','75-84','85+'], percentage_change)}
 
     fig3 = px.bar(age_group_df_new, y=age_group_df_new['Amount of citizen'],
-                  x=age_group_df_new['Age group'], title=title3)
+                  x=age_group_df_new['Age group'], title=title3,color_discrete_sequence=['#252E3F'])
     fig3.update_layout(title_text=title1,
                        yaxis=dict(
                            titlefont_size=18,
@@ -156,7 +155,10 @@ def get_graphs(statzone):
                            titlefont_size=18,
                            tickfont_size=18,
                        ), xaxis_showgrid=True, yaxis_showgrid=True)
-    fig3.update_xaxes(tickangle=45)
+    add_annotations_to_fig(fig3, fig3.data[0].x, fig3.data[0].y, percentage_change)
+    fig3.update_layout(showlegend=False)
+    max_y = max(age_group_df_new['Amount of citizen'])
+    fig3.update_layout(yaxis_range=[0, max_y * 1.1])
 
     return fig1, fig2, fig3
 

@@ -108,7 +108,7 @@ def get_graphs(statzone):
         title2 = f"Amount of workers per Salary type in {statzone} stat zone"
 
     fig1 = px.bar(df_avg_sal, y=df_avg_sal['Salary type'],
-                  x=df_avg_sal['Average salary'], orientation='h')
+                  x=df_avg_sal['Average salary'], orientation='h',color_discrete_sequence=['#252E3F'])
     fig1.update_layout(title_text=title1,
                        yaxis=dict(
                            titlefont_size=18,
@@ -129,7 +129,7 @@ def get_graphs(statzone):
                                                  df_salary['SalPenResNum'].sum(), df_salary['SalSHNoBTLResNum'].sum(),
                                                  df_salary['IncSelfResNum'].sum()]
     fig2 = px.bar(df_amount_of_workers, y=df_amount_of_workers['Salary type'],
-                  x=df_amount_of_workers['Amount of workers'], orientation='h')
+                  x=df_amount_of_workers['Amount of workers'], orientation='h',color_discrete_sequence=['#252E3F'])
     fig2.update_layout(title_text=title2,
                        yaxis=dict(
                            titlefont_size=18,
