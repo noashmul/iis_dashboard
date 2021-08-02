@@ -248,7 +248,7 @@ if __name__ == "__main__":
         values_dict[key] = np.random.randn()
 
     """Heatmap"""
-    fig1 = get_choroplethmap_fig(values_dict=values_dict, map_title="Exmple Title")
+    fig1 = get_choroplethmap_fig(values_dict=values_dict, map_title="Example Title")
     fig1.show()
 
     """Main tab statzones map"""
