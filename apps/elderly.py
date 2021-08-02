@@ -2,7 +2,6 @@ from choroplethmapbox import get_choroplethmap_fig
 from app_def import app
 from pre_process import *
 
-# TODO make sure to change survival >> Holocaust Survivors
 # TODO Gal don't forget to update the .zip through colab
 
 statistic_area = {'הכל': 0,
@@ -104,6 +103,7 @@ def get_graphs(statzone):
                                    (df_seniors1['SeniorRecivFood'] == 0)])
     food0_alone0 = len(df_seniors1[(df_seniors1['SeniorAlone'] == 0) &
                                    (df_seniors1['SeniorRecivFood'] == 0)])
+    # TODO pie colors more mellow colors please
     pie_df = {'status': ['Recieve Food & Alone', 'Recieve Food', 'Alone', 'Else'],
               'amount': [food1_alone1, food1_alone0, food0_alone1, food0_alone0]}
 
@@ -231,7 +231,7 @@ layout = html.Div(
         html.Div(
             children=[
                 html.H4(
-                    [
+                    [  # TODO maybe put "All stat.." / number of stat zone like in graphs
                         "Number of Holocaust Survivors (for current area choose)",
                     ],
                     className="container_title",

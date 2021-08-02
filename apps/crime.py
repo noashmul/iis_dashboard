@@ -132,7 +132,7 @@ def get_graphs(statzone):
     """fig2"""
     current_semi_annual = df_crimes[df_crimes['Month'] >= 7]
     previous_semi_annual = df_crimes[df_crimes['Month'] < 7]
-    percentage_change_value = []
+    percentage_change_value, old_y = [], []
 
     if statzone == 'All Statistical zones':
         df_location = current_semi_annual.groupby(by=["CrimeLocType"]).count()[['Street']] // 14
@@ -148,10 +148,12 @@ def get_graphs(statzone):
 
         for idx in df_location.index:
             if idx in prev_df_location.index:
-                new, old = float(prev_df_location.loc[idx].values), float(df_location.loc[idx].values)
+                old, new = float(prev_df_location.loc[idx].values), float(df_location.loc[idx].values)
                 percentage_change_value.append(100 * (new - old) / old)
+                old_y.append(old)
             else:
                 percentage_change_value.append(np.nan)
+                old_y.append(np.nan)
 
     else:
         df_location = current_semi_annual.groupby(by=["StatZone", "CrimeLocType"]).count()[['Street']]
@@ -167,10 +169,12 @@ def get_graphs(statzone):
 
         for idx in df_location.index:
             if idx in prev_df_location.index:
-                new, old = float(prev_df_location.loc[idx].values), float(df_location.loc[idx].values)
+                old, new = float(prev_df_location.loc[idx].values), float(df_location.loc[idx].values)
                 percentage_change_value.append(100 * (new - old) / old)
+                old_y.append(old)
             else:
                 percentage_change_value.append(np.nan)
+                old_y.append(np.nan)
 
     # TODO the next two graphs are not centered and are being cut from the bottom
     fig2 = px.bar(df_location, x=df_location.index, y=df_location['Amount of Crimes'],
@@ -189,15 +193,15 @@ def get_graphs(statzone):
                        ), xaxis_showgrid=True, yaxis_showgrid=True,
                        template='simple_white',
                        showlegend=False,
-                       yaxis_range=[0, max(fig2.data[0].y) * 1.1]
+                       yaxis_range=[0, max(fig2.data[0].y) * 1.2]
                        )
     fig2.update_xaxes(title='Crime location', tickangle=45)
 
     add_annotations_to_fig(fig=fig2, x=fig2.data[0].x, y=fig2.data[0].y,
-                           percentage_change_value=percentage_change_value)
+                           percentage_change_value=percentage_change_value, old_y=old_y)
 
     """fig3"""
-    percentage_change_value = []
+    percentage_change_value, old_y = [], []
     if statzone == 'All Statistical zones':
         df_type = current_semi_annual.groupby(by=["CrimeType"]).count()[['Street']] // 14
         df_type = df_type.sort_values(by=['Street'], ascending=False).head(10)
@@ -212,10 +216,12 @@ def get_graphs(statzone):
 
         for idx in df_type.index:
             if idx in prev_df_type.index:
-                new, old = float(prev_df_type.loc[idx].values), float(df_type.loc[idx].values)
+                old, new = float(prev_df_type.loc[idx].values), float(df_type.loc[idx].values)
                 percentage_change_value.append(100 * (new - old) / old if old != 0 else 100)
+                old_y.append(old)
             else:
                 percentage_change_value.append(np.nan)
+                old_y.append(np.nan)
     else:
         df_type = current_semi_annual.groupby(by=["StatZone", "CrimeType"]).count()[['Street']]
         df_type = df_type.loc[statzone].sort_values(by=['Street'], ascending=False).head(10)
@@ -230,10 +236,12 @@ def get_graphs(statzone):
 
         for idx in df_type.index:
             if idx in prev_df_type.index:
-                new, old = float(prev_df_type.loc[idx].values), float(df_type.loc[idx].values)
+                old, new = float(prev_df_type.loc[idx].values), float(df_type.loc[idx].values)
                 percentage_change_value.append(100 * (new - old) / old if old != 0 else 100)
+                old_y.append(old)
             else:
                 percentage_change_value.append(np.nan)
+                old_y.append(np.nan)
 
     fig3 = px.bar(df_type, x=df_type.index, y=df_type['Amount of Crimes'],
                   color_discrete_sequence=['#252E3F'])
@@ -249,11 +257,11 @@ def get_graphs(statzone):
                        ), xaxis_showgrid=True, yaxis_showgrid=True,
                        template='simple_white',
                        showlegend=False,
-                       yaxis_range=[0, max(fig3.data[0].y) * 1.1],
+                       yaxis_range=[0, max(fig3.data[0].y) * 1.2],
                        )
     fig3.update_xaxes(title='Crime type', tickangle=45)
     add_annotations_to_fig(fig=fig3, x=fig3.data[0].x, y=fig3.data[0].y,
-                           percentage_change_value=percentage_change_value)
+                           percentage_change_value=percentage_change_value, old_y=old_y)
 
     return fig1, fig2, fig3
 
