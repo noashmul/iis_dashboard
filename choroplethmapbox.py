@@ -9,14 +9,33 @@ import shapely.ops as ops
 from functools import partial
 
 
-def get_area_in_km2_for_stat_zones(geo_json_dict) -> dict:
+def get_area_in_km2_for_stat_zones() -> dict:
     """
     Get areas of statistical zones in km^2
-    :param geo_json_dict: shape_file_to_featurecollection return value
     :return: dictionary with statistical zones codes as keys and area in km^2 as values
     """
     import warnings
     warnings.filterwarnings("ignore")
+
+    shp_path = 'StatZones/Stat_Zones.shp'
+    stat_zones_names_dict = {
+        611: "הדר מערב - רח' אלמותנבי",
+        612: 'גן הבהאים',
+        613: "הדר מערב - רח' מסדה",
+        621: 'הדר עליון -בי"ח בני ציון',
+        622: "הדר עליון - רח' הפועל",
+        623: "רמת הדר - רח' המיימוני",
+        631: 'הדר מרכז - התיאטרון העירוני',
+        632: "הדר מרכז - רח' הרצליה",
+        633: 'הדר מרכז - בית העירייה',
+        634: 'הדר מרכז - שוק תלפיות',
+        641: 'הדר מזרח - רח\' יל"ג',
+        642: 'הדר מזרח - גאולה',
+        643: "רמת ויז'ניץ",
+        644: 'מעונות גאולה'
+    }
+    geo_json_dict = shape_file_to_featurecollection(shp_path, stat_zones_names_dict)
+
 
     areas = dict()
     for feature in geo_json_dict['features']:
@@ -88,7 +107,8 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
                               643: "רמת ויז'ניץ",
                               644: 'מעונות גאולה'
                           },
-                          shp_path: str = os.path.join("StatZones", "Stat_Zones.shp")):
+                          shp_path: str = os.path.join("StatZones", "Stat_Zones.shp"),
+                          is_crime_map: bool = False):
     """
     Creates and returns a plotly pig of Choroplethmapbox (map)
     Hadar StatZones polygons are used for the heatmap
@@ -101,6 +121,8 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
     :type stat_zones_names_dict: dict
     :param shp_path: path to shap file with polygons for Hadar statistical zones
     :type shp_path: str
+    :param is_crime_map: True if this is the
+    :type is_crime_map: bool
     :return: plotly fig map
     """
     # Verify stat_zones_names_dict is sorted by key
@@ -117,13 +139,16 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
             for feat in geo_json_dict['features']]
     # Define the heatmap values
     z = list(values_dict.values())
-    max_abs_val = max(abs(max(z)), abs(min(z)))
-    z.append(- max_abs_val)
-    z.append(max_abs_val)
+
+    if not is_crime_map:
+        max_abs_val = max(abs(max(z)), abs(min(z)))
+        z.append(- max_abs_val)
+        z.append(max_abs_val)
 
     fig = go.Figure(go.Choroplethmapbox(z=z,
                                         locations=locations,
-                                        colorscale=[[0, 'red'], [0.5, 'white'], [1, 'green']],
+                                        colorscale=[[0, 'red'], [0.5, 'white'], [1, 'green']] if not is_crime_map
+                                        else [[0, '#670020'], [0.5, 'white'], [1, '#083669']],  # colorscale for crime
                                         colorbar=dict(thickness=20, ticklen=3),
                                         geojson=geo_json_dict,
                                         text=text,
@@ -175,7 +200,7 @@ def get_main_tab_map(show_text: bool):
         643: "רמת ויז'ניץ",
         644: 'מעונות גאולה'
     }
-    geo_json_dict = geo_json_dict = shape_file_to_featurecollection(shp_path, stat_zones_names_dict)
+    geo_json_dict = shape_file_to_featurecollection(shp_path, stat_zones_names_dict)
 
     fig = go.Figure(go.Scattermapbox(
         mode="text",
