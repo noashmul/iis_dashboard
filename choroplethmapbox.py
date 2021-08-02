@@ -108,7 +108,7 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
                               644: 'מעונות גאולה'
                           },
                           shp_path: str = os.path.join("StatZones", "Stat_Zones.shp"),
-                          is_crime_map: bool = False):
+                          is_safety_map: bool = False):
     """
     Creates and returns a plotly pig of Choroplethmapbox (map)
     Hadar StatZones polygons are used for the heatmap
@@ -121,8 +121,8 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
     :type stat_zones_names_dict: dict
     :param shp_path: path to shap file with polygons for Hadar statistical zones
     :type shp_path: str
-    :param is_crime_map: True if this is the
-    :type is_crime_map: bool
+    :param is_safety_map: True if this is the
+    :type is_safety_map: bool
     :return: plotly fig map
     """
     # Verify stat_zones_names_dict is sorted by key
@@ -140,14 +140,14 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
     # Define the heatmap values
     z = list(values_dict.values())
 
-    if not is_crime_map:
+    if not is_safety_map:
         max_abs_val = max(abs(max(z)), abs(min(z)))
         z.append(- max_abs_val)
         z.append(max_abs_val)
 
     fig = go.Figure(go.Choroplethmapbox(z=z,
                                         locations=locations,
-                                        colorscale=[[0, 'red'], [0.5, 'white'], [1, 'green']] if not is_crime_map
+                                        colorscale=[[0, 'red'], [0.5, 'white'], [1, 'green']] if not is_safety_map
                                         else [[0, '#670020'], [0.5, 'white'], [1, '#083669']],  # colorscale for crime
                                         colorbar=dict(thickness=20, ticklen=3),
                                         geojson=geo_json_dict,
