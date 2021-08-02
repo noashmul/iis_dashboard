@@ -107,7 +107,9 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
                               644: 'מעונות גאולה'
                           },
                           shp_path: str = os.path.join("StatZones", "Stat_Zones.shp"),
-                          is_safety_map: bool = False):
+                          is_safety_map: bool = False,
+                          colorscale=None,
+                          hovertemplate=None):
     """
     Creates and returns a plotly pig of Choroplethmapbox (map)
     Hadar StatZones polygons are used for the heatmap
@@ -147,10 +149,14 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
         z.append(0)
         z.append(100)
 
+    chosen_color_scale = colorscale if colorscale is not None else (
+        [[0, 'red'], [0.5, 'white'], [1, 'green']] if not is_safety_map
+        else [[0, '#670020'], [0.5, 'white'], [1, '#083669']])  # colorscale for safety)
+
     fig = go.Figure(go.Choroplethmapbox(z=z,
+                                        below=True,
                                         locations=locations,
-                                        colorscale=[[0, 'red'], [0.5, 'white'], [1, 'green']] if not is_safety_map
-                                        else [[0, '#670020'], [0.5, 'white'], [1, '#083669']],  # colorscale for safety
+                                        colorscale=chosen_color_scale,
                                         colorbar=dict(thickness=20, ticklen=3),
                                         geojson=geo_json_dict,
                                         text=text,
@@ -172,7 +178,8 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
                                   zoom=13))
 
     # TODO this is the format of the hover string - possibly change
-    fig.data[0].hovertemplate = '<b>StatZone</b>: %{text}' + '<br><b>Value</b>: %{z}<br>'
+    fig.data[0].hovertemplate = '<b>StatZone</b>: %{text}' + '<br><b>Value</b>: %{z}<br>' if hovertemplate is None \
+        else hovertemplate
 
     return fig
 
