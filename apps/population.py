@@ -155,6 +155,7 @@ def get_graphs(statzone):
                            titlefont_size=18,
                            tickfont_size=18,
                        ), xaxis_showgrid=True, yaxis_showgrid=True)
+    # TODO add old_y to add_annotations_to_fig (see crime.py)
     add_annotations_to_fig(fig3, fig3.data[0].x, fig3.data[0].y, percentage_change)
     fig3.update_layout(showlegend=False)
     max_y = max(age_group_df_new['Amount of citizen'])

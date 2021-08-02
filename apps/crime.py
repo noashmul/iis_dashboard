@@ -2,6 +2,7 @@ from choroplethmapbox import get_choroplethmap_fig
 from app_def import app
 from pre_process import *
 from utils import add_annotations_to_fig
+import plotly.graph_objects as go
 
 statistic_area = {'הכל': 0,
                   'גן הבהאים': 612,
@@ -73,21 +74,24 @@ def get_graphs(statzone):
     if statzone == 0:
         statzone = 'All Statistical zones'
 
+    """fig1"""
     if statzone == 'All Statistical zones':
         df_total_crimes = df_crimes.groupby(by=["Month"]).count()[['Street']] // 14
         df_total_crime_all = pd.DataFrame(columns=['Month', 'Amount of Crimes'])
         df_total_crime_all['Month'] = df_total_crimes['Street'].index
         df_total_crime_all['Amount of Crimes'] = df_total_crimes['Street'].values
-        fig1 = px.line(df_total_crime_all, x=df_total_crime_all['Month']
-                       , y=df_total_crime_all['Amount of Crimes'], color_discrete_sequence=['#252E3F'])
+        fig1 = px.scatter(df_total_crime_all, x=df_total_crime_all['Month']
+                          , y=df_total_crime_all['Amount of Crimes'], color_discrete_sequence=['#252E3F'],
+                          ).update_traces(mode='lines+markers')
         max_y = df_total_crime_all['Amount of Crimes'].max()
     else:
         df_total_crimes = df_crimes.groupby(by=["StatZone", "Month"]).count()[['Street']]
         df_tot_crime_per_area = pd.DataFrame(columns=['Month', 'Amount of Crimes'])
         df_tot_crime_per_area['Month'] = df_total_crimes.loc[statzone]['Street'].index
         df_tot_crime_per_area['Amount of Crimes'] = df_total_crimes.loc[statzone]['Street'].values
-        fig1 = px.line(df_tot_crime_per_area, x=df_tot_crime_per_area['Month']
-                       , y=df_tot_crime_per_area['Amount of Crimes'], color_discrete_sequence=['#252E3F'])
+        fig1 = px.scatter(df_tot_crime_per_area, x=df_tot_crime_per_area['Month']
+                          , y=df_tot_crime_per_area['Amount of Crimes'], color_discrete_sequence=['#252E3F'],
+                          ).update_traces(mode='lines+markers')
         max_y = df_tot_crime_per_area['Amount of Crimes'].max()
 
     string = " stat zone " if statzone != 'All Statistical zones' else " "
@@ -106,22 +110,76 @@ def get_graphs(statzone):
                            ticktext=[i for i in range(13)]
                        ), xaxis_showgrid=True, yaxis_showgrid=True,
                        template='none',
-                       yaxis_range=[0, max_y * 1.1])
+                       yaxis_range=[0, max_y * 1.1],
+                       showlegend=False)
+    fig1.add_vline(x=6.5, line_width=3, line_dash="dash", line_color="#EE553B")
+
+    fig1.add_trace(go.Scatter(
+        x=[3.5, 9.5],
+        y=[min(fig1.data[0].y) / 2.5, min(fig1.data[0].y) / 2.5],
+        mode="text",
+        text=['Previous half of year', 'Current half of year'],
+        textposition="top center",
+        textfont=dict(
+            family="sans serif",
+            size=24,
+            color="black"
+        ),
+        name=''
+    ))
+
+    # TODO make fig2 above fig3 - Shoval
+    """fig2"""
+    current_semi_annual = df_crimes[df_crimes['Month'] >= 7]
+    previous_semi_annual = df_crimes[df_crimes['Month'] < 7]
+    percentage_change_value, old_y = [], []
 
     if statzone == 'All Statistical zones':
-        df_location = df_crimes.groupby(by=["CrimeLocType"]).count()[['Street']] // 14
+        df_location = current_semi_annual.groupby(by=["CrimeLocType"]).count()[['Street']] // 14
         df_location = df_location.sort_values(by=['Street'], ascending=False).head(10)
         df_location.index = [s[::-1].strip(' ') for s in df_location.index]
         df_location.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+
+        prev_df_location = previous_semi_annual.groupby(by=["CrimeLocType"]).count()[['Street']] // 14
+        prev_df_location = prev_df_location.sort_values(by=['Street'], ascending=False)
+        prev_df_location.index = [s[::-1].strip(' ') for s in prev_df_location.index]
+        prev_df_location = prev_df_location.loc[[idx for idx in df_location.index if idx in prev_df_location.index]]
+        prev_df_location.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+
+        for idx in df_location.index:
+            if idx in prev_df_location.index:
+                old, new = float(prev_df_location.loc[idx].values), float(df_location.loc[idx].values)
+                percentage_change_value.append(100 * (new - old) / old)
+                old_y.append(old)
+            else:
+                percentage_change_value.append(np.nan)
+                old_y.append(np.nan)
+
     else:
-        df_location = df_crimes.groupby(by=["StatZone", "CrimeLocType"]).count()[['Street']]
+        df_location = current_semi_annual.groupby(by=["StatZone", "CrimeLocType"]).count()[['Street']]
         df_location = df_location.loc[statzone].sort_values(by=['Street'], ascending=False).head(10)
         df_location.index = [s[::-1].strip(' ') for s in df_location.index]
         df_location.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
 
+        prev_df_location = previous_semi_annual.groupby(by=["StatZone", "CrimeLocType"]).count()[['Street']]
+        prev_df_location = prev_df_location.loc[statzone].sort_values(by=['Street'], ascending=False)
+        prev_df_location.index = [s[::-1].strip(' ') for s in prev_df_location.index]
+        prev_df_location = prev_df_location.loc[[idx for idx in df_location.index if idx in prev_df_location.index]]
+        prev_df_location.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+
+        for idx in df_location.index:
+            if idx in prev_df_location.index:
+                old, new = float(prev_df_location.loc[idx].values), float(df_location.loc[idx].values)
+                percentage_change_value.append(100 * (new - old) / old)
+                old_y.append(old)
+            else:
+                percentage_change_value.append(np.nan)
+                old_y.append(np.nan)
+
     # TODO the next two graphs are not centered and are being cut from the bottom
     fig2 = px.bar(df_location, x=df_location.index, y=df_location['Amount of Crimes'],
                   color_discrete_sequence=['#252E3F'])
+
     # for_title = "crimes per location" if graph_type == "CrimeLocType" else "crimes per type"
     fig2.update_layout(title_text=f"Amount of crimes per location in<br> {string}{statzone}",
                        title_x=0.5,
@@ -133,19 +191,57 @@ def get_graphs(statzone):
                            titlefont_size=14,
                            tickfont_size=14,
                        ), xaxis_showgrid=True, yaxis_showgrid=True,
-                       template='simple_white')
+                       template='simple_white',
+                       showlegend=False,
+                       yaxis_range=[0, max(fig2.data[0].y) * 1.2]
+                       )
     fig2.update_xaxes(title='Crime location', tickangle=45)
 
+    add_annotations_to_fig(fig=fig2, x=fig2.data[0].x, y=fig2.data[0].y,
+                           percentage_change_value=percentage_change_value, old_y=old_y)
+
+    """fig3"""
+    percentage_change_value, old_y = [], []
     if statzone == 'All Statistical zones':
-        df_type = df_crimes.groupby(by=["CrimeType"]).count()[['Street']] // 14
+        df_type = current_semi_annual.groupby(by=["CrimeType"]).count()[['Street']] // 14
         df_type = df_type.sort_values(by=['Street'], ascending=False).head(10)
         df_type.index = [s[::-1].strip(' ') for s in df_type.index]
         df_type.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+
+        prev_df_type = previous_semi_annual.groupby(by=["CrimeType"]).count()[['Street']] // 14
+        prev_df_type = prev_df_type.sort_values(by=['Street'], ascending=False)
+        prev_df_type.index = [s[::-1].strip(' ') for s in prev_df_type.index]
+        prev_df_type = prev_df_type.loc[[idx for idx in df_type.index if idx in prev_df_type.index]]
+        prev_df_type.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+
+        for idx in df_type.index:
+            if idx in prev_df_type.index:
+                old, new = float(prev_df_type.loc[idx].values), float(df_type.loc[idx].values)
+                percentage_change_value.append(100 * (new - old) / old if old != 0 else 100)
+                old_y.append(old)
+            else:
+                percentage_change_value.append(np.nan)
+                old_y.append(np.nan)
     else:
-        df_type = df_crimes.groupby(by=["StatZone", "CrimeType"]).count()[['Street']]
+        df_type = current_semi_annual.groupby(by=["StatZone", "CrimeType"]).count()[['Street']]
         df_type = df_type.loc[statzone].sort_values(by=['Street'], ascending=False).head(10)
         df_type.index = [s[::-1].strip(' ') for s in df_type.index]
         df_type.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+
+        prev_df_type = previous_semi_annual.groupby(by=["StatZone", "CrimeType"]).count()[['Street']]
+        prev_df_type = prev_df_type.loc[statzone].sort_values(by=['Street'], ascending=False)
+        prev_df_type.index = [s[::-1].strip(' ') for s in prev_df_type.index]
+        prev_df_type = prev_df_type.loc[[idx for idx in df_type.index if idx in prev_df_type.index]]
+        prev_df_type.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+
+        for idx in df_type.index:
+            if idx in prev_df_type.index:
+                old, new = float(prev_df_type.loc[idx].values), float(df_type.loc[idx].values)
+                percentage_change_value.append(100 * (new - old) / old if old != 0 else 100)
+                old_y.append(old)
+            else:
+                percentage_change_value.append(np.nan)
+                old_y.append(np.nan)
 
     fig3 = px.bar(df_type, x=df_type.index, y=df_type['Amount of Crimes'],
                   color_discrete_sequence=['#252E3F'])
@@ -160,8 +256,12 @@ def get_graphs(statzone):
                            tickfont_size=14,
                        ), xaxis_showgrid=True, yaxis_showgrid=True,
                        template='simple_white',
+                       showlegend=False,
+                       yaxis_range=[0, max(fig3.data[0].y) * 1.2],
                        )
     fig3.update_xaxes(title='Crime type', tickangle=45)
+    add_annotations_to_fig(fig=fig3, x=fig3.data[0].x, y=fig3.data[0].y,
+                           percentage_change_value=percentage_change_value, old_y=old_y)
 
     return fig1, fig2, fig3
 
@@ -176,6 +276,7 @@ layout = html.Div(
             [
                 html.Div(
                     [
+                        # TODO selection is not ordered (644 and below 623) >> change in other modules
                         'Choose area: ', dcc.RadioItems(id='areas',
                                                         options=options,
                                                         value=0

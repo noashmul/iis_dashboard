@@ -1,15 +1,4 @@
-import dash
-import numpy as np
-import pandas as pd
-import dash_core_components as dcc
-import dash_html_components as html
-import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output
-import plotly.graph_objs as go
-import plotly.express as px
 from choroplethmapbox import get_choroplethmap_fig
-import folium
-import dash_table as dt
 from app_def import app
 from pre_process import *
 
@@ -29,6 +18,7 @@ statistic_area = {'הכל': 0,
                   "רמת הדר - רח' המיימוני": 623,
                   "רמת ויז'ניץ": 643}
 
+
 def blank_fig(height):
     """
     Build blank figure with the requested height
@@ -42,6 +32,7 @@ def blank_fig(height):
             "yaxis": {"visible": False},
         },
     }
+
 
 options = list()
 for key, value in statistic_area.items():
@@ -103,13 +94,14 @@ def get_graphs(statzone):
         df_seniors1 = df_seniors1[df_seniors1['StatZone'] == statzone]
 
     food1_alone1 = len(df_seniors1[(df_seniors1['SeniorAlone'] == 1) &
-                       (df_seniors1['SeniorRecivFood'] == 1)])
+                                   (df_seniors1['SeniorRecivFood'] == 1)])
     food1_alone0 = len(df_seniors1[(df_seniors1['SeniorAlone'] == 0) &
-                       (df_seniors1['SeniorRecivFood'] == 1)])
+                                   (df_seniors1['SeniorRecivFood'] == 1)])
     food0_alone1 = len(df_seniors1[(df_seniors1['SeniorAlone'] == 1) &
-                       (df_seniors1['SeniorRecivFood'] == 0)])
+                                   (df_seniors1['SeniorRecivFood'] == 0)])
     food0_alone0 = len(df_seniors1[(df_seniors1['SeniorAlone'] == 0) &
-                       (df_seniors1['SeniorRecivFood'] == 0)])
+                                   (df_seniors1['SeniorRecivFood'] == 0)])
+    # TODO pie colors more mellow colors please
     pie_df = {'status': ['Recieve Food & Alone', 'Recieve Food', 'Alone', 'Else'],
               'amount': [food1_alone1, food1_alone0, food0_alone1, food0_alone0]}
 
@@ -128,10 +120,10 @@ def get_graphs(statzone):
                            # tickfont_size=18,
                            # tickvals=[i for i in range(13)],
                            # ticktext=[i for i in range(13)]
-                       ), #xaxis_showgrid=True, yaxis_showgrid=True,
+                       ),  # xaxis_showgrid=True, yaxis_showgrid=True,
                        template='none',
                        )
-                       # yaxis_range=[0, max_y * 1.1])
+    # yaxis_range=[0, max_y * 1.1])
 
     df_holocaust1 = dfs_dict['df_holocaust_t1']
     if statzone == 'All Statistical zones':
@@ -156,12 +148,14 @@ def get_graphs(statzone):
     }
 
     df_holocaust1["HoloSurvNdDesc"].dropna()
-    df_holocaust1 = df_holocaust1.replace({'בעיות הנובעות ממחלות אקוטיות או כרוניות (למעט בריאות הנפש)': 'מחלות אקוטיות או כרוניות',
-                          'בעיות הנובעות מרמת הכנסה נמוכה או מירידה ברמת הכנסה': 'רמת הכנסה נמוכה',
-                          'בעיות הנובעות ממומים ו/או מגבלות פיזיות (נכות)': 'נכות',
-                          'בעיות בתקשורת בקליטה (עלייה)': 'בעיות בתקשורת וקליטה'})
-    df_holocaust1["HoloSurvNdDesc"] = df_holocaust1["HoloSurvNdDesc"].apply(lambda x: str(x)[:-1]+'(' if str(x)[-1]==')' else x)
-    if statzone == 'All Statistical zones' or statzone==623:  # TODO delete or statzone==623
+    df_holocaust1 = df_holocaust1.replace(
+        {'בעיות הנובעות ממחלות אקוטיות או כרוניות (למעט בריאות הנפש)': 'מחלות אקוטיות או כרוניות',
+         'בעיות הנובעות מרמת הכנסה נמוכה או מירידה ברמת הכנסה': 'רמת הכנסה נמוכה',
+         'בעיות הנובעות ממומים ו/או מגבלות פיזיות (נכות)': 'נכות',
+         'בעיות בתקשורת בקליטה (עלייה)': 'בעיות בתקשורת וקליטה'})
+    df_holocaust1["HoloSurvNdDesc"] = df_holocaust1["HoloSurvNdDesc"].apply(
+        lambda x: str(x)[:-1] + '(' if str(x)[-1] == ')' else x)
+    if statzone == 'All Statistical zones' or statzone == 623:  # TODO delete or statzone==623
         df_holocaust1_type = df_holocaust1.groupby(by=["HoloSurvNdDesc"]).count()[['Street']]
         df_holocaust1_type = df_holocaust1_type.sort_values(by=['Street'], ascending=False).head(5)
     else:
@@ -173,12 +167,11 @@ def get_graphs(statzone):
 
     fig2 = px.bar(df_holocaust1_type, x=df_holocaust1_type.index, y=df_holocaust1_type['Amount of Holocaust Survivors'],
                   color_discrete_sequence=['#252E3F'])
-    # for_title = "crimes per location" if graph_type == "CrimeLocType" else "crimes per type"
     fig2.update_layout(title_text=f"Amount of holocaust survivors per needed help <br> type in{string}{statzone}",
                        title_x=0.5, yaxis=dict(
-                           titlefont_size=14,
-                           tickfont_size=14,
-                       ),
+            titlefont_size=14,
+            tickfont_size=14,
+        ),
                        xaxis=dict(
                            titlefont_size=14,
                            tickfont_size=14,
@@ -192,16 +185,14 @@ layout = html.Div(
     children=[
         html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
                 style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                       'letter-spacing': '0em'}
-                ),
+                       'letter-spacing': '0em'}),
         html.Div(
             [
                 html.Div(
                     [
                         'Choose area: ', dcc.RadioItems(id='areas',
                                                         options=options,
-                                                        value=0
-                                                        ),
+                                                        value=0),
                     ],
                     className="mini_container",
                 ),
@@ -215,40 +206,32 @@ layout = html.Div(
         html.Div(
             [
                 html.Div(
-                    [
-                        dcc.Graph(id='seniors_type')
-                    ],
+                    [dcc.Graph(id='seniors_type')],
                     className='narrow_container',
                 ),
                 html.Div(
-                    [
-                        dcc.Graph(id='needed_help_type')
-                    ],
+                    [dcc.Graph(id='needed_help_type')],
                     className='narrow_container',
                 ),
             ],
             id="info-container2",
             className="row container-display",
         ),
-        # html.Div(id='num_holocaust_survivors'),
-
         html.Div(
-                children=[
-                    html.H4(
-                        [
-                            "Number of Holocaust Survivors (for current area choose)",
-                        ],
-                        className="container_title",
+            children=[
+                html.H4(  # TODO maybe put "All stat.." / number of stat zone like in graphs
+                    ["Number of Holocaust Survivors (for current area choose)"],
+                    className="container_title",
+                ),
+                dcc.Loading(
+                    dcc.Graph(
+                        id="num_holocaust_survivors",
+                        figure=blank_fig(150),
+                        config={"displayModeBar": False},
                     ),
-                    dcc.Loading(
-                        dcc.Graph(
-                            id="num_holocaust_survivors",
-                            figure=blank_fig(150),
-                            config={"displayModeBar": False},
-                        ),
-                        className="svg-container",
-                        style={"height": 150},
-                    ),
+                    className="svg-container",
+                    style={"height": 150},
+                ),
             ],
             className="pretty_container twelve columns",
         ),
