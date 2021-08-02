@@ -1,17 +1,7 @@
-import dash
-import numpy as np
-import pandas as pd
-import dash_core_components as dcc
-import dash_html_components as html
-import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output
-import plotly.graph_objs as go
-import plotly.express as px
 from choroplethmapbox import get_choroplethmap_fig
-import folium
-import dash_table as dt
 from app_def import app
 from pre_process import *
+from utils import add_annotations_to_fig
 
 statistic_area = {'הכל': 0,
                   'גן הבהאים': 612,

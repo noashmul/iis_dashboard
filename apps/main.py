@@ -1,12 +1,3 @@
-import dash
-import numpy as np
-import pandas as pd
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
-import plotly.graph_objs as go
-import folium
-import dash_table as dt
 from pre_process import *
 from choroplethmapbox import get_main_tab_map
 
@@ -29,7 +20,7 @@ df = create_df_main_dash(dfs_dict)
 # \U000025B2 and \U000025BC are up and down arrows, \U0001F534 and \U0001F7E2 are red and green circles
 df['Percent change'] = df['Percent_comparison'].apply(lambda x: "\U000025BC" +
                                                                 "\U0001F534" + "   " + str(x) + "%" if x < 0
-else "\U000025B2" + "\U0001F7E2 " + " " + str(x) + "%")
+else "\U000025B2" + "\U0001F7E2 " + " " + "+" + str(x) + "%")
 df = df.drop('Percent_comparison', axis=1)
 
 layout = html.Div(

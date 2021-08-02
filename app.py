@@ -1,14 +1,12 @@
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 
 # must add this line in order for the app to be deployed successfully on Heroku
-from app_def import server
 from app_def import app
 # import all pages in the app
 from apps import main, safety, crime, income, elderly, population
-import pre_process
 
 app.layout = html.Div(
     [html.H1('Hadar Neighborhood: Semi-annual report',

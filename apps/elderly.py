@@ -46,10 +46,10 @@ def blank_fig(height):
 options = list()
 for key, value in statistic_area.items():
     if key != 'הכל':
-        options.append({'label': key + ' ' + str(value),
+        options.append({'label': "  " + key + ' ' + str(value),
                         'value': value})
     else:
-        options.append({'label': key,
+        options.append({'label': "  " + key,
                         'value': value})
 
 stat_zones_names_dict = {
