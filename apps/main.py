@@ -64,9 +64,15 @@ layout = html.Div(
                                    'letter-spacing': '0em'}
                             )
                 ] ),
-                html.Iframe(id='map', srcDoc=open('map.html', 'r').read(), width="100%", height="300",
-                            style={'justify-content': 'center', 'text-transform': 'none', 'font-family': 'sans-serif',
-                                   'letter-spacing': '0em'}),
+                # html.Iframe(id='map', srcDoc=open('map.html', 'r').read(), width="100%", height="300",
+                #             style={'justify-content': 'center', 'text-transform': 'none', 'font-family': 'sans-serif',
+                #                    'letter-spacing': '0em'}),
+                html.Div(
+                            [
+                                dcc.Graph(figure=get_main_tab_map(show_text=True))
+                            ],
+                            className='main_map_container',
+                        ),
                 generate_table(df),
             ],
             className="pretty_container twelve columns",
