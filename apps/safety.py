@@ -48,7 +48,7 @@ layout = html.Div([
                                         marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
                                                for num in [0, 0.25, 0.5, 0.75, 1]
                                                }),
-                             html.P(id="slider-text2", children="Choose the wanted weight 2:", style={'color': 'black'},
+                             html.P(id="slider-text2" ,children="Choose the wanted weight 2:", style={'color': 'black'},
                                     ),
                              dcc.Slider(id="Weight 2", min=0.0, max=1.0, value=0.5, step=None,
                                         marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }

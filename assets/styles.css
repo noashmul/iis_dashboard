@@ -6,6 +6,7 @@
 body {
   background-color: #252e3f;
   margin: 5%;
+    text-transform: none;
 }
 
 .two.columns {
@@ -77,17 +78,27 @@ body {
     display: block;
 }
 
-#slider-container {
-    background-color: #252e3f;
+.slider-container {
+    background-color: #f9f9f9;
     padding: 2rem 6rem 4rem 4rem;
     height: 15rem;
 }
 
-#areas-container {
-    background-color: #252e3f;
-    padding: 2rem 6rem 4rem 4rem;
-    height: 15rem;
+.slider-container input{
+    width:20%;
 }
+
+/*#slider-container {*/
+/*    background-color: #252e3f;*/
+/*    padding: 2rem 6rem 4rem 4rem;*/
+/*    height: 15rem;*/
+/*}*/
+
+/*#areas-container {*/
+/*    background-color: #252e3f;*/
+/*    padding: 2rem 6rem 4rem 4rem;*/
+/*    height: 15rem;*/
+/*}*/
 
 #radio-button {
     background-color: #252e3f;

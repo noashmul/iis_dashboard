@@ -10,22 +10,24 @@ from app_def import app
 from apps import main, safety, crime
 
 app.layout = html.Div(
-    [
-        dcc.Location(id="url"),
-        dbc.NavbarSimple(
-            children=[
-                dbc.NavLink("main", href="/main", active="exact"),
-                dbc.NavLink("Safety", href="/safety", active="exact"),
-                dbc.NavLink("Crime", href="/crime", active="exact")
-            ],
-            brand="Hadar Neighborhood: Semi-annual report, choose the wanted tab",
-            color="primary",
-            dark=True,
-            style={'font-size': 15}
-        ),
-        dbc.Container(id="page-content", className="pt-4"),
-    ]
-)
+    [html.H1('Hadar Neighborhood: Semi-annual report',
+             style={'color': '#FFFFFF', 'text-align': 'left', 'text-transform': None}),
+     html.Div([
+         dcc.Location(id="url"),
+         dbc.NavbarSimple(
+             children=[
+                 dbc.NavLink("main", href="/main", active="exact"),
+                 dbc.NavLink("Safety", href="/safety", active="exact"),
+                 dbc.NavLink("Crime", href="/crime", active="exact")
+             ],
+             brand="Choose the wanted tab",
+             color="primary",
+             dark=True,
+             style={'font-size': 15}
+         ),
+         dbc.Container(id="page-content", className="pt-4"),
+     ]
+     )])
 
 
 def toggle_navbar_collapse(n, is_open):
