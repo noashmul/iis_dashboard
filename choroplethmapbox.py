@@ -149,55 +149,34 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
 
     return fig
 
-    def get_main_tab_map(geo_json_dict, stat_zones_names_dict):
-        fig = go.Figure(go.Scattermapbox(
-            mode="text",
-            textfont=dict(size=16, color='black'),
-            text=list(stat_zones_names_dict.keys()),
-            lat=[Polygon(feature['geometry']['coordinates'][0]).centroid.y
-                 for feature in geo_json_dict['features']],
-            lon=[Polygon(feature['geometry']['coordinates'][0]).centroid.x
-                 for feature in geo_json_dict['features']],
-            customdata=[f"{feat['properties']['stat_zone_code']} - {feat['properties']['stat_zone_name'][::-1]}"
-                        for feat in geo_json_dict['features']],
-            name=''
-        ))
 
-        fig.update_layout(
-            mapbox={
-                'accesstoken': open(".mapbox_token").read(),
-                'style': "light",
-                'center': {'lon': 34.993, 'lat': 32.8065},
-                'zoom': 13, 'layers': [{
-                    'source': {
-                        'type': "FeatureCollection",
-                        'features': [{
-                            'type': "Feature",
-                            'geometry': {
-                                'type': "MultiPolygon",
-                                'coordinates': [feature['geometry']['coordinates'] for feature in
-                                                geo_json_dict['features']]
-                            }
-                        }]
-                    },
-                    'type': "line", 'below': "traces", 'color': "royalblue", 'line': {'width': 5}}]},
-            margin={'l': 0, 'r': 0, 'b': 0, 't': 0})
-
-        fig.data[0].hovertemplate = '<b>StatZone</b>: %{customdata}'
-
-        return fig
-
-
-def get_main_tab_map(geo_json_dict: dict, stat_zones_names_dict: dict, show_text: bool):
+def get_main_tab_map(show_text: bool):
     """
     Creates a map for the main dashboard tab with polygons showing the statistical zones
 
-    :param geo_json_dict: shape_file_to_featurecollection return value
-    :param stat_zones_names_dict: dictionary like {612: 'גן הבהאים' ...}
     :param show_text: boolean, if True shows the statistical zones codes.
                                if False no text is printed on the map
     :return: figure with the map
     """
+    shp_path = 'StatZones/Stat_Zones.shp'
+    stat_zones_names_dict = {
+        611: "הדר מערב - רח' אלמותנבי",
+        612: 'גן הבהאים',
+        613: "הדר מערב - רח' מסדה",
+        621: 'הדר עליון -בי"ח בני ציון',
+        622: "הדר עליון - רח' הפועל",
+        623: "רמת הדר - רח' המיימוני",
+        631: 'הדר מרכז - התיאטרון העירוני',
+        632: "הדר מרכז - רח' הרצליה",
+        633: 'הדר מרכז - בית העירייה',
+        634: 'הדר מרכז - שוק תלפיות',
+        641: 'הדר מזרח - רח\' יל"ג',
+        642: 'הדר מזרח - גאולה',
+        643: "רמת ויז'ניץ",
+        644: 'מעונות גאולה'
+    }
+    geo_json_dict = geo_json_dict = shape_file_to_featurecollection(shp_path, stat_zones_names_dict)
+
     fig = go.Figure(go.Scattermapbox(
         mode="text",
         textfont=dict(size=16, color='black'),
@@ -247,26 +226,6 @@ if __name__ == "__main__":
     fig1 = get_choroplethmap_fig(values_dict=values_dict, map_title="Exmple Title")
     fig1.show()
 
-    stat_zones_names_dict = {
-        611: "הדר מערב - רח' אלמותנבי",
-        612: 'גן הבהאים',
-        613: "הדר מערב - רח' מסדה",
-        621: 'הדר עליון -בי"ח בני ציון',
-        622: "הדר עליון - רח' הפועל",
-        623: "רמת הדר - רח' המיימוני",
-        631: 'הדר מרכז - התיאטרון העירוני',
-        632: "הדר מרכז - רח' הרצליה",
-        633: 'הדר מרכז - בית העירייה',
-        634: 'הדר מרכז - שוק תלפיות',
-        641: 'הדר מזרח - רח\' יל"ג',
-        642: 'הדר מזרח - גאולה',
-        643: "רמת ויז'ניץ",
-        644: 'מעונות גאולה'
-    }
-    shp_path = 'StatZones/Stat_Zones.shp'
-    geo_json_dict = shape_file_to_featurecollection(shp_path, stat_zones_names_dict)
-
     """Main tab statzones map"""
-    fig2 = get_main_tab_map(geo_json_dict=geo_json_dict, stat_zones_names_dict=stat_zones_names_dict,
-                            show_text=False)
+    fig2 = get_main_tab_map(show_text=True)
     fig2.show()
