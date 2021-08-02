@@ -36,7 +36,6 @@ def get_area_in_km2_for_stat_zones() -> dict:
     }
     geo_json_dict = shape_file_to_featurecollection(shp_path, stat_zones_names_dict)
 
-
     areas = dict()
     for feature in geo_json_dict['features']:
         zone_code = feature['properties']['stat_zone_code']
@@ -144,6 +143,9 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
         max_abs_val = max(abs(max(z)), abs(min(z)))
         z.append(- max_abs_val)
         z.append(max_abs_val)
+    else:
+        z.append(0)
+        z.append(100)
 
     fig = go.Figure(go.Choroplethmapbox(z=z,
                                         locations=locations,
@@ -248,7 +250,7 @@ if __name__ == "__main__":
         values_dict[key] = np.random.randn()
 
     """Heatmap"""
-    fig1 = get_choroplethmap_fig(values_dict=values_dict, map_title="Example Title")
+    fig1 = get_choroplethmap_fig(values_dict=values_dict, map_title="Example Title", is_safety_map=True)
     fig1.show()
 
     """Main tab statzones map"""
