@@ -67,10 +67,11 @@ def get_graphs(statzone):
     haredim_df = dfs_dict['df_haredim_t1']
     gender_df = dfs_dict['df_salaries_t1'][['StatZone', 'Women', 'Men']]
     gender_df['Total'] = gender_df['Women'] + gender_df['Men']
-    age_group_df = dfs_dict['df_salaries_t1'][['StatZone','18_34', '35_44', '45_54', '55_64', '65_74', '75_84', '85+']]
+    age_group_df = dfs_dict['df_salaries_t1'][['StatZone', '18_34', '35_44', '45_54', '55_64', '65_74', '75_84', '85+']]
+    age_group_df_old = dfs_dict['df_salaries_t0'][
+        ['StatZone', '18_34', '35_44', '45_54', '55_64', '65_74', '75_84', '85+']]
 
     if statzone == 0:
-        statzone = 'All Statistical zones'
         haredim_df = haredim_df.append({'StatZone': 'All', 'TotHaredim': haredim_df['TotHaredim'].sum(),
                                         'TotNonHaredim': haredim_df['TotNonHaredim'].sum(),
                                         'Total': haredim_df['Total'].sum(),
@@ -90,6 +91,17 @@ def get_graphs(statzone):
                                            ignore_index=True)
         age_group_df = age_group_df[age_group_df['StatZone'] == 'All']
 
+        age_group_df_old = age_group_df_old.append({'StatZone': 'All', '18_34': age_group_df_old['18_34'].sum(),
+                                                    '35_44': age_group_df_old['35_44'].sum(),
+                                                    '45_54': age_group_df_old['45_54'].sum(),
+                                                    '55_64': age_group_df_old['55_64'].sum(),
+                                                    '65_74': age_group_df_old['65_74'].sum(),
+                                                    '75_84': age_group_df_old['75_84'].sum(),
+                                                    '85+': age_group_df_old['85+'].sum(),
+                                                    },
+                                                   ignore_index=True)
+        age_group_df_old = age_group_df_old[age_group_df_old['StatZone'] == 'All']
+
         title1 = 'Haredim percentage in All Statistical zones'
         title2 = 'Genders percentages in All Statistical zones'
         title3 = 'Age groups distribution in All Statistical zones'
@@ -97,6 +109,7 @@ def get_graphs(statzone):
         haredim_df = haredim_df[haredim_df['StatZone'] == statzone]
         gender_df = gender_df[gender_df['StatZone'] == statzone]
         age_group_df = age_group_df[age_group_df['StatZone'] == statzone]
+        age_group_df_old = age_group_df_old[age_group_df_old['StatZone'] == statzone]
         title1 = f'Haredim percentage in {statzone} stat zone'
         title2 = f'Genders percentages in {statzone} stat zone'
         title3 = f'Age groups distribution in {statzone} stat zone'
@@ -113,7 +126,8 @@ def get_graphs(statzone):
     fig2 = px.pie(values=values_gender, names=labels_gender, title=title2,
                   color_discrete_sequence=['lightpink', 'skyblue'])
 
-    age_group_df_new = pd.DataFrame(columns=['Age group','Amount of citizen'])
+    age_group_df_new = pd.DataFrame(columns=['Age group', 'Amount of citizen'])
+    age_group_df_old_new = pd.DataFrame(columns=['Age group', 'Amount of citizen'])
     for col in age_group_df.columns:
         if col == 'StatZone':
             continue
@@ -121,7 +135,15 @@ def get_graphs(statzone):
             col_name = col
         else:
             col_name = col[:2] + '-' + col[3:]
-        age_group_df_new = age_group_df_new.append({'Amount of citizen':int(age_group_df[col]),'Age group':col_name},ignore_index=True)
+        age_group_df_new = age_group_df_new.append({'Amount of citizen': int(age_group_df[col]), 'Age group': col_name},
+                                                   ignore_index=True)
+        age_group_df_old_new = age_group_df_old_new.append(
+            {'Amount of citizen': int(age_group_df_old[col]), 'Age group': col_name}, ignore_index=True)
+
+    percentage_change = 100 * (age_group_df_new['Amount of citizen'] - age_group_df_old_new['Amount of citizen']) / \
+                        age_group_df_old_new['Amount of citizen']
+    values_for_heatmap = {age_group: perc_change for age_group, perc_change in
+                          zip(['18-34','35-44','45-54','55-64','65-74','75-84','85+'], percentage_change)}
 
     fig3 = px.bar(age_group_df_new, y=age_group_df_new['Amount of citizen'],
                   x=age_group_df_new['Age group'], title=title3)
