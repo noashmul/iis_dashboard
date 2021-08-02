@@ -148,12 +148,12 @@ def get_graphs(statzone):
     # for_title = "crimes per location" if graph_type == "CrimeLocType" else "crimes per type"
     fig2.update_layout(title_text=f"Amount of crimes per location in<br> {string}{statzone}",
                        yaxis=dict(
-                           titlefont_size=18,
-                           tickfont_size=18,
+                           titlefont_size=14,
+                           tickfont_size=14,
                        ),
                        xaxis=dict(
-                           titlefont_size=18,
-                           tickfont_size=18,
+                           titlefont_size=14,
+                           tickfont_size=14,
                        ), xaxis_showgrid=True, yaxis_showgrid=True, template='none')
     fig2.update_xaxes(title='Crime location', tickangle=45)
 
@@ -170,14 +170,14 @@ def get_graphs(statzone):
 
     fig3 = px.bar(df_type, x=df_type.index, y=df_type['Amount of Crimes'],
                   color_discrete_sequence=['#252E3F'])
-    fig3.update_layout(title_text=f"Amount of crimes per type<br> in {string}{statzone}",
+    fig3.update_layout(title_text=f"Amount of crimes per type in<br> {string}{statzone}",
                        yaxis=dict(
-                           titlefont_size=18,
-                           tickfont_size=18,
+                           titlefont_size=14,
+                           tickfont_size=14,
                        ),
                        xaxis=dict(
-                           titlefont_size=18,
-                           tickfont_size=18,
+                           titlefont_size=14,
+                           tickfont_size=14,
                        ), xaxis_showgrid=True, yaxis_showgrid=True,
                        template='none',
                        )
