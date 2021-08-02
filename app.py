@@ -52,7 +52,7 @@ def display_page(pathname):
     elif pathname == '/income':
         return income.layout
     elif pathname == '/elderly':
-        return elderly.layout
+        return income.layout
     else:
         return main.layout
 
