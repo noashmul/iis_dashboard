@@ -32,23 +32,11 @@ statistic_area = {'הכל': 0,
 options = list()
 for key, value in statistic_area.items():
     if key != 'הכל':
-        options.append({'label': key + ' ' + str(value),
+        options.append({'label': "  " + key + ' ' + str(value),
                         'value': value})
     else:
-        options.append({'label': key,
+        options.append({'label': "  " + key,
                         'value': value})
-
-    # def generate_table(dataframe, max_rows=10):
-    #     return html.Table([
-    #         html.Thead(
-    #             html.Tr([html.Th(col) for col in dataframe.columns])
-    #         ),
-    #         html.Tbody([
-    #             html.Tr([
-    #                 html.Td(dataframe.iloc[i][col]) for col in dataframe.columns
-    #             ]) for i in range(min(len(dataframe), max_rows))
-    #         ])
-    #     ], style={'justify-content': 'center'})
 
 stat_zones_names_dict = {
     611: "הדר מערב - רח' אלמותנבי",
@@ -79,7 +67,7 @@ values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change 
 map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
                                 map_title="% of change in total crime cases",
                                 colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
-                                hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Precentage of change</b>: %{z}%<br>')
+                                hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{z}%<br>')
 map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
 
@@ -96,7 +84,7 @@ def get_graphs(statzone):
         statzone = 'All Statistical zones'
 
     if statzone == 'All Statistical zones':
-        df_total_crimes = df_crimes.groupby(by=["Month"]).count()[['Street']] / 14
+        df_total_crimes = df_crimes.groupby(by=["Month"]).count()[['Street']] // 14
         df_total_crime_all = pd.DataFrame(columns=['Month', 'Amount of Crimes'])
         df_total_crime_all['Month'] = df_total_crimes['Street'].index
         df_total_crime_all['Amount of Crimes'] = df_total_crimes['Street'].values
@@ -116,6 +104,7 @@ def get_graphs(statzone):
 
     # TODO this title is not visible because of the margin 0, add a title to the html
     fig1.update_layout(title_text=f"Amount of crimes per month in{string}{statzone}",
+                       title_x=0.5,
                        yaxis=dict(
                            titlefont_size=18,
                            tickfont_size=18,
@@ -130,7 +119,7 @@ def get_graphs(statzone):
                        yaxis_range=[0, max_y * 1.1])
 
     if statzone == 'All Statistical zones':
-        df_location = df_crimes.groupby(by=["CrimeLocType"]).count()[['Street']] / 14
+        df_location = df_crimes.groupby(by=["CrimeLocType"]).count()[['Street']] // 14
         df_location = df_location.sort_values(by=['Street'], ascending=False).head(10)
         df_location.index = [s[::-1].strip(' ') for s in df_location.index]
         df_location.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
@@ -145,6 +134,7 @@ def get_graphs(statzone):
                   color_discrete_sequence=['#252E3F'])
     # for_title = "crimes per location" if graph_type == "CrimeLocType" else "crimes per type"
     fig2.update_layout(title_text=f"Amount of crimes per location in<br> {string}{statzone}",
+                       title_x=0.5,
                        yaxis=dict(
                            titlefont_size=14,
                            tickfont_size=14,
@@ -157,7 +147,7 @@ def get_graphs(statzone):
     fig2.update_xaxes(title='Crime location', tickangle=45)
 
     if statzone == 'All Statistical zones':
-        df_type = df_crimes.groupby(by=["CrimeType"]).count()[['Street']] / 14
+        df_type = df_crimes.groupby(by=["CrimeType"]).count()[['Street']] // 14
         df_type = df_type.sort_values(by=['Street'], ascending=False).head(10)
         df_type.index = [s[::-1].strip(' ') for s in df_type.index]
         df_type.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
@@ -170,6 +160,7 @@ def get_graphs(statzone):
     fig3 = px.bar(df_type, x=df_type.index, y=df_type['Amount of Crimes'],
                   color_discrete_sequence=['#252E3F'])
     fig3.update_layout(title_text=f"Amount of crimes per type in<br> {string}{statzone}",
+                       title_x=0.5,
                        yaxis=dict(
                            titlefont_size=14,
                            tickfont_size=14,

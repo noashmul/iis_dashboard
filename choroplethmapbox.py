@@ -109,11 +109,15 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
                           shp_path: str = os.path.join("StatZones", "Stat_Zones.shp"),
                           is_safety_map: bool = False,
                           colorscale=None,
-                          hovertemplate=None):
+                          hovertemplate=None,
+                          add_stat_numbers_to_map: bool = True):
     """
     Creates and returns a plotly pig of Choroplethmapbox (map)
     Hadar StatZones polygons are used for the heatmap
 
+    :param colorscale: wanted color scale
+    :param hovertemplate: hovertemplate for text of hover
+    :param add_stat_numbers_to_map: whether to
     :param values_dict: The heatmap values (can be any values)
     :type values_dict: dict
     :param map_title: The title of the map
@@ -153,47 +157,43 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
         [[0, 'red'], [0.5, 'white'], [1, 'green']] if not is_safety_map
         else [[0, '#670020'], [0.5, 'white'], [1, '#083669']])  # colorscale for safety)
 
+    # my mapbox_access_token must be used only for special mapbox style
+    mapboxt = open(".mapbox_token").read()
+
     fig = go.Figure(go.Choroplethmapbox(z=z,
+                                        below=True,
                                         locations=locations,
                                         colorscale=chosen_color_scale,
                                         colorbar=dict(thickness=20, ticklen=3),
                                         geojson=geo_json_dict,
                                         text=text,
                                         hoverinfo='all',
-                                        name=''))
+                                        name='',
+                                        hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Value</b>: %{z}<br>' if \
+                                            hovertemplate is None else hovertemplate
+                                        )
+                    )
 
-    # my mapbox_access_token must be used only for special mapbox style
-    mapboxt = open(".mapbox_token").read()
+    # Add statistical zones numbers to map
+    fig.add_trace(go.Scattermapbox(
+        mode="text",
+        textfont=dict(size=10, color='black'),
+        text=list(stat_zones_names_dict.keys()) if add_stat_numbers_to_map else [''] * len(stat_zones_names_dict),
+        lat=[Polygon(feature['geometry']['coordinates'][0]).centroid.y
+             for feature in geo_json_dict['features']],
+        lon=[Polygon(feature['geometry']['coordinates'][0]).centroid.x
+             for feature in geo_json_dict['features']],
+        name='', hoverinfo='skip'
+    ))
 
     fig.update_layout(title_text=map_title,
                       title_x=0.5,
-                      # TODO possibly change width, height
-                      width=700,  # height=700,
                       mapbox=dict(center=dict(lat=32.8065, lon=34.993),
                                   accesstoken=mapboxt,
-                                  # TODO choose style from the below:
-                                  #  open-street-map, light, carto-positron, white-bg, dark
-                                  style='carto-positron',
-                                  zoom=13))
-
-    # TODO Yotam
-    # show_text = True
-    # fig.add_trace(go.Scattermapbox(
-    #     mode="text",
-    #     textfont=dict(size=10, color='black'),
-    #     text=list(stat_zones_names_dict.keys()) if show_text else [''] * len(stat_zones_names_dict),
-    #     lat=[Polygon(feature['geometry']['coordinates'][0]).centroid.y
-    #          for feature in geo_json_dict['features']],
-    #     lon=[Polygon(feature['geometry']['coordinates'][0]).centroid.x
-    #          for feature in geo_json_dict['features']],
-    #     customdata=[f"{feat['properties']['stat_zone_code']} - {feat['properties']['stat_zone_name'][::-1]}"
-    #                 for feat in geo_json_dict['features']],
-    #     name=''
-    # ))
-
-    # TODO this is the format of the hover string - possibly change
-    fig.data[0].hovertemplate = '<b>StatZone</b>: %{text}' + '<br><b>Value</b>: %{z}<br>' if hovertemplate is None \
-        else hovertemplate
+                                  style='light',
+                                  zoom=13
+                                  )
+                      )
 
     return fig
 
@@ -255,7 +255,7 @@ def get_main_tab_map(show_text: bool):
                         }
                     }]
                 },
-                'type': "line", 'below': "traces", 'color': "royalblue", 'line': {'width': 5}}]},
+                'type': "line", 'below': "traces", 'color': "#8a9bba", 'line': {'width': 5}}]},
         margin={'l': 0, 'r': 0, 'b': 0, 't': 0})
 
     fig.data[0].hovertemplate = '<b>StatZone</b>: %{customdata}'
@@ -271,7 +271,11 @@ if __name__ == "__main__":
         values_dict[key] = np.random.randn()
 
     """Heatmap"""
-    fig1 = get_choroplethmap_fig(values_dict=values_dict, map_title="Example Title", is_safety_map=True)
+    fig1 = get_choroplethmap_fig(values_dict=values_dict, map_title="Example Title",
+                                 colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
+                                 hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{z}%<br>',
+                                 add_stat_numbers_to_map=True
+                                 )
     fig1.show()
 
     """Main tab statzones map"""

@@ -21,10 +21,10 @@ statistic_area = {'הכל': 0,
 options = list()
 for key, value in statistic_area.items():
     if key != 'הכל':
-        options.append({'label': key + ' ' + str(value),
-                        'value': value})  # TODO value need to be int or str? in Gal's function its int
+        options.append({'label': "  " + key + ' ' + str(value),
+                        'value': value})
     else:
-        options.append({'label': key,
+        options.append({'label': "  " + key,
                         'value': value})
 
 
