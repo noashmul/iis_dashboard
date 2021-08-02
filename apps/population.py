@@ -38,10 +38,10 @@ stat_zones_names_dict = {
 options = list()
 for key, value in statistic_area.items():
     if key != 'הכל':
-        options.append({'label': key + ' ' + str(value),
+        options.append({'label': "  " + key + ' ' + str(value),
                         'value': value})
     else:
-        options.append({'label': key,
+        options.append({'label': "  " + key,
                         'value': value})
 
 citizen0, citizen1 = dfs_dict['df_salaries_t0'], dfs_dict['df_salaries_t1']

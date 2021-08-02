@@ -1,12 +1,3 @@
-import dash
-import numpy as np
-import pandas as pd
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
-import plotly.graph_objs as go
-import folium
-import dash_table as dt
 from pre_process import *
 from choroplethmapbox import get_main_tab_map
 
