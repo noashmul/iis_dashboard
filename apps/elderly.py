@@ -29,6 +29,20 @@ statistic_area = {'הכל': 0,
                   "רמת הדר - רח' המיימוני": 623,
                   "רמת ויז'ניץ": 643}
 
+def blank_fig(height):
+    """
+    Build blank figure with the requested height
+    """
+    return {
+        "data": [],
+        "layout": {
+            "height": height,
+            # "template": template,
+            "xaxis": {"visible": False},
+            "yaxis": {"visible": False},
+        },
+    }
+
 options = list()
 for key, value in statistic_area.items():
     if key != 'הכל':
@@ -76,6 +90,7 @@ map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 @app.callback(
     Output(component_id='seniors_type', component_property='figure'),
     Output(component_id='needed_help_type', component_property='figure'),
+    Output(component_id='num_holocaust_survival', component_property='value'),
     Input(component_id='areas', component_property='value')
 )
 def get_graphs(statzone):
@@ -85,7 +100,7 @@ def get_graphs(statzone):
         statzone = 'All Statistical zones'
 
     if statzone != 'All Statistical zones':
-        df_seniors1 = df_seniors1[df_seniors1['StatZone']==statzone]
+        df_seniors1 = df_seniors1[df_seniors1['StatZone'] == statzone]
 
     food1_alone1 = len(df_seniors1[(df_seniors1['SeniorAlone'] == 1) &
                        (df_seniors1['SeniorRecivFood'] == 1)])
@@ -149,7 +164,12 @@ def get_graphs(statzone):
                        ), xaxis_showgrid=True, yaxis_showgrid=True, template='simple_white')
     fig2.update_xaxes(title='Needed help type', tickangle=45)
 
-    return fig1, fig2#, fig3
+    if statzone == 'All Statistical zones':
+        text3 = len(df_holocaust1)
+    else:
+        text3 = len(df_holocaust1[df_holocaust1['StatZone']==statzone])
+
+    return fig1, fig2, text3
 
 
 layout = html.Div(
@@ -193,7 +213,19 @@ layout = html.Div(
             ],
             id="info-container2",
             className="row container-display",
-        )
+        ),
+        # html.Div(id='num_holocaust_survival'),
+
+        html.Div(
+            [
+                dcc.Graph(
+                    id="num_holocaust_survival",
+                    figure=blank_fig(150),
+                    config={"displayModeBar": False},
+                ),
+            ],
+            className='narrow_container',
+        ),
     ],
     className="pretty_container twelve columns",
     style={"text-align": "justify"},
