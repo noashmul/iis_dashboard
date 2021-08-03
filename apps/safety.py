@@ -95,20 +95,20 @@ for col in df_scores.columns[:-1]:
 # statistic_area_ = ['All', '611', '612', '613', '621', '622', '623', '631', '632', '633', '634',
 #                    '641', '642', ' 643', '644']
 statistic_area = {'הכל': 0,
-                  'גן הבהאים': 612,
-                  'הדר מזרח - גאולה': 642,
-                  'הדר מזרח - רח\' יל"ג': 641,
                   "הדר מערב - רח' אלמותנבי": 611,
+                  'גן הבהאים': 612,
                   "הדר מערב - רח' מסדה": 613,
-                  'הדר מרכז - בית העירייה': 633,
+                  'הדר עליון -בי"ח בני ציון': 621,
+                  "הדר עליון - רח' הפועל": 622,
+                  "רמת הדר - רח' המיימוני": 623,
                   'הדר מרכז - התיאטרון העירוני': 631,
                   "הדר מרכז - רח' הרצליה": 632,
+                  'הדר מרכז - בית העירייה': 633,
                   'הדר מרכז - שוק תלפיות': 634,
-                  "הדר עליון - רח' הפועל": 622,
-                  'הדר עליון -בי"ח בני ציון': 621,
-                  'מעונות גאולה': 644,
-                  "רמת הדר - רח' המיימוני": 623,
-                  "רמת ויז'ניץ": 643}
+                  'הדר מזרח - רח\' יל"ג': 641,
+                  'הדר מזרח - גאולה': 642,
+                  "רמת ויז'ניץ": 643,
+                  'מעונות גאולה': 644}
 
 options = list()
 for key, value in statistic_area.items():
@@ -120,154 +120,164 @@ for key, value in statistic_area.items():
                         'value': value})
 
 layout = html.Div(children=[
-    html.Div(children= [
-        html.H4(children='Choose the weight for each component in the safety formula to influence the score in each Stat Zone',
-                style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                       'letter-spacing': '0em'}
-                ),
+    html.Div([html.H4(
+        'Choose the weight for each component in the safety formula to influence the score in each Stat Zone',
+        style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+               'letter-spacing': '0em'}, )],
+        className='pretty_container'
+    ),
+    html.Div([
+        html.Div([
+            html.Div([html.P(id="slider-text1", children="Choose the wanted weight 1:",
+                             style={'color': 'black', 'text-align': 'left'},
+                             ),
+                      dcc.Slider(id="Weight 1", min=0.0, max=1.0, value=0.5, step=None,
+                                 marks={
+                                     str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
+                                     for num in [0, 0.25, 0.5, 0.75, 1]
+                                 }),
+                      html.P(id="slider-text2", children="Choose the wanted weight 2:",
+                             style={'color': 'black'},
+                             ),
+                      dcc.Slider(id="Weight 2", min=0.0, max=1.0, value=0.5, step=None,
+                                 marks={
+                                     str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
+                                     for num in [0, 0.25, 0.5, 0.75, 1]
+                                 }),
+                      html.P(id="slider-text3", children="Choose the wanted weight 3:",
+                             style={'color': 'black'},
+                             ),
+                      dcc.Slider(id="Weight 3", min=0.0, max=1.0, value=0.5, step=None,
+                                 marks={
+                                     str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
+                                     for num in [0, 0.25, 0.5, 0.75, 1]
+                                 }),
+                      html.P(id="slider-text4", children="Choose the wanted weight 4:",
+                             style={'color': 'black'},
+                             ),
+                      dcc.Slider(id="Weight 4", min=0.0, max=1.0, value=0.5, step=None,
+                                 marks={
+                                     str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
+                                     for num in [0, 0.25, 0.5, 0.75, 1]
+                                 }),
+                      html.P(id="slider-text5", children="Choose the wanted weight 5:",
+                             style={'color': 'black'},
+                             ),
+                      dcc.Slider(id="Weight 5", min=0.0, max=1.0, value=0.5, step=None,
+                                 marks={
+                                     str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
+                                     for num in [0, 0.25, 0.5, 0.75, 1]
+                                 }),
+                      html.P(id="slider-text6", children="Choose the wanted weight 6:",
+                             style={'color': 'black'},
+                             ),
+                      dcc.Slider(id="Weight 6", min=0.0, max=1.0, value=0.5, step=None,
+                                 marks={
+                                     str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
+                                     for num in [0, 0.25, 0.5, 0.75, 1]
+                                 }), ], className="slider-container")
+        ], className='narrow_container'),
+        html.Div([
+            html.Div([html.P(id="slider-text8", children="Choose the wanted weight 7:",
+                             style={'color': 'black'},
+                             ),
+                      dcc.Slider(id="Weight 7", min=0.0, max=1.0, value=0.5, step=None,
+                                 marks={
+                                     str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
+                                     for num in [0, 0.25, 0.5, 0.75, 1]
+                                 }),
+                      html.P(id="slider-text8", children="Choose the wanted weight 8:",
+                             style={'color': 'black'},
+                             ),
+                      dcc.Slider(id="Weight 8", min=0.0, max=1.0, value=0.5, step=None,
+                                 marks={
+                                     str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
+                                     for num in [0, 0.25, 0.5, 0.75, 1]
+                                 }),
+                      html.P(id="slider-text9", children="Choose the wanted weight 9:",
+                             style={'color': 'black'},
+                             ),
+                      dcc.Slider(id="Weight 9", min=0.0, max=1.0, value=0.5, step=None,
+                                 marks={
+                                     str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
+                                     for num in [0, 0.25, 0.5, 0.75, 1]
+                                 }),
+                      html.P(id="slider-text10", children="Choose the wanted weight 10:",
+                             style={'color': 'black'},
+                             ),
+                      dcc.Slider(id="Weight 10", min=0.0, max=1.0, value=0.5, step=None,
+                                 marks={
+                                     str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
+                                     for num in [0, 0.25, 0.5, 0.75, 1]
+                                 }),
+                      html.P(id="slider-text11", children="Choose the wanted weight 11:",
+                             style={'color': 'black'},
+                             ),
+                      dcc.Slider(id="Weight 11", min=0.0, max=1.0, value=0.5, step=None,
+                                 marks={
+                                     str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
+                                     for num in [0, 0.25, 0.5, 0.75, 1]
+                                 }),
+                      html.P(id="slider-text12", children="Choose the wanted weight 12:",
+                             style={'color': 'black'},
+                             ),
+                      dcc.Slider(id="Weight 12", min=0.0, max=1.0, value=0.5, step=None,
+                                 marks={
+                                     str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
+                                     for num in [0, 0.25, 0.5, 0.75, 1]
+                                 }), ], className="slider-container")
+        ], className='narrow_container'),
+    ], id="info-container2",
+        className="row container-display"),
+    # ], className='pretty_container'),
 
-html.Div(
-         children=[
-        html.Div(className="narrow_container",
-                 children= [
-            html.Div(className="slider-container",
-                     children=[
-                         html.H5("Choose weights"),
-                         html.P(id="slider-text1", children="Choose the wanted weight 1:",
-                                style={'color': 'black'},
-                                ),
-                         dcc.Slider(id="Weight 1", min=0.0, max=1.0, value=0.5, step=None,
-                                    marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
-                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                           }),
-                         html.P(id="slider-text2", children="Choose the wanted weight 2:",
-                                style={'color': 'black'},
-                                ),
-                         dcc.Slider(id="Weight 2", min=0.0, max=1.0, value=0.5, step=None,
-                                    marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
-                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                           }),
-                         html.P(id="slider-text3", children="Choose the wanted weight 3:",
-                                style={'color': 'black'},
-                                ),
-                         dcc.Slider(id="Weight 3", min=0.0, max=1.0, value=0.5, step=None,
-                                    marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
-                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                           }),
-                         html.P(id="slider-text4", children="Choose the wanted weight 4:",
-                                style={'color': 'black'},
-                                ),
-                         dcc.Slider(id="Weight 4", min=0.0, max=1.0, value=0.5, step=None,
-                                    marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
-                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                           }),
-                         html.P(id="slider-text5", children="Choose the wanted weight 5:",
-                                style={'color': 'black'},
-                                ),
-                         dcc.Slider(id="Weight 5", min=0.0, max=1.0, value=0.5, step=None,
-                                    marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
-                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                           }),
-                         html.P(id="slider-text6", children="Choose the wanted weight 6:",
-                                style={'color': 'black'},
-                                ),
-                         dcc.Slider(id="Weight 6", min=0.0, max=1.0, value=0.5, step=None,
-                                    marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
-                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                           }),
-                         html.P(id="slider-text7", children="Choose the wanted weight 7:",
-                                style={'color': 'black'},
-                                ),
-                         dcc.Slider(id="Weight 7", min=0.0, max=1.0, value=0.5, step=None,
-                                    marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
-                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                           }),
-                         html.P(id="slider-text8", children="Choose the wanted weight 8:",
-                                style={'color': 'black'},
-                                ),
-                         dcc.Slider(id="Weight 8", min=0.0, max=1.0, value=0.5, step=None,
-                                    marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
-                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                           }),
-                         html.P(id="slider-text9", children="Choose the wanted weight 9:",
-                                style={'color': 'black'},
-                                ),
-                         dcc.Slider(id="Weight 9", min=0.0, max=1.0, value=0.5, step=None,
-                                    marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
-                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                           }),
-                         html.P(id="slider-text10", children="Choose the wanted weight 10:",
-                                style={'color': 'black'},
-                                ),
-                         dcc.Slider(id="Weight 10", min=0.0, max=1.0, value=0.5, step=None,
-                                    marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
-                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                           }),
-                         html.P(id="slider-text11", children="Choose the wanted weight 11:",
-                                style={'color': 'black'},
-                                ),
-                         dcc.Slider(id="Weight 11", min=0.0, max=1.0, value=0.5, step=None,
-                                    marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
-                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                           }),
-                         html.P(id="slider-text12", children="Choose the wanted weight 12:",
-                                style={'color': 'black'},
-                                ),
-                         dcc.Slider(id="Weight 12", min=0.0, max=1.0, value=0.5, step=None,
-                                    marks={str(num): {"label": str(num), "style": {"color": "#7fafdf"}, }
-                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                           }),
-                     ]),
-                html.Div(
-                    [
-                        'Choose area: ', dcc.RadioItems(id='areas',
-                                                        options=options,
-                                                        value=0
-                                                        ),
-                    ],
-                    className="mini_container",
-                ),
+    html.Div(children=[
+        html.Div([
+            html.Div(
+                children=[
+                    html.Div(
+                        [
+                            'Choose area: ', dcc.RadioItems(id='areas',
+                                                            options=options,
+                                                            value=0
+                                                            ),
+                        ],
+                        className="mini_container",
+                    ),
+                    html.Div(
+                        id="graph-container",
+                        children=[
+                            dcc.Graph(id='graph_with_slider')
+                        ], className='map_container'),
 
-]),
+                ], id="info-container1",
+                className="row container-display")], className="pretty_container"),
 
-# ],className="row container-display", id="info-container1"),
-
-                # html.Div([
-                #     dcc.Graph(id='graph_with_slider')
-                # ], className="map_container"),
-        html.Div(className="narrow_container",
-                 children=[
-                html.Div(
-                    id="graph-container",
-                    children=[
-                        dcc.Graph(id='graph_with_slider')
-                    ], className='map_container'),
+        html.Div([
 
             html.Div(
-                    [
-                        dcc.Graph(id='score_graph')
-                    ],
-                    className='map_container',
-                )
-            ]),
+                [
+                    dcc.Graph(id='score_graph')
+                ],
+                className='map_container',
+            )], className='pretty_container')
+    ], )
+], )
 
 
-],className="row container-display", id="info-container1"),
-    ],
-        className="pretty_container"),
+# className="pretty_container"),
 
-    # html.Div(
-    #     [
-    #         html.Div(
-    #             [
-    #                 dcc.Graph(id='score_graph')
-    #             ],
-    #             className='narrow_container',
-    #         ),
-    #
-    #     ], )
+# html.Div(
+#     [
+#         html.Div(
+#             [
+#                 dcc.Graph(id='score_graph')
+#             ],
+#             className='narrow_container',
+#         ),
+#
+#     ], )
 
-    ])
 
 #
 # layout = html.Div(
@@ -440,24 +450,28 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
         values_dict[row.StatZone] = int(tmp_score * 100)
 
     fig1 = get_choroplethmap_fig(values_dict=values_dict, map_title="Stat Zone Safety Score", is_safety_map=True)
+    fig1.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
-    if area in [0,'0'] :
+    if area in [0, '0']:
         area = 'All Statistical zones'
-
     if area == 'All Statistical zones':
         score_area_val = list(df_scores.drop("StatZone", axis=1).mean())
+        title2 = "Component scores for All Statistical zones "
     else:
         score_area_val = df_scores[df_scores['StatZone'] == int(area)].drop('StatZone', axis=1).values[0]
+        title2 = f"Component scores for stat zone {area}"
         print(score_area_val)
     X_label = ["Neighbors' Conflicts", "Security Cameras", 'Abandoned houses',
                'Calls to 106 - Security', 'Calls to 106 - Social', 'Crime', 'Thefts',
                'BodyAssaults', 'SexualAssaults', 'Robbery', 'Average Income', 'Demographic density']
-
-    fig2 = px.bar(x=X_label, y=score_area_val)
-    fig2.update_layout(title_text=f"Component scores for stat zone {area}")
+    fig2_df = pd.DataFrame(columns=['Score', 'Topic'])
+    fig2_df['Score'] = score_area_val
+    fig2_df['Topic'] = X_label
+    fig2_df.sort_values(by='Score', inplace=True)
+    fig2 = px.bar(fig2_df, x=fig2_df.Score, y=fig2_df.Topic, color_discrete_sequence=['#252E3F'])
+    fig2.update_layout(title_text=title2)
 
     return fig1, fig2
-
 
 # if __name__ == '__main__':
 # score_area_val = list(df_scores.mean())

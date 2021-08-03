@@ -4,20 +4,20 @@ from pre_process import *
 from utils import add_annotations_to_fig
 
 statistic_area = {'הכל': 0,
-                  'גן הבהאים': 612,
-                  'הדר מזרח - גאולה': 642,
-                  'הדר מזרח - רח\' יל"ג': 641,
                   "הדר מערב - רח' אלמותנבי": 611,
+                  'גן הבהאים': 612,
                   "הדר מערב - רח' מסדה": 613,
-                  'הדר מרכז - בית העירייה': 633,
+                  'הדר עליון -בי"ח בני ציון': 621,
+                  "הדר עליון - רח' הפועל": 622,
+                  "רמת הדר - רח' המיימוני": 623,
                   'הדר מרכז - התיאטרון העירוני': 631,
                   "הדר מרכז - רח' הרצליה": 632,
+                  'הדר מרכז - בית העירייה': 633,
                   'הדר מרכז - שוק תלפיות': 634,
-                  "הדר עליון - רח' הפועל": 622,
-                  'הדר עליון -בי"ח בני ציון': 621,
-                  'מעונות גאולה': 644,
-                  "רמת הדר - רח' המיימוני": 623,
-                  "רמת ויז'ניץ": 643}
+                  'הדר מזרח - רח\' יל"ג': 641,
+                  'הדר מזרח - גאולה': 642,
+                  "רמת ויז'ניץ": 643,
+                  'מעונות גאולה': 644}
 
 stat_zones_names_dict = {
     611: "הדר מערב - רח' אלמותנבי",
@@ -129,6 +129,7 @@ def get_graphs(statzone):
 
     age_group_df_new = pd.DataFrame(columns=['Age group', 'Amount of citizen'])
     age_group_df_old_new = pd.DataFrame(columns=['Age group', 'Amount of citizen'])
+    old_y = []
     for col in age_group_df.columns:
         if col == 'StatZone':
             continue
@@ -140,6 +141,7 @@ def get_graphs(statzone):
                                                    ignore_index=True)
         age_group_df_old_new = age_group_df_old_new.append(
             {'Amount of citizen': int(age_group_df_old[col]), 'Age group': col_name}, ignore_index=True)
+        old_y.append(int(age_group_df_old[col]))
 
     percentage_change = 100 * (age_group_df_new['Amount of citizen'] - age_group_df_old_new['Amount of citizen']) / \
                         age_group_df_old_new['Amount of citizen']
@@ -155,8 +157,7 @@ def get_graphs(statzone):
                            titlefont_size=18,
                            tickfont_size=18,
                        ), xaxis_showgrid=True, yaxis_showgrid=True)
-    # TODO add old_y to add_annotations_to_fig (see crime.py)
-    add_annotations_to_fig(fig3, fig3.data[0].x, fig3.data[0].y, percentage_change)
+    add_annotations_to_fig(fig3, fig3.data[0].x, fig3.data[0].y, percentage_change, old_y=old_y)
     fig3.update_layout(showlegend=False)
     max_y = max(age_group_df_new['Amount of citizen'])
     fig3.update_layout(yaxis_range=[0, max_y * 1.1])
