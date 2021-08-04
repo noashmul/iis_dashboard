@@ -136,6 +136,7 @@ def get_graphs(statzone):
                                       'Alone': '#636EFA',
                                       'Else': 'darkblue'}
                   )
+    # fig1.update_layout(legend={'traceorder':'reversed+grouped'})
 
     string = " stat zone " if statzone != 'All Statistical zones' else " "
 

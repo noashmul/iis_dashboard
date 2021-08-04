@@ -50,8 +50,8 @@ body {
 }
 
 .map_container_safety {
-    width: 60%;
-    height: 50%;
+    width: 100%;
+    /*height: 100%;*/
 }
 
 .main_map_container{

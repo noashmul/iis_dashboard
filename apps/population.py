@@ -6,7 +6,6 @@ import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Input, Output
 import plotly.express as px
-import numpy as np
 
 statistic_area = {'הכל': 0,
                   "הדר מערב - רח' אלמותנבי": 611,
