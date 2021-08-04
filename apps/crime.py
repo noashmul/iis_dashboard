@@ -3,6 +3,11 @@ from app_def import app
 from pre_process import *
 from utils import add_annotations_to_fig
 import plotly.graph_objects as go
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output
+import plotly.express as px
+import numpy as np
 
 statistic_area = {'הכל': 0,
                   'גן הבהאים': 612,

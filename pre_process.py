@@ -1,16 +1,4 @@
-import json
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
-import plotly.express as px
-import urllib.request as urllib
-# from urllib.request import urlopen
 import pandas as pd
-# import plotly.graph_objs as go
-# import statsmodels.api as sm
-import plotly.figure_factory as ff
-import numpy as np
 import gdown
 import zipfile
 import os
@@ -28,6 +16,10 @@ def add_row_to_main_dash(df_main_dash, Subject: str, Description: str, t0_total,
 
 
 def create_df_main_dash(d: dict):
+    """
+    Create a table for the main tab of the dashboard
+    :param d: dfs_dict
+    """
     df_main_dash = pd.DataFrame(columns=['Subject', 'Description', 'Value', 'Percent_comparison'])
 
     # Crime || Total Crimes
@@ -143,8 +135,6 @@ def create_dfs_dict():
 
 def main():
     dfs_dict = create_dfs_dict()
-    df_main_dash_out = create_df_main_dash(dfs_dict)
-    print('hi')
 
 
 global dfs_dict

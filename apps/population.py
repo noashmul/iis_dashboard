@@ -2,6 +2,11 @@ from app_def import app
 from choroplethmapbox import get_choroplethmap_fig
 from pre_process import *
 from utils import add_annotations_to_fig
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output
+import plotly.express as px
+import numpy as np
 
 statistic_area = {'הכל': 0,
                   'גן הבהאים': 612,
@@ -145,7 +150,7 @@ def get_graphs(statzone):
                         age_group_df_old_new['Amount of citizen']
 
     fig3 = px.bar(age_group_df_new, y=age_group_df_new['Amount of citizen'],
-                  x=age_group_df_new['Age group'], title=title3,color_discrete_sequence=['#252E3F'])
+                  x=age_group_df_new['Age group'], title=title3, color_discrete_sequence=['#252E3F'])
     fig3.update_layout(title_text=title1,
                        yaxis=dict(
                            titlefont_size=18,
