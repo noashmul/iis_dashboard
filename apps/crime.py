@@ -153,7 +153,7 @@ def get_graphs(statzone):
         for idx in df_location.index:
             if idx in prev_df_location.index:
                 old, new = float(prev_df_location.loc[idx].values), float(df_location.loc[idx].values)
-                percentage_change_value.append(100 * (new - old) / old)
+                percentage_change_value.append(100 * (new - old) / old if old != 0 else 100)
                 old_y.append(old)
             else:
                 percentage_change_value.append(np.nan)
@@ -174,7 +174,7 @@ def get_graphs(statzone):
         for idx in df_location.index:
             if idx in prev_df_location.index:
                 old, new = float(prev_df_location.loc[idx].values), float(df_location.loc[idx].values)
-                percentage_change_value.append(100 * (new - old) / old)
+                percentage_change_value.append(100 * (new - old) / old if old != 0 else 100)
                 old_y.append(old)
             else:
                 percentage_change_value.append(np.nan)

@@ -17,7 +17,7 @@ def add_annotations_to_fig(fig, x, y, percentage_change_value, old_y):
     """
     up, down = "\U000025B2", "\U000025BC"
     percentage_change_value = [round(val, 1) if not np.isnan(val) else val for val in percentage_change_value]
-    text = [(f'{up} +{val}%' if val > 0 else f'{down} {val}%') if not np.isnan(val) else ""
+    text = [((f'{up} +{val}%' if val > 0 else f'{down} {val}%') if val != 0 else f'{val}%') if not np.isnan(val) else ""
             for val in percentage_change_value]
 
     fig.add_trace(go.Scatter(
