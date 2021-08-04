@@ -174,7 +174,7 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
                 customdata.append(f'  ({up}{val}% change)' if val > 0 else f'  ({val}% change)')
         hovertemplate = '<b>StatZone</b>: %{text}' + '<br>🛡️<b>Safety Score</b>🛡️: <b>%{z}</b>%{customdata}'
     else:
-        customdata = [str(val) if val < 0 else f'+{val}' for val in z]
+        customdata = [str(val) if val < 0 else (f'+{val}' if val > 0 else f'{val}') for val in z]
     fig = go.Figure(go.Choroplethmapbox(z=z,
                                         below=True,
                                         locations=locations,
@@ -288,7 +288,7 @@ if __name__ == "__main__":
     """Heatmap"""
     fig1 = get_choroplethmap_fig(values_dict=values_dict, map_title="Example Title",
                                  colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
-                                 hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{z}%<br>',
+                                 hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{customdata}%<br>',
                                  is_safety_map=True,
                                  add_stat_numbers_to_map=True
                                  )
