@@ -9,27 +9,40 @@ from app_def import app
 from apps import main, safety, crime, income, elderly, population
 
 app.layout = html.Div(
-    [html.H1('Hadar Neighborhood: Semi-annual report',
-             style={'color': '#FFFFFF', 'text-align': 'left', 'text-transform': 'none'}),
-     html.Div([
-         dcc.Location(id="url"),
-         dbc.NavbarSimple(
-             children=[
-                 dbc.NavLink("Main", href="/main", active="exact"),
-                 dbc.NavLink("Safety", href="/safety", active="exact"),
-                 dbc.NavLink("Crime", href="/crime", active="exact"),
-                 dbc.NavLink("Income", href="/income", active="exact"),
-                 dbc.NavLink("Elderly", href="/elderly", active="exact"),
-                 dbc.NavLink("Population", href="/population", active="exact"),
-             ],
-             brand="Choose the wanted tab",
-             color="primary",
-             dark=True,
-             style={'font-size': 15},
-         ),
-         dbc.Container(id="page-content", className="pt-4"),
-     ]
-     )])
+    [dbc.Row(
+        [
+            html.H1('-', style={'color': '#252e3f'}),
+            html.Img(src="/assets/city.png", height="30px"),
+            html.H1('-', style={'color': '#252e3f'}),
+            html.H1('Hadar Neighborhood: Semi-annual report',
+                    style={'color': '#FFFFFF', 'text-transform': 'none'}, ),
+        ],
+        align="left",
+    ),
+        html.Div([
+            dcc.Location(id="url"),
+
+            dbc.NavbarSimple(
+                children=[
+                    dbc.Container(
+                        [
+                            dbc.NavLink("Main", href="/main"),
+                            dbc.NavLink("Safety", href="/safety"),
+                            dbc.NavLink("Crime", href="/crime"),
+                            dbc.NavLink("Income", href="/income"),
+                            dbc.NavLink("Elderly", href="/elderly"),
+                            dbc.NavLink("Population", href="/population"),
+                        ])],
+                brand="Choose the wanted tab",
+                color="primary",
+                dark=True,
+                style={'font-size': 15},
+            ),
+
+            dbc.Container(fluid=True,
+                          id="page-content", className="pt-4"),
+        ],
+        )])
 
 
 def toggle_navbar_collapse(n, is_open):
