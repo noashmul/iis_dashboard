@@ -168,12 +168,11 @@ def get_graphs(statzone):
 
 
 layout = html.Div(children=[
+    html.H4(children='Choose the wanted area to see the graphs changes',
+            style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+                   'letter-spacing': '0em'}, className="pretty_container"
+            ),
     html.Div([
-        html.H4(children='Choose the wanted area to see the graphs changes',
-                style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                       'letter-spacing': '0em'}
-                ),
-
         html.Div(
             [
                 html.Div(

@@ -154,46 +154,45 @@ def get_graphs(statzone):
     return fig1, fig2
 
 
-layout = html.Div(children=[
-    html.Div([
-        html.H4(children='Choose the wanted area to see the graphs changes',
-                style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                       'letter-spacing': '0em'}
-                ),
+layout = html.Div(children=[html.H4(children='Choose the wanted area to see the graphs changes',
+                                    style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+                                           'letter-spacing': '0em'}, className="pretty_container"
+                                    ),
+                            html.Div([
 
-        html.Div(
-            [
-                html.Div(
-                    [
-                        'Choose area: ', dcc.RadioItems(id='areas',
-                                                        options=options,
-                                                        value=0
-                                                        ),
-                    ],
-                    className="mini_container",
-                ),
-                html.Div([
-                    dcc.Graph(figure=map_fig)
-                ], className="map_container"),
-            ],
-            id="info-container1",
-            className="row container-display",
-        ), ], className="pretty_container"),
-    html.Div(
-        [
-            html.Div(
-                [
-                    dcc.Graph(id='Avg_salary')
-                ],
-                className='wide_container',
-            ),
-            html.Div(
-                [
-                    dcc.Graph(id='Amount_of_workers')
-                ],
-                className='wide_container',
-            ),
-        ], )
-]
+                                html.Div(
+                                    [
+                                        html.Div(
+                                            [
+                                                'Choose area: ', dcc.RadioItems(id='areas',
+                                                                                options=options,
+                                                                                value=0
+                                                                                ),
+                                            ],
+                                            className="mini_container",
+                                        ),
+                                        html.Div([
+                                            dcc.Graph(figure=map_fig)
+                                        ], className="map_container"),
+                                    ],
+                                    id="info-container1",
+                                    className="row container-display",
+                                ), ], className="pretty_container"),
+                            html.Div(
+                                [
+                                    html.Div(
+                                        [
+                                            dcc.Graph(id='Avg_salary')
+                                        ],
+                                        className='wide_container',
+                                    ),
+                                    html.Div(
+                                        [
+                                            dcc.Graph(id='Amount_of_workers')
+                                        ],
+                                        className='wide_container',
+                                    ),
+                                ], )
+                            ]
 
-)
+                  )

@@ -50,16 +50,18 @@ layout = html.Div(
                     style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
                            'letter-spacing': '0em'}
                     )
-        ]),
+        ], className="pretty_container"),
+        html.Div([
         html.Div(
             [
                 dcc.Graph(figure=get_main_tab_map(show_text=True))
             ],
             className='main_map_container',
-        ),
-        generate_table(df),
+        ),],className="pretty_container"),
+        html.Div([
+        generate_table(df),], className="pretty_container")
     ],
-    className="pretty_container twelve columns",
-    id="cross-filter-options",
+    # className="pretty_container twelve columns",
+    # id="cross-filter-options",
     style={"text-align": "justify"},
 )

@@ -38,6 +38,7 @@ def blank_fig(height):
         },
     }
 
+
 def manipulate_holucaust_df(df, statzone):
     df["HoloSurvNdDesc"].dropna()
     df = df.replace(
@@ -128,13 +129,13 @@ def get_graphs(statzone):
                                    (df_seniors1['SeniorRecivFood'] == 0)])
 
     pie_df = pd.DataFrame.from_dict({'status': ['Recieve Food & Alone', 'Recieve Food', 'Alone', 'Else'],
-              'amount': [food1_alone1, food1_alone0, food0_alone1, food0_alone0]})
+                                     'amount': [food1_alone1, food1_alone0, food0_alone1, food0_alone0]})
 
     fig1 = px.pie(pie_df, values='amount', names='status', title='Status of seniors citizens',
-                   color='status', color_discrete_map={'Recieve Food & Alone': '#19D3F3',
-                                      'Recieve Food': '#0099C6',
-                                      'Alone': '#636EFA',
-                                      'Else': 'darkblue'}
+                  color='status', color_discrete_map={'Recieve Food & Alone': '#19D3F3',
+                                                      'Recieve Food': '#0099C6',
+                                                      'Alone': '#636EFA',
+                                                      'Else': 'darkblue'}
                   )
     # fig1.update_layout(legend={'traceorder':'reversed+grouped'})
 
@@ -180,9 +181,9 @@ def get_graphs(statzone):
 
     df_holocaust1_type = manipulate_holucaust_df(df_holocaust1, statzone)
     df_holocaust0_type = manipulate_holucaust_df(df_holocaust0, statzone)
-    percentage_change = 100 * (df_holocaust1_type['Amount of Holocaust Survivors'] - df_holocaust0_type['Amount of Holocaust Survivors']) / \
+    percentage_change = 100 * (df_holocaust1_type['Amount of Holocaust Survivors'] - df_holocaust0_type[
+        'Amount of Holocaust Survivors']) / \
                         df_holocaust0_type['Amount of Holocaust Survivors']
-
 
     fig2 = px.bar(df_holocaust1_type, x=df_holocaust1_type.index, y=df_holocaust1_type['Amount of Holocaust Survivors'],
                   color_discrete_sequence=['#252E3F'])
@@ -196,7 +197,8 @@ def get_graphs(statzone):
                            tickfont_size=18,
                        ), xaxis_showgrid=True, yaxis_showgrid=True, template='simple_white')
     fig2.update_xaxes(title='Needed help type', tickangle=45)
-    add_annotations_to_fig(fig2, fig2.data[0].x, fig2.data[0].y, percentage_change, old_y=list(df_holocaust0_type['Amount of Holocaust Survivors']))
+    add_annotations_to_fig(fig2, fig2.data[0].x, fig2.data[0].y, percentage_change,
+                           old_y=list(df_holocaust0_type['Amount of Holocaust Survivors']))
     fig2.update_layout(showlegend=False)
     max_y = max(df_holocaust1_type['Amount of Holocaust Survivors'])
     fig2.update_layout(yaxis_range=[0, max_y * 1.1])
@@ -204,74 +206,72 @@ def get_graphs(statzone):
     return fig1, fig2, text3_display
 
 
-
-
 layout = html.Div(
-    children=[
-        html.Div([
-        html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
-                style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                       'letter-spacing': '0em'}),
-        html.Div(
-            [
-                html.Div(
-                    [
-                        'Choose area: ', dcc.RadioItems(id='areas',
-                                                        options=options,
-                                                        value=0),
-                    ],
-                    className="mini_container",
-                ),
-                html.Div([
-                    dcc.Graph(figure=map_fig)
-                ], className="map_container"),
-            ],
-            id="info-container1",
-            className="row container-display",
-        )], className='pretty_container'),
-        html.Div(
-            children=[
-                html.H4(  # TODO maybe put "All stat.." / number of stat zone like in graphs
-                    ["Number of Holocaust Survivors (for current area choose)"],
-                    className="container_title",
-                ),
-                dcc.Loading(
-                    dcc.Graph(
-                        id="num_holocaust_survivors",
-                        figure=blank_fig(150),
-                        config={"displayModeBar": False},
-                    ),
-                    className="svg-container",
-                    style={"height": 150},
-                ),
-            ],
-            className="pretty_container",
-        ),
+    children=[html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
+                      style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+                             'letter-spacing': '0em'}, className='pretty_container'),
+              html.Div([
 
-        html.Div([
-            html.Div(
-                [dcc.Graph(id='seniors_type')],
-                className='narrow_container',
-            ),
-            html.Div(
-                [dcc.Graph(id='needed_help_type')],
-                className='narrow_container',),
-        ]),
+                  html.Div(
+                      [
+                          html.Div(
+                              [
+                                  'Choose area: ', dcc.RadioItems(id='areas',
+                                                                  options=options,
+                                                                  value=0),
+                              ],
+                              className="mini_container",
+                          ),
+                          html.Div([
+                              dcc.Graph(figure=map_fig)
+                          ], className="map_container"),
+                      ],
+                      id="info-container1",
+                      className="row container-display",
+                  )], className='pretty_container'),
+              html.Div(
+                  children=[
+                      html.H4(  # TODO maybe put "All stat.." / number of stat zone like in graphs
+                          ["Number of Holocaust Survivors (for current area choose)"],
+                          className="container_title",
+                      ),
+                      dcc.Loading(
+                          dcc.Graph(
+                              id="num_holocaust_survivors",
+                              figure=blank_fig(150),
+                              config={"displayModeBar": False},
+                          ),
+                          className="svg-container",
+                          style={"height": 150},
+                      ),
+                  ],
+                  className="pretty_container",
+              ),
 
-        html.Div([
-                # html.Div(
-                #     [dcc.Graph(id='seniors_type')],
-                #     className='narrow_container',
-                # ),
-                # html.Div(
-                #     [dcc.Graph(id='needed_help_type')],
-                #     className='narrow_container',
-                # ),
+              html.Div([
+                  html.Div(
+                      [dcc.Graph(id='seniors_type')],
+                      className='narrow_container',
+                  ),
+                  html.Div(
+                      [dcc.Graph(id='needed_help_type')],
+                      className='narrow_container', ),
+              ]),
 
-        ],id="info-container2",
-            className="row container-display",),
+              html.Div([
+                  # html.Div(
+                  #     [dcc.Graph(id='seniors_type')],
+                  #     className='narrow_container',
+                  # ),
+                  # html.Div(
+                  #     [dcc.Graph(id='needed_help_type')],
+                  #     className='narrow_container',
+                  # ),
 
-    ],
+              ], id="info-container2",
+                  className="row container-display", ),
+
+              ],
     # className="pretty_container twelve columns",
     style={"text-align": "justify"},
 )
