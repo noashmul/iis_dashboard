@@ -178,7 +178,7 @@ layout = html.Div(children=[
                                  }), ], className="slider-container")
         ], className='narrow_container'),
         html.Div([
-            html.Div([html.P(id="slider-text8", children="Choose the wanted weight 7:",
+            html.Div([html.P(id="slider-text7", children="Choose the wanted weight 7:",
                              style={'color': 'black'},
                              ),
                       dcc.Slider(id="Weight 7", min=0.0, max=1.0, value=0.5, step=None,
@@ -229,8 +229,6 @@ layout = html.Div(children=[
         ], className='narrow_container'),
     ], id="info-container2",
         className="row container-display"),
-    # ], className='pretty_container'),
-
     html.Div(children=[
         html.Div([
             html.Div(
@@ -252,7 +250,6 @@ layout = html.Div(children=[
 
                 ], id="info-container1",
                 className="row container-display")], className="pretty_container"),
-
         html.Div([
 
             html.Div(
@@ -261,7 +258,10 @@ layout = html.Div(children=[
                 ],
                 className='map_container',
             )], className='pretty_container')
+        # ]),
+
     ], )
+    # className="row container-display", id="info-container1"),
 ], )
 
 
@@ -468,7 +468,7 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
     fig2_df['Score'] = score_area_val
     fig2_df['Topic'] = X_label
     fig2_df.sort_values(by='Score', inplace=True)
-    fig2 = px.bar(fig2_df, x=fig2_df.Score, y=fig2_df.Topic, color_discrete_sequence=['#252E3F'])
+    fig2 = px.bar(fig2_df, x=fig2_df.Score, y=fig2_df.Topic)
     fig2.update_layout(title_text=title2)
 
     return fig1, fig2
