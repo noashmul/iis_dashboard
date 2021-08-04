@@ -120,21 +120,20 @@ def get_graphs(statzone):
         title2 = f'Genders percentages in {statzone} stat zone'
         title3 = f'Age groups distribution in {statzone} stat zone'
 
-    p_haredim = np.round(float(haredim_df['TotHaredim'] / haredim_df['Total'].values), 2)
-    values_haredim = [p_haredim, 1 - p_haredim]
-    labels_haredim = ['Haredim', 'Non Haredim']
-    fig1 = px.pie(values=values_haredim, names=labels_haredim, title=title1,
-                  color_discrete_sequence=['darkseagreen', 'wheat'])
+    pie1_df = {'Label': ['Haredim', 'Non Haredim'],
+               'Amount': [int(haredim_df['TotHaredim']), int(haredim_df['Total']) - int(haredim_df['TotHaredim'])]}
+    fig1 = px.pie(pie1_df, values='Amount', names='Label', title=title1, color='Label',
+                  color_discrete_map={'Haredim': '#8FBC8F', 'Non Haredim': '#F5DEB3'})
 
-    p_gender = np.round(float(gender_df['Men'] / gender_df['Total'].values), 2)
-    values_gender = [p_gender, 1 - p_gender]
-    labels_gender = ['Men', 'Woman']
-    fig2 = px.pie(values=values_gender, names=labels_gender, title=title2,
-                  color_discrete_sequence=['lightpink', 'skyblue'])
+    pie2_df = {'Gender': ['Men', 'Woman'],
+               'Amount': [int(gender_df['Men']), int(gender_df['Total']) - int(gender_df['Men'])]}
+    fig2 = px.pie(pie2_df, values='Amount', names='Gender', title=title2, color='Gender',
+                  color_discrete_map={'Men': 'skyblue', 'Woman': 'lightpink'})
 
     age_group_df_new = pd.DataFrame(columns=['Age group', 'Amount of citizen'])
     age_group_df_old_new = pd.DataFrame(columns=['Age group', 'Amount of citizen'])
     old_y = []
+    percentage_change = []
     for col in age_group_df.columns:
         if col == 'StatZone':
             continue
@@ -146,10 +145,9 @@ def get_graphs(statzone):
                                                    ignore_index=True)
         age_group_df_old_new = age_group_df_old_new.append(
             {'Amount of citizen': int(age_group_df_old[col]), 'Age group': col_name}, ignore_index=True)
+        new, old = int(age_group_df[col]), int(age_group_df_old[col])
+        percentage_change.append(100 * (new - old) / old if old != 0 else 100)
         old_y.append(int(age_group_df_old[col]))
-
-    percentage_change = 100 * (age_group_df_new['Amount of citizen'] - age_group_df_old_new['Amount of citizen']) / \
-                        age_group_df_old_new['Amount of citizen']
 
     fig3 = px.bar(age_group_df_new, y=age_group_df_new['Amount of citizen'],
                   x=age_group_df_new['Age group'], title=title3, color_discrete_sequence=['#252E3F'])
