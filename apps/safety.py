@@ -21,11 +21,17 @@ from pre_process import *
 
 #### Create scores #####
 df_salaries_t1 = dfs_dict['df_salaries_t1']
+df_salaries_t0 = dfs_dict['df_salaries_t0']
 df_conflicts_t1 = dfs_dict['df_conflicts_t1']
-df_cameras = dfs_dict['df_cameras_t1']
-df_aband = dfs_dict['df_aband_t1']
-df_106 = dfs_dict['df_106_t1']
-df_crimes = dfs_dict['df_crime_t1']
+df_conflicts_t0 = dfs_dict['df_conflicts_t0']
+df_cameras_t1 = dfs_dict['df_cameras_t1']
+df_cameras_t0 = dfs_dict['df_cameras_t0']
+df_aband_t1 = dfs_dict['df_aband_t1']
+df_aband_t0 = dfs_dict['df_aband_t0']
+df_106_t1 = dfs_dict['df_106_t1']
+df_106_t0 = dfs_dict['df_106_t0']
+df_crimes_t1 = dfs_dict['df_crime_t1']
+df_crimes_t0 = dfs_dict['df_crime_t0']
 StatZone_size_dict = get_area_in_km2_for_stat_zones()
 
 
@@ -73,22 +79,29 @@ def calc_safety_scores(StatZone, df_salary, df_conflicts, df_cameras, df_aband, 
     X_features = [x.values[0] for x in X_features]
     return X_features
 
+def create_safety_table(df_salaries, df_conflicts, df_cameras, df_aband,df_106, df_crimes):
 
-values_dict = dict.fromkeys([611, 612, 613, 621, 622, 623, 631, 632, 633, 634, 641, 642, 643, 644], 0.)
-data = dict.fromkeys([611, 612, 613, 621, 622, 623, 631, 632, 633, 634, 641, 642, 643, 644], 0.)
-for StatZone in values_dict.keys():
-    X_features = calc_safety_scores(StatZone, df_salaries_t1, df_conflicts_t1, df_cameras, df_aband, df_106,
-                                    df_crimes)
-    data[StatZone] = X_features
+    values_dict = dict.fromkeys([611, 612, 613, 621, 622, 623, 631, 632, 633, 634, 641, 642, 643, 644], 0.)
+    data = dict.fromkeys([611, 612, 613, 621, 622, 623, 631, 632, 633, 634, 641, 642, 643, 644], 0.)
 
-df_scores = pd.DataFrame(data.values(),
-                         columns=['conflicts_s', 'cameras_s', 'aband_s', 'security_106_s', 'social_106_s', 'crime_s', \
-                                  'crime_thefts_s', 'crime_BodyAssaults_s', 'crime_SexualAssaults_s', 'crime_Robbery_s', \
-                                  'income_avg_s', 'Demographic_density_s'])
-df_scores['StatZone'] = data.keys()
-for col in df_scores.columns[:-1]:
-    df_scores[col] = (df_scores[col] - df_scores[col].min()) / (df_scores[col].max() - df_scores[col].min())
 
+    for StatZone in values_dict.keys():
+        X_features = calc_safety_scores(StatZone, df_salaries, df_conflicts, df_cameras, df_aband, df_106,
+                                        df_crimes)
+        data[StatZone] = X_features
+
+    df_score = pd.DataFrame(data.values(),
+                             columns=['conflicts_s', 'cameras_s', 'aband_s', 'security_106_s', 'social_106_s', 'crime_s', \
+                                      'crime_thefts_s', 'crime_BodyAssaults_s', 'crime_SexualAssaults_s', 'crime_Robbery_s', \
+                                      'income_avg_s', 'Demographic_density_s'])
+    df_score['StatZone'] = data.keys()
+    for col in df_score.columns[:-1]:
+        df_score[col] = (df_score[col] - df_score[col].min()) / (df_score[col].max() - df_score[col].min())
+
+    return df_score, values_dict
+
+df_score_t1, values_dict_t1 = create_safety_table(df_salaries_t1, df_conflicts_t1, df_cameras_t1, df_aband_t1, df_106_t1, df_crimes_t1)
+df_score_t0, values_dict_t0 = create_safety_table(df_salaries_t0, df_conflicts_t0, df_cameras_t0, df_aband_t0, df_106_t0, df_crimes_t0)
 
 statistic_area = {'הכל': 0,
                   "הדר מערב - רח' אלמותנבי": 611,
@@ -140,115 +153,115 @@ layout = html.Div(children=[
                     ),
                 ),
                 dbc.Collapse(
-                    dbc.CardBody([html.Div([html.P(id="slider-text1", children="Choose the wanted weight 1:",
+                    dbc.CardBody([html.Div([html.P(id="slider-text1", children="ציון קונפליקטים בין שכנים",
                                                    style={'color': 'black', 'text-align': 'left'},
                                                    ),
-                                            dcc.Slider(id="Weight 1", min=0.0, max=1.0, value=0.5, step=None,
+                                            dcc.Slider(id="Weight 1",min=1, max=5, value=1, step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [0, 0.25, 0.5, 0.75, 1]
+                                                           for num in [1, 2, 3, 4,5]
                                                        }),
-                                            html.P(id="slider-text2", children="Choose the wanted weight 2:",
+                                            html.P(id="slider-text2", children="ציון מצלמות אבטחה",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 2", min=0.0, max=1.0, value=0.5, step=None,
+                                            dcc.Slider(id="Weight 2", min=1, max=5, value=1, step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [0, 0.25, 0.5, 0.75, 1]
+                                                           for num in [1, 2, 3, 4,5]
                                                        }),
-                                            html.P(id="slider-text3", children="Choose the wanted weight 3:",
+                                            html.P(id="slider-text3", children="ציון בתים נטושים",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 3", min=0.0, max=1.0, value=0.5, step=None,
+                                            dcc.Slider(id="Weight 3", min=1, max=5, value=1, step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [0, 0.25, 0.5, 0.75, 1]
+                                                           for num in [1, 2, 3, 4,5]
                                                        }),
-                                            html.P(id="slider-text4", children="Choose the wanted weight 4:",
+                                            html.P(id="slider-text4", children="ציון שיחות למוקד 106 בנושא ביטחון",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 4", min=0.0, max=1.0, value=0.5, step=None,
+                                            dcc.Slider(id="Weight 4", min=1, max=5, value=1, step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                                       }),
-                                            ], className="slider-container"),
-                                  html.Div([html.P(id="slider-text5", children="Choose the wanted weight 5:",
-                                                   style={'color': 'black'},
-                                                   ),
-                                            dcc.Slider(id="Weight 5", min=0.0, max=1.0, value=0.5, step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                                       }),
-                                            html.P(id="slider-text6", children="Choose the wanted weight 6:",
-                                                   style={'color': 'black'},
-                                                   ),
-                                            dcc.Slider(id="Weight 6", min=0.0, max=1.0, value=0.5, step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                                       }),
-                                            html.P(id="slider-text7", children="Choose the wanted weight 7:",
-                                                   style={'color': 'black'},
-                                                   ),
-                                            dcc.Slider(id="Weight 7", min=0.0, max=1.0, value=0.5, step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [0, 0.25, 0.5, 0.75, 1]
-                                                       }),
-                                            html.P(id="slider-text8", children="Choose the wanted weight 8:",
-                                                   style={'color': 'black'},
-                                                   ),
-                                            dcc.Slider(id="Weight 8", min=0.0, max=1.0, value=0.5, step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [0, 0.25, 0.5, 0.75, 1]
+                                                           for num in [1, 2, 3, 4,5]
                                                        }),
                                             ], className="slider-container"),
-                                  html.Div([html.P(id="slider-text9", children="Choose the wanted weight 9:",
+                                  html.Div([html.P(id="slider-text5", children="ציון שיחות למוקד 106 בנושא סוציאלי",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 9", min=0.0, max=1.0, value=0.5, step=None,
+                                            dcc.Slider(id="Weight 5", min=1, max=5, value=1, step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [0, 0.25, 0.5, 0.75, 1]
+                                                           for num in [1, 2, 3, 4,5]
                                                        }),
-                                            html.P(id="slider-text10", children="Choose the wanted weight 10:",
+                                            html.P(id="slider-text6", children="ציון פשיעה",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 10", min=0.0, max=1.0, value=0.5, step=None,
+                                            dcc.Slider(id="Weight 6",min=1, max=5, value=1, step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [0, 0.25, 0.5, 0.75, 1]
+                                                           for num in [1, 2, 3, 4,5]
                                                        }),
-                                            html.P(id="slider-text11", children="Choose the wanted weight 11:",
+                                            html.P(id="slider-text7", children="ציון גניבות",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 11", min=0.0, max=1.0, value=0.5, step=None,
+                                            dcc.Slider(id="Weight 7", min=1, max=5, value=1, step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [0, 0.25, 0.5, 0.75, 1]
+                                                           for num in [1, 2, 3, 4,5]
                                                        }),
-                                            html.P(id="slider-text12", children="Choose the wanted weight 12:",
+                                            html.P(id="slider-text8", children="ציון תקיפות גוף",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 12", min=0.0, max=1.0, value=0.5, step=None,
+                                            dcc.Slider(id="Weight 8", min=1, max=5, value=1, step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [0, 0.25, 0.5, 0.75, 1]
+                                                           for num in [1, 2, 3, 4,5]
+                                                       }),
+                                            ], className="slider-container"),
+                                  html.Div([html.P(id="slider-text9", children="ציון תקיפות מיניות",
+                                                   style={'color': 'black'},
+                                                   ),
+                                            dcc.Slider(id="Weight 9", min=1, max=5, value=1, step=None,
+                                                       marks={
+                                                           str(num): {"label": str(num),
+                                                                      "style": {"color": "#7fafdf"}, }
+                                                           for num in [1, 2, 3, 4,5]
+                                                       }),
+                                            html.P(id="slider-text10", children="ציון שודים",
+                                                   style={'color': 'black'},
+                                                   ),
+                                            dcc.Slider(id="Weight 10", min=1, max=5, value=1, step=None,
+                                                       marks={
+                                                           str(num): {"label": str(num),
+                                                                      "style": {"color": "#7fafdf"}, }
+                                                           for num in [1, 2, 3, 4,5]
+                                                       }),
+                                            html.P(id="slider-text11", children="ציון הכנסה ממוצעת",
+                                                   style={'color': 'black'},
+                                                   ),
+                                            dcc.Slider(id="Weight 11",min=1, max=5, value=1, step=None,
+                                                       marks={
+                                                           str(num): {"label": str(num),
+                                                                      "style": {"color": "#7fafdf"}, }
+                                                           for num in [1, 2, 3, 4,5]
+                                                       }),
+                                            html.P(id="slider-text12", children="ציון צפיפות דמוגרפית",
+                                                   style={'color': 'black'},
+                                                   ),
+                                            dcc.Slider(id="Weight 12", min=1, max=5, value=1, step=None,
+                                                       marks={
+                                                           str(num): {"label": str(num),
+                                                                      "style": {"color": "#7fafdf"}, }
+                                                           for num in [1, 2, 3, 4,5]
                                                        }), ], className="slider-container"),
                                   ]),
                     id=f"collapse-1",
@@ -321,30 +334,38 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
     W = [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12]
     W = [float(i) / sum(W) for i in W]
 
-    for idx, row in df_scores.iterrows():
+    for idx, row in df_score_t1.iterrows():
         tmp_score = sum(np.multiply(list(row[:-1]), W))
-        values_dict[row.StatZone] = int(tmp_score * 100)
+        values_dict_t1[row.StatZone] = int(tmp_score * 100)
 
-    fig1 = get_choroplethmap_fig(values_dict=values_dict, map_title="Stat Zone Safety Score", is_safety_map=True)
+    for idx, row in df_score_t0.iterrows():
+        tmp_score = sum(np.multiply(list(row[:-1]), W))
+        values_dict_t0[row.StatZone] = int(tmp_score * 100)
+    scores_dict = [values_dict_t0,values_dict_t1]
+    fig1 = get_choroplethmap_fig(values_dict=values_dict_t1, map_title="Stat Zone Safety Score", is_safety_map=True)
     fig1.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     if area in [0, '0']:
         area = 'All Statistical zones'
     if area == 'All Statistical zones':
-        score_area_val = list(df_scores.drop("StatZone", axis=1).mean())
+        score_area_val = list(df_score_t1.drop("StatZone", axis=1).mean())
         title2 = "Component scores for All Statistical zones "
     else:
-        score_area_val = df_scores[df_scores['StatZone'] == int(area)].drop('StatZone', axis=1).values[0]
+        score_area_val = df_score_t1[df_score_t1['StatZone'] == int(area)].drop('StatZone', axis=1).values[0]
         title2 = f"Component scores for stat zone {area}"
-        print(score_area_val)
-    X_label = ["Neighbors' Conflicts", "Security Cameras", 'Abandoned houses',
-               'Calls to 106 - Security', 'Calls to 106 - Social', 'Crime', 'Thefts',
-               'BodyAssaults', 'SexualAssaults', 'Robbery', 'Average Income', 'Demographic density']
-    fig2_df = pd.DataFrame(columns=['Score', 'Topic'])
+    score_area_val = [i*100 for i in score_area_val]
+
+    y_label = ['ציון קונפליקטים בין שכנים', 'ציון מצלמות אבטחה', 'ציון בתים נטושים',
+               'ציון שיחות למוקד העירייה בנושא ביטחון', 'ציון שיחות למוקד העירייה בנושא סוציאלי', 'ציון פשיעה',
+               'ציון גניבות', 'ציון תקיפות גוף', 'ציון תקיפות מיניות', 'ציון שודים', 'ציון הכנסה ממוצעת ',
+               'ציון צפיפות דמוגרפית']
+    y_label = [s[::-1] for s in y_label]
+    fig2_df = pd.DataFrame(columns=['Score', 'Score component'])
     fig2_df['Score'] = score_area_val
-    fig2_df['Topic'] = X_label
-    fig2_df.sort_values(by='Score', inplace=True)
-    fig2 = px.bar(fig2_df, x=fig2_df.Score, y=fig2_df.Topic)
+    print(score_area_val)
+    fig2_df['Score component'] = y_label
+    fig2_df.sort_values(by='Score', inplace=True, ascending='True')
+    fig2 = px.bar(fig2_df, x=fig2_df.Score, y=fig2_df['Score component'])
     fig2.update_layout(title_text=title2)
 
     return fig1, fig2
