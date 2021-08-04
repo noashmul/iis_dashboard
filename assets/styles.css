@@ -23,8 +23,19 @@ body {
     width: 50%;
     padding: 10px;
     margin-bottom: 10px;
+    position: relative;
     box-sizing: border-box;
 }
+
+.narrow_container_safety {
+    /*float: left;*/
+    width: 40%;
+    padding: 10px;
+    margin-bottom: 10px;
+    /*position: relative;*/
+    box-sizing: border-box;
+}
+
 
 .wide_container {
     float: left;
@@ -35,6 +46,11 @@ body {
 
 .map_container {
     width: 70%;
+    height: 70%;
+}
+
+.map_container_safety {
+    width: 60%;
     height: 50%;
 }
 
@@ -51,6 +67,17 @@ body {
     padding: 15px;
     position: relative;
     box-shadow: 2px 2px 2px lightgrey;
+}
+
+.mini_pretty_container {
+    width: 45%;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin: 10px;
+    padding: 15px;
+    /*position: relative;*/
+    /*box-shadow: 2px 2px 2px lightgrey;*/
+    box-sizing: border-box;
 }
 
 .no_border_container {
@@ -98,16 +125,32 @@ body {
 }
 
 .slider-container {
+    float: left;
+    width:33.3%;
     background-color: #f9f9f9;
-    padding: 2rem 6rem 4rem 4rem;
-    height: 15rem;
-    overflow: scroll;
+    padding-left: 10px;
+    padding-right: 10px;
+    /*padding: 2rem 6rem 4rem 4rem;*/
+    /*height: 15rem;*/
+    /*overflow: scroll;*/
 }
 
 .slider-container input {
     width: 20%;
 }
 
+.button-radius{
+    border-radius: 5px;
+}
+
+/*.accordion{*/
+/*    border-radius: 5px;*/
+/*    background-color: #f9f9f9;*/
+/*    margin: 10px;*/
+/*    padding: 15px;*/
+/*    position: relative;*/
+/*    box-shadow: 2px 2px 2px lightgrey;*/
+/*}*/
 
 /*#slider-container {*/
 /*    background-color: #252e3f;*/
@@ -169,8 +212,8 @@ body {
 
 .mini_container {
     /*width: 100%;*/
-    height: 450px;
-    overflow: scroll;
+    height: 500px;
+    /*overflow: scroll;*/
     border-radius: 5px;
     background-color: #f9f9f9;
     margin: 10px;
@@ -180,6 +223,22 @@ body {
 }
 
 .mini_container label {
+    display: block;
+}
+
+.mini_container_safety {
+    /*width: 100%;*/
+    height: 300px;
+    overflow: scroll;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin: 10px;
+    padding: 15px;
+    position: relative;
+    /*box-shadow: 2px 2px 2px lightgrey;*/
+}
+
+.mini_container_safety label {
     display: block;
 }
 

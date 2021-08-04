@@ -10,20 +10,20 @@ import plotly.express as px
 import numpy as np
 
 statistic_area = {'הכל': 0,
-                  'גן הבהאים': 612,
-                  'הדר מזרח - גאולה': 642,
-                  'הדר מזרח - רח\' יל"ג': 641,
                   "הדר מערב - רח' אלמותנבי": 611,
+                  'גן הבהאים': 612,
                   "הדר מערב - רח' מסדה": 613,
-                  'הדר מרכז - בית העירייה': 633,
+                  'הדר עליון -בי"ח בני ציון': 621,
+                  "הדר עליון - רח' הפועל": 622,
+                  "רמת הדר - רח' המיימוני": 623,
                   'הדר מרכז - התיאטרון העירוני': 631,
                   "הדר מרכז - רח' הרצליה": 632,
+                  'הדר מרכז - בית העירייה': 633,
                   'הדר מרכז - שוק תלפיות': 634,
-                  "הדר עליון - רח' הפועל": 622,
-                  'הדר עליון -בי"ח בני ציון': 621,
-                  'מעונות גאולה': 644,
-                  "רמת הדר - רח' המיימוני": 623,
-                  "רמת ויז'ניץ": 643}
+                  'הדר מזרח - רח\' יל"ג': 641,
+                  'הדר מזרח - גאולה': 642,
+                  "רמת ויז'ניץ": 643,
+                  'מעונות גאולה': 644}
 
 options = list()
 for key, value in statistic_area.items():
@@ -133,7 +133,6 @@ def get_graphs(statzone):
         name=''
     ))
 
-    # TODO make fig2 above fig3 - Shoval
     """fig2"""
     current_semi_annual = df_crimes[df_crimes['Month'] >= 7]
     previous_semi_annual = df_crimes[df_crimes['Month'] < 7]
@@ -273,53 +272,55 @@ def get_graphs(statzone):
 
 layout = html.Div(
     children=[
-        html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
-                style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                       'letter-spacing': '0em'}
-                ),
-        html.Div(
-            [
-                html.Div(
-                    [
-                        # TODO selection is not ordered (644 and below 623) >> change in other modules
-                        'Choose area: ', dcc.RadioItems(id='areas',
-                                                        options=options,
-                                                        value=0
-                                                        ),
-                    ],
-                    className="mini_container",
-                ),
-                html.Div([
-                    dcc.Graph(figure=map_fig)
-                ], className="map_container"),
-            ],
-            id="info-container1",
-            className="row container-display",
-        ),
+        html.Div([
+            html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
+                    style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+                           'letter-spacing': '0em'}
+                    ),
+
+            html.Div(
+                [
+                    html.Div(
+                        [
+                            'Choose area: ', dcc.RadioItems(id='areas',
+                                                            options=options,
+                                                            value=0
+                                                            ),
+                        ],
+                        className="mini_container",
+                    ),
+                    html.Div([
+                        dcc.Graph(figure=map_fig)
+                    ], className="map_container"),
+                ],
+                id="info-container1",
+                className="row container-display",
+            ),
+        ], className='pretty_container'),
         html.Div(
             [
                 dcc.Graph(id='crime_trend_graph')
-            ], className="graph_container"
+            ], className="pretty_container"
+        ),
+        # html.Div(
+        #     [
+        html.Div(
+            [
+                dcc.Graph(id='crime_location_type')
+            ],
+            className='pretty_container',
         ),
         html.Div(
             [
-                html.Div(
-                    [
-                        dcc.Graph(id='crime_location_type')
-                    ],
-                    className='narrow_container',
-                ),
-                html.Div(
-                    [
-                        dcc.Graph(id='crime_type')
-                    ],
-                    className='narrow_container',
-                ),
+                dcc.Graph(id='crime_type')
             ],
-            id="info-container2",
-            className="row container-display",
-        )
+            className='pretty_container',
+        ),
+        #     ],
+        #     id="info-container2",
+        #     className="row container-display",
+        # )
     ],
-    className="pretty_container twelve columns",
+    # className="pretty_container twelve columns",
     style={"text-align": "justify"},
 )

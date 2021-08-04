@@ -32,7 +32,7 @@ def add_annotations_to_fig(fig, x, y, percentage_change_value, old_y):
             color="black"
         ),
         name='',
-        customdata=[f'{int(old_y_i)}>>{int(y_i)}' if (not np.isnan(old_y_i) and not np.isnan(y_i)) else ''
+        customdata=[f'{int(old_y_i)}→{int(y_i)}' if (not np.isnan(old_y_i) and not np.isnan(y_i)) else ''
                     for old_y_i, y_i in zip(old_y, y)],
         hovertemplate='%{customdata}'
     ))

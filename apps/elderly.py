@@ -7,20 +7,20 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 
 statistic_area = {'הכל': 0,
-                  'גן הבהאים': 612,
-                  'הדר מזרח - גאולה': 642,
-                  'הדר מזרח - רח\' יל"ג': 641,
                   "הדר מערב - רח' אלמותנבי": 611,
+                  'גן הבהאים': 612,
                   "הדר מערב - רח' מסדה": 613,
-                  'הדר מרכז - בית העירייה': 633,
+                  'הדר עליון -בי"ח בני ציון': 621,
+                  "הדר עליון - רח' הפועל": 622,
+                  "רמת הדר - רח' המיימוני": 623,
                   'הדר מרכז - התיאטרון העירוני': 631,
                   "הדר מרכז - רח' הרצליה": 632,
+                  'הדר מרכז - בית העירייה': 633,
                   'הדר מרכז - שוק תלפיות': 634,
-                  "הדר עליון - רח' הפועל": 622,
-                  'הדר עליון -בי"ח בני ציון': 621,
-                  'מעונות גאולה': 644,
-                  "רמת הדר - רח' המיימוני": 623,
-                  "רמת ויז'ניץ": 643}
+                  'הדר מזרח - רח\' יל"ג': 641,
+                  'הדר מזרח - גאולה': 642,
+                  "רמת ויז'ניץ": 643,
+                  'מעונות גאולה': 644}
 
 
 def blank_fig(height):
@@ -187,6 +187,7 @@ def get_graphs(statzone):
 
 layout = html.Div(
     children=[
+        html.Div([
         html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
                 style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
                        'letter-spacing': '0em'}),
@@ -206,21 +207,29 @@ layout = html.Div(
             ],
             id="info-container1",
             className="row container-display",
-        ),
-        html.Div(
-            [
-                html.Div(
-                    [dcc.Graph(id='seniors_type')],
-                    className='narrow_container',
-                ),
-                html.Div(
-                    [dcc.Graph(id='needed_help_type')],
-                    className='narrow_container',
-                ),
-            ],
-            id="info-container2",
-            className="row container-display",
-        ),
+        )], className='pretty_container'),
+        html.Div([
+            html.Div(
+                [dcc.Graph(id='seniors_type')],
+                className='narrow_container',
+            ),
+            html.Div(
+                [dcc.Graph(id='needed_help_type')],
+                className='narrow_container',),
+    ]),
+
+        html.Div([
+                # html.Div(
+                #     [dcc.Graph(id='seniors_type')],
+                #     className='narrow_container',
+                # ),
+                # html.Div(
+                #     [dcc.Graph(id='needed_help_type')],
+                #     className='narrow_container',
+                # ),
+
+        ],id="info-container2",
+            className="row container-display",),
         html.Div(
             children=[
                 html.H4(  # TODO maybe put "All stat.." / number of stat zone like in graphs
@@ -237,9 +246,9 @@ layout = html.Div(
                     style={"height": 150},
                 ),
             ],
-            className="pretty_container twelve columns",
+            className="pretty_container",
         ),
     ],
-    className="pretty_container twelve columns",
+    # className="pretty_container twelve columns",
     style={"text-align": "justify"},
 )
