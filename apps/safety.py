@@ -180,7 +180,7 @@ layout = html.Div(children=[
                                                                       "style": {"color": "#7fafdf"}, }
                                                            for num in [1, 2, 3, 4,5]
                                                        }),
-                                            html.P(id="slider-text4", children="ציון שיחות למוקד 106 בנושא ביטחון",
+                                            html.P(id="slider-text4", children="ציון שיחות למוקד העירייה בנושא ביטחון",
                                                    style={'color': 'black'},
                                                    ),
                                             dcc.Slider(id="Weight 4", min=1, max=5, value=1, step=None,
@@ -190,7 +190,7 @@ layout = html.Div(children=[
                                                            for num in [1, 2, 3, 4,5]
                                                        }),
                                             ], className="slider-container"),
-                                  html.Div([html.P(id="slider-text5", children="ציון שיחות למוקד 106 בנושא סוציאלי",
+                                  html.Div([html.P(id="slider-text5", children="ציון שיחות למוקד העירייה בנושא סוציאלי",
                                                    style={'color': 'black'},
                                                    ),
                                             dcc.Slider(id="Weight 5", min=1, max=5, value=1, step=None,
@@ -364,9 +364,9 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
     fig2_df['Score'] = score_area_val
     print(score_area_val)
     fig2_df['Score component'] = y_label
-    fig2_df.sort_values(by='Score', inplace=True, ascending='True')
-    fig2 = px.bar(fig2_df, x=fig2_df.Score, y=fig2_df['Score component'])
-    fig2.update_layout(title_text=title2)
+    fig2_df = fig2_df.sort_values(by='Score', ascending='False')
+    fig2 = px.bar(fig2_df, x=fig2_df.Score, y=fig2_df['Score component'], color_discrete_sequence=['#252E3F'])
+    fig2.update_layout(title_text=title2, barmode='stack', yaxis={'categoryorder': 'total descending'})
 
     return fig1, fig2
 
