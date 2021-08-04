@@ -24,9 +24,9 @@ df = create_df_main_dash(dfs_dict)
 # \U000025B2 and \U000025BC are up and down arrows, \U0001F534 and \U0001F7E2 are red and green circles
 def annotate_table(x):
     if x == 0:
-        return "\U000026AA " + str(x) + "%"
+        return "\U000025A0" + "\U000026AA " + "\U00002800" + str(x) + "%"
     return "\U000025BC" + "\U0001F534" + "   " + str(x) + "%" if x < 0 \
-        else "\U000025B2" + "\U0001F7E2 " + " " + "+" + str(x) + "%"
+        else "\U000025B2" + "\U0001F7E2 "  + "+" + str(x) + "%"
 
 
 df['Percent change'] = df['Percent_comparison'].apply(lambda x: annotate_table(x))

@@ -29,12 +29,12 @@ def create_df_main_dash(d: dict):
                                         d['df_crime_t0']['total_crimes'].sum(), d['df_crime_t1']['total_crimes'].sum())
 
     # Population || Total Population
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Demographics', 'Total Population',
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'Population', 'Total Population',
                                         int(d['df_salaries_t0']['ResNum'].sum()),
                                         int(d['df_salaries_t1']['ResNum'].sum()))
 
     # Population || Total Haredim
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Demographics', 'Total Haredi Population',
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'Population', 'Total Haredi Population',
                                         int(d['df_haredim_t0']['TotHaredim'].sum()),
                                         int(d['df_haredim_t1']['TotHaredim'].sum()))
 
@@ -55,7 +55,7 @@ def create_df_main_dash(d: dict):
         for ResNum, Salary in zip(df_salaries['ResNum_Salary'], df_salaries['weighted_salary']):
             Average_Salary_list[i] += (ResNum / (df_salaries['ResNum_Salary'].sum())) * Salary
 
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Demographics', 'Average Salary', int(Average_Salary_list[0]),
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'Population', 'Average Salary', int(Average_Salary_list[0]),
                                         int(Average_Salary_list[1]))
 
     # Elderly || Senior Citizens || len(df_seniors)
