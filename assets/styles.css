@@ -125,8 +125,12 @@ body {
 }
 
 .slider-container {
+    float: left;
+    width:33.3%;
     background-color: #f9f9f9;
-    padding: 2rem 6rem 4rem 4rem;
+    padding-left: 10px;
+    padding-right: 10px;
+    /*padding: 2rem 6rem 4rem 4rem;*/
     /*height: 15rem;*/
     /*overflow: scroll;*/
 }
@@ -135,6 +139,18 @@ body {
     width: 20%;
 }
 
+.button-radius{
+    border-radius: 5px;
+}
+
+/*.accordion{*/
+/*    border-radius: 5px;*/
+/*    background-color: #f9f9f9;*/
+/*    margin: 10px;*/
+/*    padding: 15px;*/
+/*    position: relative;*/
+/*    box-shadow: 2px 2px 2px lightgrey;*/
+/*}*/
 
 /*#slider-container {*/
 /*    background-color: #252e3f;*/
