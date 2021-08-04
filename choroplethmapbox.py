@@ -110,7 +110,8 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
                           is_safety_map: bool = False,
                           colorscale=None,
                           hovertemplate=None,
-                          add_stat_numbers_to_map: bool = True):
+                          add_stat_numbers_to_map: bool = True,
+                          scores_dicts=None):
     """
     Creates and returns a plotly pig of Choroplethmapbox (map)
     Hadar StatZones polygons are used for the heatmap
@@ -160,6 +161,21 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
     # my mapbox_access_token must be used only for special mapbox style
     mapboxt = open(".mapbox_token").read()
 
+    if is_safety_map:
+        prev_scores, cur_scores = scores_dicts[0], scores_dicts[1]
+
+        up, down = "\U000025B2", "\U000025BC"
+        customdata = []
+        for old, new in zip(prev_scores.values(), cur_scores.values()):
+            print(old, new)
+            if new == old:
+                customdata.append('(0% change)')
+            else:
+                val = int((new - old) / old)
+                customdata.append(f'({up} +{val}%' if val > 0 else f'{down} {val}% change)')
+        hovertemplate = '<b>StatZone</b>: %{text}' + '<br>🛡️<b>Safety Score</b>🛡️: <b>%{z}</b> %{customdata}'
+    else:
+        customdata = []
     fig = go.Figure(go.Choroplethmapbox(z=z,
                                         below=True,
                                         locations=locations,
@@ -169,6 +185,7 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
                                         text=text,
                                         hoverinfo='all',
                                         name='',
+                                        customdata=customdata,
                                         hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Value</b>: %{z}<br>' if \
                                             hovertemplate is None else hovertemplate
                                         )
@@ -185,13 +202,12 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
              for feature in geo_json_dict['features']],
         name='', hoverinfo='skip'
     ))
-
     fig.update_layout(title_text=map_title,
                       title_x=0.5,
                       mapbox=dict(center=dict(lat=32.8065, lon=34.993),
                                   accesstoken=mapboxt,
                                   style='light',
-                                  zoom=13
+                                  zoom=13 if not is_safety_map else 13.1
                                   )
                       )
 
