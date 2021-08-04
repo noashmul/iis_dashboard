@@ -119,16 +119,19 @@ def get_graphs(statzone):
         title2 = f'Genders percentages in {statzone} stat zone'
         title3 = f'Age groups distribution in {statzone} stat zone'
 
-    pie1_df = {'Label': ['Haredim', 'Non Haredim'],
+    pie1_df = {'Label': ['חרדים', 'לא חרדים'],
                'Amount': [int(haredim_df['TotHaredim']), int(haredim_df['Total']) - int(haredim_df['TotHaredim'])]}
+    pie1_df['Label'] = [(str(x)[::-1]) for x in pie1_df['Label']]
+
     fig1 = px.pie(pie1_df, values='Amount', names='Label', title=title1, color='Label',
-                  color_discrete_map={'Haredim': '#8FBC8F', 'Non Haredim': '#F5DEB3'})
+                  color_discrete_map={list(pie1_df['Label'])[0]: '#8FBC8F', list(pie1_df['Label'])[1]: '#F5DEB3'})
 
-    pie2_df = {'Gender': ['Men', 'Woman'],
+    pie2_df = {'Gender': ['גברים', 'נשים'],
                'Amount': [int(gender_df['Men']), int(gender_df['Total']) - int(gender_df['Men'])]}
-    fig2 = px.pie(pie2_df, values='Amount', names='Gender', title=title2, color='Gender',
-                  color_discrete_map={'Men': 'skyblue', 'Woman': 'lightpink'})
+    pie2_df['Gender'] = [(str(x)[::-1]) for x in pie2_df['Gender']]
 
+    fig2 = px.pie(pie2_df, values='Amount', names='Gender', title=title2, color='Gender',
+                  color_discrete_map={list(pie2_df['Gender'])[0]: 'skyblue', list(pie2_df['Gender'])[1]: 'lightpink'})
     age_group_df_new = pd.DataFrame(columns=['Age group', 'Amount of citizen'])
     age_group_df_old_new = pd.DataFrame(columns=['Age group', 'Amount of citizen'])
     old_y = []
@@ -168,12 +171,11 @@ def get_graphs(statzone):
 
 
 layout = html.Div(children=[
+    html.H4(children='Choose the wanted area to see the graphs changes',
+            style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+                   'letter-spacing': '0em'}, className="pretty_container"
+            ),
     html.Div([
-        html.H4(children='Choose the wanted area to see the graphs changes',
-                style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                       'letter-spacing': '0em'}
-                ),
-
         html.Div(
             [
                 html.Div(
@@ -189,8 +191,7 @@ layout = html.Div(children=[
                     dcc.Graph(figure=map_fig)
                 ], className="map_container"),
             ],
-            id="info-container1",
-            className="row container-display",
+            className="row_rapper",
         ), ], className="pretty_container"),
     html.Div(
         [

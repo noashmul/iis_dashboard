@@ -45,7 +45,7 @@ body {
 }
 
 .map_container {
-    width: 70%;
+    width: 75%;
     height: 70%;
 }
 
@@ -87,6 +87,25 @@ body {
     padding: 0px;
     position: relative;
     box-shadow: 2px 2px 2px lightgrey;
+}
+
+.flex{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.row_rapper{
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.col_rapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
 }
 
 .bare_container {
@@ -212,12 +231,12 @@ body {
 
 .mini_container {
     /*width: 100%;*/
-    height: 500px;
+    /*height: 500px;*/
     /*overflow: scroll;*/
-    border-radius: 5px;
+    /*border-radius: 5px;*/
     background-color: #f9f9f9;
-    margin: 10px;
-    padding: 15px;
+    margin-left: 10px;
+    /*padding: 15px;*/
     position: relative;
     /*box-shadow: 2px 2px 2px lightgrey;*/
 }

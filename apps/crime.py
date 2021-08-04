@@ -271,56 +271,54 @@ def get_graphs(statzone):
 
 
 layout = html.Div(
-    children=[
-        html.Div([
-            html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
-                    style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                           'letter-spacing': '0em'}
-                    ),
-
-            html.Div(
-                [
-                    html.Div(
-                        [
-                            'Choose area: ', dcc.RadioItems(id='areas',
-                                                            options=options,
-                                                            value=0
-                                                            ),
-                        ],
-                        className="mini_container",
-                    ),
-                    html.Div([
-                        dcc.Graph(figure=map_fig)
-                    ], className="map_container"),
-                ],
-                id="info-container1",
-                className="row container-display",
-            ),
-        ], className='pretty_container'),
-        html.Div(
-            [
-                dcc.Graph(id='crime_trend_graph')
-            ], className="pretty_container"
-        ),
-        # html.Div(
-        #     [
-        html.Div(
-            [
-                dcc.Graph(id='crime_location_type')
-            ],
-            className='pretty_container',
-        ),
-        html.Div(
-            [
-                dcc.Graph(id='crime_type')
-            ],
-            className='pretty_container',
-        ),
-        #     ],
-        #     id="info-container2",
-        #     className="row container-display",
-        # )
-    ],
+    children=[html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
+                      style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+                             'letter-spacing': '0em'}, className='pretty_container'
+                      ),
+              html.Div([
+                  html.Div(
+                      [
+                          html.Div(
+                              [
+                                  'Choose area: ', dcc.RadioItems(id='areas',
+                                                                  options=options,
+                                                                  value=0
+                                                                  ),
+                              ],
+                              className="mini_container",
+                          ),
+                          html.Div([
+                              dcc.Graph(figure=map_fig)
+                          ], className="map_container"),
+                      ],
+                      # id="info-container1",
+                      className="row_rapper",
+                  ),
+              ], className='pretty_container'),
+              html.Div(
+                  [
+                      dcc.Graph(id='crime_trend_graph')
+                  ], className="pretty_container"
+              ),
+              # html.Div(
+              #     [
+              html.Div(
+                  [
+                      dcc.Graph(id='crime_location_type')
+                  ],
+                  className='pretty_container',
+              ),
+              html.Div(
+                  [
+                      dcc.Graph(id='crime_type')
+                  ],
+                  className='pretty_container',
+              ),
+              #     ],
+              #     id="info-container2",
+              #     className="row container-display",
+              # )
+              ],
     # className="pretty_container twelve columns",
     style={"text-align": "justify"},
 )

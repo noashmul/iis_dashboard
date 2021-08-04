@@ -38,6 +38,7 @@ def blank_fig(height):
         },
     }
 
+
 def manipulate_holucaust_df(df, statzone):
     df["HoloSurvNdDesc"].dropna()
     df = df.replace(
@@ -47,7 +48,7 @@ def manipulate_holucaust_df(df, statzone):
          'בעיות בתקשורת בקליטה (עלייה)': 'בעיות בתקשורת וקליטה'})
     df["HoloSurvNdDesc"] = df["HoloSurvNdDesc"].apply(
         lambda x: str(x)[:-1] + '(' if str(x)[-1] == ')' else x)
-    if statzone == 'All Statistical zones' or statzone == 623:  # TODO delete or statzone==623
+    if statzone == 'All Statistical Zones' or statzone == 623:  # TODO delete or statzone==623
         df_holocaust1_type = df.groupby(by=["HoloSurvNdDesc"]).count()[['Street']]
         df_holocaust1_type = df_holocaust1_type.sort_values(by=['Street'], ascending=False).head(5)
     else:
@@ -113,9 +114,9 @@ def get_graphs(statzone):
     df_seniors1 = dfs_dict['df_seniors_t1']
 
     if statzone == 0:
-        statzone = 'All Statistical zones'
+        statzone = 'All Statistical Zones'
 
-    if statzone != 'All Statistical zones':
+    if statzone != 'All Statistical Zones':
         df_seniors1 = df_seniors1[df_seniors1['StatZone'] == statzone]
 
     food1_alone1 = len(df_seniors1[(df_seniors1['SeniorAlone'] == 1) &
@@ -127,37 +128,33 @@ def get_graphs(statzone):
     food0_alone0 = len(df_seniors1[(df_seniors1['SeniorAlone'] == 0) &
                                    (df_seniors1['SeniorRecivFood'] == 0)])
 
-    pie_df = pd.DataFrame.from_dict({'status': ['Recieve Food & Alone', 'Recieve Food', 'Alone', 'Else'],
-              'amount': [food1_alone1, food1_alone0, food0_alone1, food0_alone0]})
+    pie_df = pd.DataFrame.from_dict({'status': ['קשישים בודדים ומקבלי מזון', 'קשישים מקבלי מזון', 'קשישים בודדים', 'אחר'],
+                                     'amount': [food1_alone1, food1_alone0, food0_alone1, food0_alone0]})
 
+    pie_df['status'] = pie_df['status'].apply(lambda x: str(x)[::-1])
     fig1 = px.pie(pie_df, values='amount', names='status', title='Status of seniors citizens',
-                   color='status', color_discrete_map={'Recieve Food & Alone': '#19D3F3',
-                                      'Recieve Food': '#0099C6',
-                                      'Alone': '#636EFA',
-                                      'Else': 'darkblue'}
+                  color='status', color_discrete_map={list(pie_df['status'])[0]: '#19D3F3',
+                                                      list(pie_df['status'])[1]: '#0099C6',
+                                                      list(pie_df['status'])[2]: '#636EFA',
+                                                      list(pie_df['status'])[3]: 'darkblue'}
                   )
     # fig1.update_layout(legend={'traceorder':'reversed+grouped'})
 
-    string = " stat zone " if statzone != 'All Statistical zones' else " "
+    string = " Stat Zone " if statzone != 'All Statistical Zones' else " "
 
     # TODO this title is not visible because of the margin 0, add a title to the html
-    fig1.update_layout(title_text=f"Status of seniors citizens in{string}{statzone}",
+    fig1.update_layout(title_text=f"Status of Seniors Citizens in{string}{statzone}",
                        yaxis=dict(
                            titlefont_size=18,
-                           # tickfont_size=18,
                        ),
                        xaxis=dict(
                            titlefont_size=18,
-                           # tickfont_size=18,
-                           # tickvals=[i for i in range(13)],
-                           # ticktext=[i for i in range(13)]
-                       ),  # xaxis_showgrid=True, yaxis_showgrid=True,
+                       ), legend={'traceorder': 'normal'},
                        template='none',
                        )
-    # yaxis_range=[0, max_y * 1.1])
     df_holocaust0 = dfs_dict['df_holocaust_t0']
     df_holocaust1 = dfs_dict['df_holocaust_t1']
-    if statzone == 'All Statistical zones':
+    if statzone == 'All Statistical Zones':
         text3 = len(df_holocaust1)
     else:
         text3 = len(df_holocaust1[df_holocaust1['StatZone'] == statzone])
@@ -180,13 +177,13 @@ def get_graphs(statzone):
 
     df_holocaust1_type = manipulate_holucaust_df(df_holocaust1, statzone)
     df_holocaust0_type = manipulate_holucaust_df(df_holocaust0, statzone)
-    percentage_change = 100 * (df_holocaust1_type['Amount of Holocaust Survivors'] - df_holocaust0_type['Amount of Holocaust Survivors']) / \
+    percentage_change = 100 * (df_holocaust1_type['Amount of Holocaust Survivors'] - df_holocaust0_type[
+        'Amount of Holocaust Survivors']) / \
                         df_holocaust0_type['Amount of Holocaust Survivors']
-
 
     fig2 = px.bar(df_holocaust1_type, x=df_holocaust1_type.index, y=df_holocaust1_type['Amount of Holocaust Survivors'],
                   color_discrete_sequence=['#252E3F'])
-    fig2.update_layout(title_text=f"Amount of holocaust survivors per needed help <br> type in{string}{statzone}",
+    fig2.update_layout(title_text=f"# of holocaust survivors per needed help <br> type in{string}{statzone}",
                        title_x=0.5, yaxis=dict(
             titlefont_size=18,
             tickfont_size=18,
@@ -195,8 +192,10 @@ def get_graphs(statzone):
                            titlefont_size=18,
                            tickfont_size=18,
                        ), xaxis_showgrid=True, yaxis_showgrid=True, template='simple_white')
-    fig2.update_xaxes(title='Needed help type', tickangle=45)
-    add_annotations_to_fig(fig2, fig2.data[0].x, fig2.data[0].y, percentage_change, old_y=list(df_holocaust0_type['Amount of Holocaust Survivors']))
+    fig2.update_xaxes(title='Needed Help Type', tickangle=45)
+    fig2.update_yaxes(title='# Of Holocaust Survivors')
+    add_annotations_to_fig(fig2, fig2.data[0].x, fig2.data[0].y, percentage_change,
+                           old_y=list(df_holocaust0_type['Amount of Holocaust Survivors']))
     fig2.update_layout(showlegend=False)
     max_y = max(df_holocaust1_type['Amount of Holocaust Survivors'])
     fig2.update_layout(yaxis_range=[0, max_y * 1.1])
@@ -204,31 +203,28 @@ def get_graphs(statzone):
     return fig1, fig2, text3_display
 
 
-
-
 layout = html.Div(
     children=[
-        html.Div([
-        html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
-                style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                       'letter-spacing': '0em'}),
-        html.Div(
-            [
-                html.Div(
-                    [
-                        'Choose area: ', dcc.RadioItems(id='areas',
-                                                        options=options,
-                                                        value=0),
-                    ],
-                    className="mini_container",
-                ),
-                html.Div([
-                    dcc.Graph(figure=map_fig)
-                ], className="map_container"),
-            ],
-            id="info-container1",
-            className="row container-display",
-        )], className='pretty_container'),
+            html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
+                    style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+                           'letter-spacing': '0em'}, className='pretty_container'),
+              html.Div([
+            html.Div(
+                [
+                    html.Div(
+                        [
+                            'Choose area: ', dcc.RadioItems(id='areas',
+                                                            options=options,
+                                                            value=0),
+                        ],
+                        className="mini_container",
+                    ),
+                    html.Div([
+                        dcc.Graph(figure=map_fig)
+                    ], className="map_container"),
+                ],
+                className="row_rapper",
+            )], className='pretty_container'),
         html.Div(
             children=[
                 html.H4(  # TODO maybe put "All stat.." / number of stat zone like in graphs
@@ -248,30 +244,15 @@ layout = html.Div(
             className="pretty_container",
         ),
 
-        html.Div([
-            html.Div(
-                [dcc.Graph(id='seniors_type')],
-                className='narrow_container',
-            ),
-            html.Div(
-                [dcc.Graph(id='needed_help_type')],
-                className='narrow_container',),
-        ]),
-
-        html.Div([
-                # html.Div(
-                #     [dcc.Graph(id='seniors_type')],
-                #     className='narrow_container',
-                # ),
-                # html.Div(
-                #     [dcc.Graph(id='needed_help_type')],
-                #     className='narrow_container',
-                # ),
-
-        ],id="info-container2",
-            className="row container-display",),
-
-    ],
-    # className="pretty_container twelve columns",
+              html.Div([
+                  html.Div(
+                      [dcc.Graph(id='seniors_type')],
+                      className='narrow_container',
+                  ),
+                  html.Div(
+                      [dcc.Graph(id='needed_help_type')],
+                      className='narrow_container', ),
+              ]),
+              ],
     style={"text-align": "justify"},
 )
