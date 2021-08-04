@@ -223,8 +223,7 @@ layout = html.Div(
                         dcc.Graph(figure=map_fig)
                     ], className="map_container"),
                 ],
-                id="info-container1",
-                className="row container-display",
+                className="row_rapper",
             )], className='pretty_container'),
         html.Div(
             children=[
@@ -254,21 +253,6 @@ layout = html.Div(
                       [dcc.Graph(id='needed_help_type')],
                       className='narrow_container', ),
               ]),
-
-        html.Div([
-            # html.Div(
-            #     [dcc.Graph(id='seniors_type')],
-            #     className='narrow_container',
-            # ),
-            # html.Div(
-            #     [dcc.Graph(id='needed_help_type')],
-            #     className='narrow_container',
-            # ),
-
-              ], id="info-container2",
-                  className="row container-display", ),
-
               ],
-    # className="pretty_container twelve columns",
     style={"text-align": "justify"},
 )

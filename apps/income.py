@@ -175,8 +175,8 @@ layout = html.Div(children=[html.H4(children='Choose the wanted area to see the 
                                             dcc.Graph(figure=map_fig)
                                         ], className="map_container"),
                                     ],
-                                    id="info-container1",
-                                    className="row container-display",
+                                    # id="info-container1",
+                                    className="row_rapper",
                                 ), ], className="pretty_container"),
                             html.Div(
                                 [

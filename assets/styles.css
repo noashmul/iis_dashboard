@@ -89,6 +89,25 @@ body {
     box-shadow: 2px 2px 2px lightgrey;
 }
 
+.flex{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.row_rapper{
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.col_rapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
 .bare_container {
     margin: 0 0 0 0;
     padding: 0 0 0 0;

@@ -191,8 +191,7 @@ layout = html.Div(children=[
                     dcc.Graph(figure=map_fig)
                 ], className="map_container"),
             ],
-            id="info-container1",
-            className="row container-display",
+            className="row_rapper",
         ), ], className="pretty_container"),
     html.Div(
         [
