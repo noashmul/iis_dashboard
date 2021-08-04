@@ -126,7 +126,8 @@ for key, value in statistic_area.items():
 
 layout = html.Div(children=[
     html.Div([html.H4(
-        'Choose the weight for each component in the safety formula to influence the score in each Stat Zone',
+        'A personal safety score is a combination of 12 different components, which represent different aspects of personal safety. \
+         Please customize the importance of each component according to your needs. ',
         style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
                'letter-spacing': '0em'}, )],
         className='pretty_container'
@@ -138,12 +139,12 @@ layout = html.Div(children=[
                 dbc.CardHeader(
                     html.H2(
                         dbc.Button(
-                            "\U0001F446" + "  Click here to select the importance of each attribute to the final score for each statistical zone   "
+                            "\U0001F446" + "  Click here to customize the importance of each component   "
                             + "\U000021E9",
                             color="link",
                             id=f"group-1-toggle",
                             n_clicks=0,
-                            style={'text-align': 'center', 'text-transform': 'none', 'font-family': 'sans-serif',
+                            style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
                                    'letter-spacing': '0em', 'font-size': 20},
                         ),
                     ),
@@ -265,10 +266,15 @@ layout = html.Div(children=[
                 ),
             ]
         ), className='accordion'), ], className='pretty_container'),
+
     html.Div(children=[
         html.Div([
             html.Div(
-                children=[
+                children=
+                [
+                    html.H4(children='Heatmap of safety score of each stat zone',
+                    style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+                       'letter-spacing': '0em'}),
                     html.Div(
                         id="graph-container",
                         children=[
@@ -276,7 +282,7 @@ layout = html.Div(children=[
                         ], className='map_container_safety'),
 
                 ],
-                className="row_rapper")
+                )
         ], className="pretty_container"),
         html.Div([
             html.Div([
@@ -295,10 +301,14 @@ layout = html.Div(children=[
                         dcc.Graph(id='score_graph')
                     ],
                     className='map_container', )
-            ], id="info-container1",
-                className="row container-display")], className='pretty_container')
+            ],
+                className="row_rapper"),
+                html.H4('For each component, higher score means safer sense. For example, higher thefts score means less thefts, which is safer.',
+                        style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+                       'letter-spacing': '0em'})], className='pretty_container')
     ], )
 ], )
+
 
 
 @app.callback(

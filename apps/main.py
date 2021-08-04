@@ -29,37 +29,42 @@ def annotate_table(x):
         else "\U000025B2" + "\U0001F7E2 "  + "+" + str(x) + "%"
 
 
-df['Percent change'] = df['Percent_comparison'].apply(lambda x: annotate_table(x))
+df['Percent change from last report'] = df['Percent_comparison'].apply(lambda x: annotate_table(x))
 
 df = df.drop('Percent_comparison', axis=1)
 
 layout = html.Div(
     children=[
         html.Div(children=[
-            html.H4(children='Welcome to our dashboard.',
-                    style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+            html.H2(children='Welcome to our dashboard',
+                    style={'text-align': 'center', 'text-transform': 'none', 'font-family': 'sans-serif',
                            'letter-spacing': '0em'}),
             html.H4(children='Above are different tabs, a tab for each subject.',
                     style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
                            'letter-spacing': '0em'}),
             html.H4(
-                children='This dashboard is interactive - make sure to hover / choose / click on the visualizations.',
+                children='This dashboard is interactive - make sure to hover / choose / click on the visualizations. In the next tabs, choosing stat zone will change the charts accordingly.',
                 style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
                        'letter-spacing': '0em'}),
-            html.H5(children='The data below is for the date range of X to Y.',
+            html.H5(children='*The report presents data from July 2020 to December 2020, and changes from the previous report (from January 2020 to June 2020).',
                     style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
                            'letter-spacing': '0em'}
                     )
         ], className="pretty_container"),
-        html.Div([
         html.Div(
             [
-                dcc.Graph(figure=get_main_tab_map(show_text=True))
-            ],
-            className='main_map_container',
-        ),],className="pretty_container"),
+                html.Div(
+                    [
+                        dcc.Graph(figure=get_main_tab_map(show_text=True))
+                    ],
+                    className='main_map_container',),
+            ], className="pretty_container"),
         html.Div([
-        generate_table(df),], className="pretty_container")
+                    html.H4(children='Percent change from last semi-annual report, in chosen fields.',
+                    style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+                           'letter-spacing': '0em'}),
+                    generate_table(df),
+                  ], className="pretty_container")
     ],
     # className="pretty_container twelve columns",
     # id="cross-filter-options",

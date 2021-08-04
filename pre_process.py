@@ -68,16 +68,16 @@ def create_df_main_dash(d: dict):
                                         d['df_seniors_t1']['SeniorAlone'].sum())
 
     # Elderly || Senior Citizens That Recieve Food ||
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Recieving Food Senior Citizens',
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Receiving Food Senior Citizens',
                                         d['df_seniors_t0']['SeniorRecivFood'].sum(),
                                         d['df_seniors_t1']['SeniorRecivFood'].sum())
 
     # Elderly || Holocaust Srvivors
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Holocaust Srvivors',
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Holocaust Survivors',
                                         len(d['df_holocaust_t0']), len(d['df_holocaust_t1']))
 
     # Elderly || Unrecognized Holocaust Survivors ||
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Unrecognized Holocaust Srvivors',
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Unrecognized Holocaust Survivors',
                                         sum(d['df_holocaust_t0']['HoloSurvKnwn'] == "לא מוכר"),
                                         sum(d['df_holocaust_t1']['HoloSurvKnwn'] == "לא מוכר"))
     return df_main_dash
