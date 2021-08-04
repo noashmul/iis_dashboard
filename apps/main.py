@@ -1,5 +1,7 @@
 from pre_process import *
 from choroplethmapbox import get_main_tab_map
+import dash_html_components as html
+import dash_core_components as dcc
 
 
 def generate_table(dataframe, max_rows=10):
@@ -41,9 +43,6 @@ layout = html.Div(
                            'letter-spacing': '0em'}
                     )
         ]),
-        # html.Iframe(id='map', srcDoc=open('map.html', 'r').read(), width="100%", height="300",
-        #             style={'justify-content': 'center', 'text-transform': 'none', 'font-family': 'sans-serif',
-        #                    'letter-spacing': '0em'}),
         html.Div(
             [
                 dcc.Graph(figure=get_main_tab_map(show_text=True))

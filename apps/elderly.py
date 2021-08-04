@@ -1,6 +1,10 @@
 from choroplethmapbox import get_choroplethmap_fig
 from app_def import app
 from pre_process import *
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output
+import plotly.express as px
 from utils import add_annotations_to_fig
 
 statistic_area = {'הכל': 0,
