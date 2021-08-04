@@ -342,7 +342,7 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
         tmp_score = sum(np.multiply(list(row[:-1]), W))
         values_dict_t0[row.StatZone] = int(tmp_score * 100)
     scores_dict = [values_dict_t0,values_dict_t1]
-    fig1 = get_choroplethmap_fig(values_dict=values_dict_t1, map_title="Stat Zone Safety Score", is_safety_map=True)
+    fig1 = get_choroplethmap_fig(values_dict=values_dict_t1, map_title="Stat Zone Safety Score", is_safety_map=True, scores_dict=scores_dict)
     fig1.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     if area in [0, '0']:
@@ -362,7 +362,6 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
     y_label = [s[::-1] for s in y_label]
     fig2_df = pd.DataFrame(columns=['Score', 'Score component'])
     fig2_df['Score'] = score_area_val
-    print(score_area_val)
     fig2_df['Score component'] = y_label
     fig2_df = fig2_df.sort_values(by='Score', ascending='False')
     fig2 = px.bar(fig2_df, x=fig2_df.Score, y=fig2_df['Score component'], color_discrete_sequence=['#252E3F'])
