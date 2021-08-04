@@ -7,16 +7,10 @@ from app_def import app
 from choroplethmapbox import get_choroplethmap_fig
 import dash_bootstrap_components as dbc
 from dash.dependencies import State
-
-import pandas as pd
 import numpy as np
-
-import plotly.io as pio
-
-pio.renderers.default = "browser"
-
+# import plotly.io as pio
+# pio.renderers.default = "browser"
 from choroplethmapbox import get_area_in_km2_for_stat_zones
-
 from pre_process import *
 
 #### Create scores #####
@@ -79,11 +73,10 @@ def calc_safety_scores(StatZone, df_salary, df_conflicts, df_cameras, df_aband, 
     X_features = [x.values[0] for x in X_features]
     return X_features
 
-def create_safety_table(df_salaries, df_conflicts, df_cameras, df_aband,df_106, df_crimes):
 
+def create_safety_table(df_salaries, df_conflicts, df_cameras, df_aband, df_106, df_crimes):
     values_dict = dict.fromkeys([611, 612, 613, 621, 622, 623, 631, 632, 633, 634, 641, 642, 643, 644], 0.)
     data = dict.fromkeys([611, 612, 613, 621, 622, 623, 631, 632, 633, 634, 641, 642, 643, 644], 0.)
-
 
     for StatZone in values_dict.keys():
         X_features = calc_safety_scores(StatZone, df_salaries, df_conflicts, df_cameras, df_aband, df_106,
@@ -91,17 +84,20 @@ def create_safety_table(df_salaries, df_conflicts, df_cameras, df_aband,df_106, 
         data[StatZone] = X_features
 
     df_score = pd.DataFrame(data.values(),
-                             columns=['conflicts_s', 'cameras_s', 'aband_s', 'security_106_s', 'social_106_s', 'crime_s', \
-                                      'crime_thefts_s', 'crime_BodyAssaults_s', 'crime_SexualAssaults_s', 'crime_Robbery_s', \
-                                      'income_avg_s', 'Demographic_density_s'])
+                            columns=['conflicts_s', 'cameras_s', 'aband_s', 'security_106_s', 'social_106_s', 'crime_s', \
+                                     'crime_thefts_s', 'crime_BodyAssaults_s', 'crime_SexualAssaults_s',
+                                     'crime_Robbery_s', 'income_avg_s', 'Demographic_density_s'])
     df_score['StatZone'] = data.keys()
     for col in df_score.columns[:-1]:
         df_score[col] = (df_score[col] - df_score[col].min()) / (df_score[col].max() - df_score[col].min())
 
     return df_score, values_dict
 
-df_score_t1, values_dict_t1 = create_safety_table(df_salaries_t1, df_conflicts_t1, df_cameras_t1, df_aband_t1, df_106_t1, df_crimes_t1)
-df_score_t0, values_dict_t0 = create_safety_table(df_salaries_t0, df_conflicts_t0, df_cameras_t0, df_aband_t0, df_106_t0, df_crimes_t0)
+
+df_score_t1, values_dict_t1 = create_safety_table(df_salaries_t1, df_conflicts_t1, df_cameras_t1, df_aband_t1,
+                                                  df_106_t1, df_crimes_t1)
+df_score_t0, values_dict_t0 = create_safety_table(df_salaries_t0, df_conflicts_t0, df_cameras_t0, df_aband_t0,
+                                                  df_106_t0, df_crimes_t0)
 
 statistic_area = {'הכל': 0,
                   "הדר מערב - רח' אלמותנבי": 611,
@@ -156,11 +152,11 @@ layout = html.Div(children=[
                     dbc.CardBody([html.Div([html.P(id="slider-text1", children="ציון קונפליקטים בין שכנים",
                                                    style={'color': 'black', 'text-align': 'left'},
                                                    ),
-                                            dcc.Slider(id="Weight 1",min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 1", min=1, max=5, value=1, step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4,5]
+                                                           for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text2", children="ציון מצלמות אבטחה",
                                                    style={'color': 'black'},
@@ -169,7 +165,7 @@ layout = html.Div(children=[
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4,5]
+                                                           for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text3", children="ציון בתים נטושים",
                                                    style={'color': 'black'},
@@ -178,7 +174,7 @@ layout = html.Div(children=[
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4,5]
+                                                           for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text4", children="ציון שיחות למוקד העירייה בנושא ביטחון",
                                                    style={'color': 'black'},
@@ -187,7 +183,7 @@ layout = html.Div(children=[
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4,5]
+                                                           for num in [1, 2, 3, 4, 5]
                                                        }),
                                             ], className="slider-container"),
                                   html.Div([html.P(id="slider-text5", children="ציון שיחות למוקד העירייה בנושא סוציאלי",
@@ -197,16 +193,16 @@ layout = html.Div(children=[
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4,5]
+                                                           for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text6", children="ציון פשיעה",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 6",min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 6", min=1, max=5, value=1, step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4,5]
+                                                           for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text7", children="ציון גניבות",
                                                    style={'color': 'black'},
@@ -215,7 +211,7 @@ layout = html.Div(children=[
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4,5]
+                                                           for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text8", children="ציון תקיפות גוף",
                                                    style={'color': 'black'},
@@ -224,7 +220,7 @@ layout = html.Div(children=[
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4,5]
+                                                           for num in [1, 2, 3, 4, 5]
                                                        }),
                                             ], className="slider-container"),
                                   html.Div([html.P(id="slider-text9", children="ציון תקיפות מיניות",
@@ -234,7 +230,7 @@ layout = html.Div(children=[
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4,5]
+                                                           for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text10", children="ציון שודים",
                                                    style={'color': 'black'},
@@ -243,16 +239,16 @@ layout = html.Div(children=[
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4,5]
+                                                           for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text11", children="ציון הכנסה ממוצעת",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 11",min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 11", min=1, max=5, value=1, step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4,5]
+                                                           for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text12", children="ציון צפיפות דמוגרפית",
                                                    style={'color': 'black'},
@@ -261,7 +257,7 @@ layout = html.Div(children=[
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4,5]
+                                                           for num in [1, 2, 3, 4, 5]
                                                        }), ], className="slider-container"),
                                   ]),
                     id=f"collapse-1",
@@ -284,26 +280,25 @@ layout = html.Div(children=[
         ], className="pretty_container"),
         html.Div([
             html.Div([
-            html.Div(
-                [
-                    'Choose area: ', dcc.RadioItems(id='areas',
-                                                    options=options,
-                                                    value=0
-                                                    ),
-                ],
-                className="mini_container",
-            ),
+                html.Div(
+                    [
+                        'Choose area: ', dcc.RadioItems(id='areas',
+                                                        options=options,
+                                                        value=0
+                                                        ),
+                    ],
+                    className="mini_container",
+                ),
 
-            html.Div(
-                [
-                    dcc.Graph(id='score_graph')
-                ],
-                className='map_container',)
+                html.Div(
+                    [
+                        dcc.Graph(id='score_graph')
+                    ],
+                    className='map_container', )
             ], id="info-container1",
                 className="row container-display")], className='pretty_container')
     ], )
 ], )
-
 
 
 @app.callback(
@@ -341,7 +336,7 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
     for idx, row in df_score_t0.iterrows():
         tmp_score = sum(np.multiply(list(row[:-1]), W))
         values_dict_t0[row.StatZone] = int(tmp_score * 100)
-    scores_dict = [values_dict_t0,values_dict_t1]
+    scores_dict = [values_dict_t0, values_dict_t1]
     fig1 = get_choroplethmap_fig(values_dict=values_dict_t1, map_title="Stat Zone Safety Score", is_safety_map=True)
     fig1.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
@@ -353,7 +348,7 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
     else:
         score_area_val = df_score_t1[df_score_t1['StatZone'] == int(area)].drop('StatZone', axis=1).values[0]
         title2 = f"Component scores for stat zone {area}"
-    score_area_val = [i*100 for i in score_area_val]
+    score_area_val = [i * 100 for i in score_area_val]
 
     y_label = ['ציון קונפליקטים בין שכנים', 'ציון מצלמות אבטחה', 'ציון בתים נטושים',
                'ציון שיחות למוקד העירייה בנושא ביטחון', 'ציון שיחות למוקד העירייה בנושא סוציאלי', 'ציון פשיעה',
