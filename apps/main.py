@@ -2,7 +2,7 @@ from pre_process import *
 from choroplethmapbox import get_main_tab_map
 import dash_html_components as html
 import dash_core_components as dcc
-
+from app_def import app
 
 def generate_table(dataframe, max_rows=10):
     val = ['table-light', 'table-primary'] * 10
@@ -66,7 +66,5 @@ layout = html.Div(
                     generate_table(df),
                   ], className="pretty_container")
     ],
-    # className="pretty_container twelve columns",
-    # id="cross-filter-options",
     style={"text-align": "justify"},
 )

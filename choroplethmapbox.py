@@ -164,18 +164,17 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
     if is_safety_map:
         prev_scores, cur_scores = scores_dicts[0], scores_dicts[1]
 
-        up, down = "\U000025B2", "\U000025BC"
+        up = "+"
         customdata = []
         for old, new in zip(prev_scores.values(), cur_scores.values()):
-            print(old, new)
-            if new == old:
-                customdata.append('(0% change)')
+            val = int(100 * (new - old) / old)
+            if val == 0:
+                customdata.append('  (0% change)')
             else:
-                val = int((new - old) / old)
-                customdata.append(f'({up} +{val}%' if val > 0 else f'{down} {val}% change)')
-        hovertemplate = '<b>StatZone</b>: %{text}' + '<br>🛡️<b>Safety Score</b>🛡️: <b>%{z}</b> %{customdata}'
+                customdata.append(f'  ({up}{val}% change)' if val > 0 else f'  ({val}% change)')
+        hovertemplate = '<b>StatZone</b>: %{text}' + '<br>🛡️<b>Safety Score</b>🛡️: <b>%{z}</b>%{customdata}'
     else:
-        customdata = []
+        customdata = [str(val) if val < 0 else (f'+{val}' if val > 0 else f'{val}') for val in z]
     fig = go.Figure(go.Choroplethmapbox(z=z,
                                         below=True,
                                         locations=locations,
@@ -186,8 +185,8 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
                                         hoverinfo='all',
                                         name='',
                                         customdata=customdata,
-                                        hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Value</b>: %{z}<br>' if \
-                                            hovertemplate is None else hovertemplate
+                                        hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Value</b>: %{customdata}<br>' \
+                                            if hovertemplate is None else hovertemplate
                                         )
                     )
 
@@ -289,7 +288,7 @@ if __name__ == "__main__":
     """Heatmap"""
     fig1 = get_choroplethmap_fig(values_dict=values_dict, map_title="Example Title",
                                  colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
-                                 hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{z}%<br>',
+                                 hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{customdata}%<br>',
                                  is_safety_map=True,
                                  add_stat_numbers_to_map=True
                                  )

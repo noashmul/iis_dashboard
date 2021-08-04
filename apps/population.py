@@ -58,7 +58,7 @@ values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change 
 map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
                                 map_title="% of change in total crime cases",
                                 colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
-                                hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Precentage of change</b>: %{z}%<br>')
+                                hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Precentage of change</b>: %{customdata}%<br>')
 map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
 

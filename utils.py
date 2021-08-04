@@ -28,7 +28,7 @@ def add_annotations_to_fig(fig, x, y, percentage_change_value, old_y):
         textposition="top center",
         textfont=dict(
             family="sans serif",
-            size=18,  # TODO make sure this is good to all the graphs
+            size=18,
             color="black"
         ),
         name='',
@@ -38,11 +38,85 @@ def add_annotations_to_fig(fig, x, y, percentage_change_value, old_y):
     ))
 
 
+def create_horizontal_bar_plot_with_annotations(numeric_vals,  # x
+                                                old_numeric_vals,  # old x
+                                                category_vals,  # y
+                                                percentage_change_value,  # pay attention to order
+                                                title_text,
+                                                text_offset_to_the_right,
+                                                text_color='#252E3F',
+                                                bar_color='#252E3F',
+                                                annotations_text_size=18,
+                                                titlefont_size=18,
+                                                tickfont_size=18,
+                                                tickangle=45
+                                                ):
+    fig = go.Figure()
+    fig.add_trace(
+        go.Bar(
+            x=numeric_vals,
+            y=category_vals,
+            marker=dict(color=bar_color),
+            name='',
+            orientation='h',
+            customdata=[f'{int(old_y_i)}→{int(y_i)}' if (not np.isnan(old_y_i) and not np.isnan(y_i)) else ''
+                        for old_y_i, y_i in zip(old_numeric_vals, numeric_vals)],
+            hovertemplate='%{customdata}'
+        )
+    )
+
+    up, down = "\U000025B2", "\U000025BC"
+    percentage_change_value = [round(val, 1) if not np.isnan(val) else val for val in percentage_change_value]
+    percentage_change_value = [((f'{up} +{val}%' if val > 0 else f'{down} {val}%') if val != 0 else f'{val}%') if \
+                                   not np.isnan(val) else "" for val in percentage_change_value]
+
+    annotations = []
+
+    for num, cat, text in zip(numeric_vals, category_vals, percentage_change_value):
+        annotations.append(dict(xref='x1', yref='y1',
+                                y=cat, x=num + text_offset_to_the_right,
+                                text=text,
+                                font=dict(size=annotations_text_size, color=text_color),
+                                showarrow=False))
+    fig.update_layout(annotations=annotations)
+
+    fig.update_layout(title_text=title_text,
+                      yaxis=dict(
+                          titlefont_size=titlefont_size,
+                          tickfont_size=tickfont_size,
+                      ),
+                      xaxis=dict(
+                          titlefont_size=titlefont_size,
+                          tickfont_size=tickfont_size,
+                      ), xaxis_showgrid=True, yaxis_showgrid=True,
+                      template='simple_white',
+                      )
+    fig.update_xaxes(tickangle=tickangle)
+
+    return fig
+
+
 if __name__ == "__main__":
-    """Test the annotation function"""
+    """Test the annotation function `add_annotations_to_fig`"""
     df = px.data.gapminder().query("continent == 'Europe' and year == 2007 and pop > 2.e6")
     fig = px.bar(df, y='pop', x=list(range(len(df))))
     # TODO add old_y to add_annotations_to_fig (see crime.py)
     add_annotations_to_fig(fig=fig, x=list(range(len(df))), y=list(df['pop']),
-                           percentage_change_value=[100 * np.random.randn() for i in range(len(df))])
+                           percentage_change_value=[100 * np.random.randn() for i in range(len(df))],
+                           old_y=list(df['pop'] * np.random.randn()))
+    fig.show()
+
+    """Test the horizontal bar plot funciton"""
+    fig = create_horizontal_bar_plot_with_annotations(
+        numeric_vals=[93453.919999999998, 81666.570000000007, 69889.619999999995,
+                      78381.529999999999, 141395.29999999999, 92969.020000000004,
+                      66090.179999999993, 122379.3],
+        old_numeric_vals=np.array([93453.919999999998, 81666.570000000007, 69889.619999999995,
+                                   78381.529999999999, 141395.29999999999, 92969.020000000004,
+                                   66090.179999999993, 122379.3]) * np.random.randn(),
+        category_vals=['Japan', 'United Kingdom', 'Canada', 'Netherlands',
+                       'United States', 'Belgium', 'Sweden', 'Switzerland'],
+        percentage_change_value=[val * np.random.randn() for val in list(range(9))],
+        title_text="HELLLLLO",
+        text_offset_to_the_right=3000)
     fig.show()
