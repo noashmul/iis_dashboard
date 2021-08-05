@@ -227,9 +227,18 @@ def change_map(map_def):
 
 layout = html.Div(
     children=[
-        html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
-                style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                       'letter-spacing': '0em'}, className='pretty_container'),
+        html.H4(
+            children=[html.H4(['בעמוד הנוכחי תוכלו לראות מגוון נתונים בנושא האוכלוסיה המבוגרת בהדר'],
+                              style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
+                                     'letter-spacing': '0em'}, ),
+                      html.H4([
+                          'ניתן לבחור ולראות מפה המציגה את הערכים הנוכחיים של כמות האוכלוסיה המבוגרת בכל אזור סטטיסטי, וכן מפה המראה את השינויים מהחצי שנה הקודמת. בהמשך מוצגים גרפים אשר מציגים מידע נוסף על אוכלוסיה זו, וניתן לבחור להציג בהם מידע רק על אזור סטטיסטי מסוים.תצוגה ראשונית מדגישה את כמות ניצולי השואה (עבור הדר כולה או עבור האזור הנבחר). בנוסף, מוצגים 2 גרפים המציגים את מצב האזרחים המבוגרים והנזקקות שלהם- גרף המפרט מה סוג הנזקקות של המבוגרים באזור ואת השינוי מהחצי שנה הקודמת וגרף המפרט מי מהקששים מקבל מזון ומי בודד (במעבר על גרף העוגה ניתן לראות גם את הערכים עצמם ולא רק אחזוים)']
+                          , style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
+                                   'letter-spacing': '0em', 'line-height': '1.6em'}
+                      )]
+            ,
+            className='pretty_container'
+        ),
         html.Div([
             html.Div([html.H6('בחר את תצוגת המפה',
                               style={'Font-weight': 'bold', 'text-transform': 'none',
