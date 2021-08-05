@@ -56,7 +56,7 @@ for df in [crime0, crime1]:
     df['total_crime_cases'] = df[[col for col in df.columns if col != 'StatZone' and col != 'Year']].sum(axis=1)
 
 
-options_map = [{'label': 'הצג מפת שינויים', 'value': 0}, {'label': 'הצג ערכים נוכחיים', 'value': 1}]
+options_map = [{'label': ' הצג מפת שינויים ', 'value': 0}, {'label': ' הצג ערכים נוכחיים', 'value': 1}]
 
 
 @app.callback(
