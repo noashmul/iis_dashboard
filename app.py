@@ -2,20 +2,11 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
-import dash
 
 # must add this line in order for the app to be deployed successfully on Heroku
-# from app_def import app
+from app_def import app
 # import all pages in the app
-# from apps import main, safety, crime, income, elderly, population
-
-external_stylesheets = [dbc.themes.LUX]
-
-app = dash.Dash(__name__,
-                external_stylesheets=external_stylesheets)
-
-server = app.server
-app.config.suppress_callback_exceptions = True
+from apps import main, safety, crime, income, elderly, population
 
 app.layout = html.Div(
     [dbc.Row(
@@ -60,23 +51,23 @@ def toggle_navbar_collapse(n, is_open):
     return is_open
 
 
-# @app.callback(Output('page-content', 'children'),
-#               [Input('url', 'pathname')])
-# def display_page(pathname):
-#     if pathname == '/main':
-#         return main.layout
-#     elif pathname == '/safety':
-#         return safety.layout
-#     elif pathname == '/crime':
-#         return crime.layout
-#     elif pathname == '/income':
-#         return income.layout
-#     elif pathname == '/elderly':
-#         return elderly.layout
-#     elif pathname == '/population':
-#         return population.layout
-#     else:
-#         return main.layout
+@app.callback(Output('page-content', 'children'),
+              [Input('url', 'pathname')])
+def display_page(pathname):
+    if pathname == '/main':
+        return main.layout
+    elif pathname == '/safety':
+        return safety.layout
+    elif pathname == '/crime':
+        return crime.layout
+    elif pathname == '/income':
+        return income.layout
+    elif pathname == '/elderly':
+        return elderly.layout
+    elif pathname == '/population':
+        return population.layout
+    else:
+        return main.layout
 
 
 if __name__ == '__main__':
