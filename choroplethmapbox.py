@@ -106,7 +106,7 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
                               643: "רמת ויז'ניץ",
                               644: 'מעונות גאולה'
                           },
-                          shp_path: str = os.path.join("StatZones", "Stat_Zones.shp"),
+                          shp_path: str = os.path.join("apps/StatZones", "Stat_Zones.shp"),
                           is_safety_map: bool = False,
                           colorscale=None,
                           hovertemplate=None,
@@ -231,7 +231,7 @@ def get_main_tab_map(show_text: bool):
                                if False no text is printed on the map
     :return: figure with the map
     """
-    shp_path = 'StatZones/Stat_Zones.shp'
+    shp_path = 'apps/StatZones/Stat_Zones.shp'
     stat_zones_names_dict = {
         611: "הדר מערב - רח' אלמותנבי",
         612: 'גן הבהאים',

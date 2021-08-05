@@ -44,6 +44,7 @@ def create_horizontal_bar_plot_with_annotations(numeric_vals,  # x
                                                 percentage_change_value,  # pay attention to order
                                                 title_text,
                                                 text_offset_to_the_right,
+                                                y_label_data=None,
                                                 text_color='#252E3F',
                                                 bar_color='#252E3F',
                                                 annotations_text_size=18,
@@ -52,19 +53,36 @@ def create_horizontal_bar_plot_with_annotations(numeric_vals,  # x
                                                 tickangle=45,
                                                 is_safety = False
                                                 ):
-    fig = go.Figure()
-    fig.add_trace(
-        go.Bar(
-            x=numeric_vals,
-            y=category_vals,
-            marker=dict(color=bar_color),
-            name='',
-            orientation='h',
-            customdata=[f'{int(old_y_i)}→{int(y_i)}' if (not np.isnan(old_y_i) and not np.isnan(y_i)) else ''
-                        for old_y_i, y_i in zip(old_numeric_vals, numeric_vals)],
-            hovertemplate='%{customdata}'
+
+
+    if is_safety:
+        fig = go.Figure()
+        fig.add_trace(
+            go.Bar(
+                x=numeric_vals,
+                y=category_vals,
+                marker=dict(color=bar_color),
+                name='',
+                orientation='h',
+                customdata=[f'{int(old_y_i)}→{int(y_i)}<br>{hover}' if (not np.isnan(old_y_i) and not np.isnan(y_i)) else ''
+                            for old_y_i, y_i,hover in zip(old_numeric_vals, numeric_vals, y_label_data)],
+                hovertemplate='%{customdata}<br>'
+            )
         )
-    )
+    else:
+        fig = go.Figure()
+        fig.add_trace(
+            go.Bar(
+                x=numeric_vals,
+                y=category_vals,
+                marker=dict(color=bar_color),
+                name='',
+                orientation='h',
+                customdata=[f'{int(old_y_i)}→{int(y_i)}' if (not np.isnan(old_y_i) and not np.isnan(y_i)) else ''
+                            for old_y_i, y_i in zip(old_numeric_vals, numeric_vals)],
+                hovertemplate='%{customdata}<br>'
+            )
+        )
 
     up, down = "\U000025B2", "\U000025BC"
     percentage_change_value = [round(val, 1) if not np.isnan(val) else val for val in percentage_change_value]
