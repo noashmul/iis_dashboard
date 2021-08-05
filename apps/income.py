@@ -39,7 +39,7 @@ stat_zones_names_dict = {
     644: 'מעונות גאולה'
 }
 
-options_map = [{'label': ' הצג מפת שינויים ', 'value': 0}, {'label': ' הצג ערכים נוכחיים', 'value': 1}]
+options_map = [{'label': ' שינוי באחוזים מהדו"ח הקודם ', 'value': 0}, {'label': ' ערכי הדו"ח הנוכחי', 'value': 1}]
 
 options = list()
 for key, value in statistic_area.items():
@@ -129,7 +129,7 @@ def get_graphs(statzone):
     Input(component_id='map_definition', component_property='value')
 )
 def change_map(map_def):
-    if map_def == 0:  # 'הצג מפת שינויים'
+    if map_def == 0:  # 'שינוי באחוזים מהדו"ח הקודם'
         percentage_change = 100 * (sal1.total_sal_avg - sal0.total_sal_avg) / sal0.total_sal_avg
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
                               zip(stat_zones_names_dict.keys(), percentage_change)}
@@ -194,11 +194,11 @@ def manipulate_df_salary_fig2(df_salary):
 
 
 layout = html.Div(children=[html.H4(
-    children=[html.H4(['בעמוד הנוכחי תוכלו לראות מגוון נתונים בנושא ההכנסה של האוכלוסיה בהדר'],
+    children=[html.H4(['.בעמוד הנוכחי תוכלו לראות מגוון נתונים בנושא ההכנסה של האוכלוסיה בהדר'],
                       style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                              'letter-spacing': '0em'}, ),
               html.H4([
-                  'ניתן לבחור ולראות מפה המציגה את הערכים הנוכחיים של ההכנסה הממוצעת בכל אזור סטטיסטי, וכן מפה המראה את השינויים מהחצי שנה הקודמת. בהמשך מוצגים גרפים אשר מציגים מידע נוסף על ההכנסה, וניתן לבחור להציג בהם מידע רק על אזור סטטיסטי מסוים. מוצגים 2 גרפים המציגים את כמות העובדים והשכר הממוצע עבור מגוון סוגי הכנסות.הגרפים מציגים את המצב הנוכחי ומוצג בהם השינוי מהחצי שנה שעברה (במעבר על הגרפים ניתן לראות את הערכים עצמם ואת השינוי בהם)']
+                  'ניתן לבחור ולראות מפה המציגה את הערכים הנוכחיים של ההכנסה הממוצעת בכל אזור סטטיסטי, וכן מפה המראה את השינויים מהחצי שנה הקודמת. בהמשך מוצגים גרפים אשר מציגים מידע נוסף על ההכנסה, וניתן לבחור להציג בהם מידע רק על אזור סטטיסטי מסוים. מוצגים 2 גרפים המציגים את כמות העובדים והשכר הממוצע עבור מגוון סוגי הכנסות. הגרפים מציגים את המצב הנוכחי ומוצג בהם השינוי בין התקופות השונות. (במעבר על הגרפים ניתן לראות את הערכים עצמם ואת השינוי בהם)']
                   , style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                            'letter-spacing': '0em', 'line-height': '1.6em'}
               )]

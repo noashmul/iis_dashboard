@@ -55,7 +55,7 @@ crime0, crime1 = dfs_dict['df_crime_t0'], dfs_dict['df_crime_t1']
 for df in [crime0, crime1]:
     df['total_crime_cases'] = df[[col for col in df.columns if col != 'StatZone' and col != 'Year']].sum(axis=1)
 
-options_map = [{'label': ' הצג מפת שינויים ', 'value': 0}, {'label': ' הצג ערכים נוכחיים', 'value': 1}]
+options_map = [{'label': ' שינוי באחוזים מהדו"ח הקודם ', 'value': 0}, {'label': ' ערכי הדו"ח הנוכחי', 'value': 1}]
 
 
 @app.callback(
@@ -90,11 +90,12 @@ def get_graphs(statzone):
                           ).update_traces(mode='lines+markers')
         max_y = df_tot_crime_per_area['Amount of Crimes'].max()
 
-    string = (str(statzone) + "באזור סטטיסטי "[
-                              ::-1]) if statzone != 'All Statistical zones' else "בכל האזורים הסטטיסטיים"[::-1]
+    string = (str(statzone) + "באזור סטטיסטי "[::-1]) if statzone != 'All Statistical zones' else \
+        "בכל שכונת הדר"[::-1]
 
-    # TODO this title is not visible because of the margin 0, add a title to the html
-    fig1.update_layout(title_text=string + "מספר פשעים לפי חודש "[::-1],
+    fig1.update_xaxes(title='חודש'[::-1])
+    fig1.update_yaxes(title='כמות פשעים'[::-1])
+    fig1.update_layout(title_text=string + "מספר פשעים לפי חודש "[::-1], titlefont_size=18,
                        title_x=0.5,
                        yaxis=dict(
                            titlefont_size=18,
@@ -110,8 +111,6 @@ def get_graphs(statzone):
                        yaxis_range=[0, max_y * 1.1],
                        showlegend=False)
     fig1.add_vline(x=6.5, line_width=3, line_dash="dash", line_color="#EE553B")
-    fig1.update_xaxes(title='חודש'[::-1])
-    fig1.update_yaxes(title='כמות פשעים'[::-1])
 
     fig1.add_trace(go.Scatter(
         x=[3.5, 9.5],
@@ -174,27 +173,27 @@ def get_graphs(statzone):
                 percentage_change_value.append(np.nan)
                 old_y.append(np.nan)
 
-    # TODO the next two graphs are not centered and are being cut from the bottom
     fig2 = px.bar(df_location, x=df_location.index, y=df_location['Amount of Crimes'],
                   color_discrete_sequence=['#252E3F'])
 
+    fig2.update_xaxes(title='סוג מיקום'[::-1], tickangle=45)
+    fig2.update_yaxes(title='כמות פשעים'[::-1])
     # for_title = "crimes per location" if graph_type == "CrimeLocType" else "crimes per type"
-    fig2.update_layout(title_text=string + "מספר פשעים לפי סוג מיקום "[::-1],
+    fig2.update_layout(title_text=string + "מספר פשעים לפי סוג מיקום "[::-1], titlefont_size=18,
                        title_x=0.5,
                        yaxis=dict(
-                           titlefont_size=14,
-                           tickfont_size=14,
+                           titlefont_size=18,
+                           tickfont_size=18,
                        ),
                        xaxis=dict(
-                           titlefont_size=14,
-                           tickfont_size=14,
+                           titlefont_size=18,
+                           tickfont_size=18,
                        ), xaxis_showgrid=True, yaxis_showgrid=True,
                        template='simple_white',
                        showlegend=False,
                        yaxis_range=[0, max(fig2.data[0].y) * 1.2]
                        )
-    fig2.update_xaxes(title='סוג מיקום'[::-1], tickangle=45)
-    fig2.update_yaxes(title='כמות פשעים'[::-1])
+
     add_annotations_to_fig(fig=fig2, x=fig2.data[0].x, y=fig2.data[0].y,
                            percentage_change_value=percentage_change_value, old_y=old_y)
 
@@ -243,22 +242,23 @@ def get_graphs(statzone):
 
     fig3 = px.bar(df_type, x=df_type.index, y=df_type['Amount of Crimes'],
                   color_discrete_sequence=['#252E3F'])
-    fig3.update_layout(title_text=string + "מספר פשעים לפי סוג פשע "[::-1],
+    fig3.update_xaxes(title='סוג פשע'[::-1], tickangle=45)
+    fig3.update_yaxes(title='כמות פשעים'[::-1])
+    fig3.update_layout(title_text=string + "מספר פשעים לפי סוג פשע "[::-1], titlefont_size=18,
                        title_x=0.5,
                        yaxis=dict(
-                           titlefont_size=14,
-                           tickfont_size=14,
+                           titlefont_size=18,
+                           tickfont_size=18,
                        ),
                        xaxis=dict(
-                           titlefont_size=14,
-                           tickfont_size=14,
+                           titlefont_size=18,
+                           tickfont_size=18,
                        ), xaxis_showgrid=True, yaxis_showgrid=True,
                        template='simple_white',
                        showlegend=False,
                        yaxis_range=[0, max(fig3.data[0].y) * 1.2],
                        )
-    fig3.update_xaxes(title='סוג פשע'[::-1], tickangle=45)
-    fig3.update_yaxes(title='כמות פשעים'[::-1])
+
     add_annotations_to_fig(fig=fig3, x=fig3.data[0].x, y=fig3.data[0].y,
                            percentage_change_value=percentage_change_value, old_y=old_y)
 
@@ -270,7 +270,7 @@ def get_graphs(statzone):
     Input(component_id='map_definition', component_property='value')
 )
 def change_map(map_def):
-    if map_def == 0:  # 'הצג מפת שינויים'
+    if map_def == 0:  # 'שינוי באחוזים מהדו"ח הקודם'
         # percentage change in % units from time0 to time1
         percentage_change = 100 * (crime1.total_crime_cases - crime0.total_crime_cases) / crime0.total_crime_cases
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
@@ -301,7 +301,7 @@ layout = html.Div(
                               style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                                      'letter-spacing': '0em'}, ),
                       html.H4([
-                          'ניתן לבחור ולראות מפה המציגה את הערכים הנוכחיים של הפשיעה הכוללת בכל אזור סטטיסטי, וכן מפה המראה את השינויים מהחצי שנה הקודמת. בהמשך מוצגים גרפים אשר מציגים מידע נוסף על הפשיעה, וניתן לבחור להציג בהם מידע רק על אזור סטטיסטי מסוים. הגרף הראשון מציג את מגמת הפשיעה בשנה האחרונה, עם הפרדה בין החצי שנה הנוכחית לקודמת. בנוסף אליו מוצגים 2 גרפים המציגים את כמות הפשיעה מבחינת מיקומים ומבחינת סוגי פשעים. ב2 הגרפים מוצגת גם מגמת השינוי בחצי שנה הנוכחית מהחצי שנה הקודמת לה. שימו לב לעבור על הגרפים ולראות את המיגע בנוסף שהם מציגים']
+                          'ניתן לבחור ולראות מפה המציגה את הערכים הנוכחיים של הפשיעה הכוללת בכל אזור סטטיסטי, וכן מפה המראה את השינויים מהחצי שנה הקודמת. בהמשך מוצגים גרפים אשר מציגים מידע נוסף על הפשיעה, וניתן לבחור להציג בהם מידע רק על אזור סטטיסטי מסוים. הגרף הראשון מציג את מגמת הפשיעה בשנה האחרונה, עם הפרדה בין החצי שנה הנוכחית לקודמת. בנוסף אליו מוצגים 2 גרפים המציגים את כמות הפשיעה מבחינת מיקומים ומבחינת סוגי פשעים. ב2 הגרפים מוצגת גם מגמת השינוי בין התקופות השונות. שימו לב לעבור על הגרפים ולראות את המידע בנוסף שהם מציגים']
                           , style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                                    'letter-spacing': '0em', 'line-height': '1.6em'}
                       )]

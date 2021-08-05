@@ -23,7 +23,7 @@ statistic_area = {'הכל': 0,
                   "רמת ויז'ניץ": 643,
                   'מעונות גאולה': 644}
 
-options_map = [{'label': ' הצג מפת שינויים ', 'value': 0}, {'label': ' הצג ערכים נוכחיים', 'value': 1}]
+options_map = [{'label': ' שינוי באחוזים מהדו"ח הקודם ', 'value': 0}, {'label': ' ערכי הדו"ח הנוכחי', 'value': 1}]
 
 
 def blank_fig(height):
@@ -177,7 +177,7 @@ def get_graphs(statzone):
 
     fig2 = px.bar(df_holocaust1_type, x=df_holocaust1_type.index, y=df_holocaust1_type['Amount of Holocaust Survivors'],
                   color_discrete_sequence=['#252E3F'])
-    title2 = "כמות ניצולי השואה על פי הצרכים שלהם בכל שכונת"[::-1] if statzone == 'All Statistical Zones' \
+    title2 = "כמות ניצולי השואה על פי הצרכים שלהם בכל שכונת הדר"[::-1] if statzone == 'All Statistical Zones' \
         else f"כמות ניצולי השואה על פי הצרכים שלהם באזור סטטיסטי {statzone_name}"[::-1]
     fig2.update_xaxes(title='סוג נזקקות'[::-1], tickangle=45)
     fig2.update_yaxes(title='כמות ניצולי השואה'[::-1])
@@ -204,7 +204,7 @@ def get_graphs(statzone):
     Input(component_id='map_definition', component_property='value')
 )
 def change_map(map_def):
-    if map_def == 0:  # 'הצג מפת שינויים'
+    if map_def == 0:  # 'שינוי באחוזים מהדו"ח הקודם'
         percentage_change = 100 * ((seniors1_per_zone.Street - seniors0_per_zone.Street) / seniors0_per_zone.Street)
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
                               zip(stat_zones_names_dict.keys(), percentage_change)}
@@ -230,11 +230,11 @@ def change_map(map_def):
 layout = html.Div(
     children=[
         html.H4(
-            children=[html.H4(['בעמוד הנוכחי תוכלו לראות מגוון נתונים בנושא האוכלוסיה המבוגרת בהדר'],
+            children=[html.H4(['.בעמוד הנוכחי תוכלו לראות מגוון נתונים בנושא האוכלוסיה המבוגרת בהדר'],
                               style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                                      'letter-spacing': '0em'}, ),
                       html.H4([
-                          'ניתן לבחור ולראות מפה המציגה את הערכים הנוכחיים של כמות האוכלוסיה המבוגרת בכל אזור סטטיסטי, וכן מפה המראה את השינויים מהחצי שנה הקודמת. בהמשך מוצגים גרפים אשר מציגים מידע נוסף על אוכלוסיה זו, וניתן לבחור להציג בהם מידע רק על אזור סטטיסטי מסוים. תצוגה ראשונית מדגישה את כמות ניצולי השואה (עבור הדר כולה או עבור האזור הנבחר). בנוסף, מוצגים 2 גרפים המציגים את מצב האזרחים המבוגרים והנזקקות שלהם- גרף המפרט מה סוג הנזקקות של המבוגרים באזור ואת השינוי מהחצי שנה הקודמת וגרף המפרט מי מהקששים מקבל מזון ומי בודד (במעבר על גרף העוגה ניתן לראות גם את הערכים עצמם ולא רק אחזוים)']
+                          'ניתן לבחור ולראות מפה המציגה את הערכים הנוכחיים של כמות האוכלוסיה המבוגרת בכל אזור סטטיסטי, וכן מפה המראה את השינויים בין התקופות השונות. בהמשך מוצגים גרפים אשר מציגים מידע נוסף על אוכלוסיה זו, וניתן לבחור להציג בהם מידע רק על אזור סטטיסטי מסוים. תצוגה ראשונית מדגישה את כמות ניצולי השואה (עבור הדר כולה או עבור האזור הנבחר). בנוסף, מוצגים 2 גרפים המציגים את מצב האזרחים המבוגרים והנזקקות שלהם- גרף המפרט מה סוג הנזקקות של המבוגרים באזור ואת השינוי בין התקופות השונות וגרף המפרט מי מהקששים מקבל מזון ומי בודד (במעבר על גרף העוגה ניתן לראות גם את הערכים עצמם ולא רק אחוזים)']
                           , style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                                    'letter-spacing': '0em', 'line-height': '1.6em'}
                       )]
