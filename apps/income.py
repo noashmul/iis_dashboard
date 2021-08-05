@@ -194,7 +194,7 @@ def manipulate_df_salary_fig2(df_salary):
 
 
 layout = html.Div(children=[html.H4(
-    children=[html.H4(['בעמוד הנוכחי תוכלו לראות מגוון נתונים בנושא ההכנסה של האוכלוסיה בהדר'],
+    children=[html.H4(['.בעמוד הנוכחי תוכלו לראות מגוון נתונים בנושא ההכנסה של האוכלוסיה בהדר'],
                       style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                              'letter-spacing': '0em'}, ),
               html.H4([

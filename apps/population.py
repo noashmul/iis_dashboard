@@ -199,7 +199,7 @@ def change_map(map_def):
 
 layout = html.Div(children=[
     html.H4(
-        children=[html.H4(['בעמוד הנוכחי תוכלו לראות מגוון נתונים בנושא הדמוגרפיה של הדר'],
+        children=[html.H4(['.בעמוד הנוכחי תוכלו לראות מגוון נתונים בנושא הדמוגרפיה של הדר'],
                           style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                                  'letter-spacing': '0em'}, ),
                   html.H4([
