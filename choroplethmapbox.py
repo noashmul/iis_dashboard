@@ -231,7 +231,7 @@ def get_main_tab_map(show_text: bool):
                                if False no text is printed on the map
     :return: figure with the map
     """
-    shp_path = 'apps/StatZones/Stat_Zones.shp'
+    shp_path = 'StatZones/Stat_Zones.shp'
     stat_zones_names_dict = {
         611: "הדר מערב - רח' אלמותנבי",
         612: 'גן הבהאים',
