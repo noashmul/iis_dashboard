@@ -121,7 +121,7 @@ statistic_area = {'כל האזורים הסטטיסטיים': 0,
 
 options = list()
 for key, value in statistic_area.items():
-    if key != 'הכל':
+    if key != 'כל האזורים הסטטיסטיים':
         options.append({'label': "  " + key + ' ' + str(value),
                         'value': value})
     else:
