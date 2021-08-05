@@ -8,11 +8,14 @@ def generate_table(dataframe, max_rows=10):
     val = ['table-light', 'table-primary'] * 10
     return html.Table([
         html.Thead(
-            html.Tr([html.Th(col, scope="col", className="table-dark", dir='rtl', style={'font-size':'17px'}) for col in dataframe.columns])
+            html.Tr(
+                [html.Th(col, scope="col", className="table-dark", dir='rtl', style={'font-size': '17px'}) for col in
+                 dataframe.columns])
         ),
         html.Tbody([
             html.Tr([
-                html.Th(dataframe.iloc[i][col], scope="row", className=val[i], dir='rtl', style={'font-size':'14px'}) for col in dataframe.columns
+                html.Th(dataframe.iloc[i][col], scope="row", className=val[i], dir='rtl', style={'font-size': '14px'})
+                for col in dataframe.columns
             ]) for i in range(min(len(dataframe), max_rows))
         ])
     ], className="table table-hover")
@@ -30,13 +33,12 @@ df = create_df_main_dash(dfs_dict)
 df['אחוז שינוי מהדו"ח הקודם'] = df['אחוז שינוי מהדו"ח הקודם'].apply(lambda x: annotate_table(x))
 df = df[['אחוז שינוי מהדו"ח הקודם', 'ערך', 'תיאור', 'נושא']]
 
-
 layout = html.Div(
     children=[
         html.Div(children=[
             html.H2(children='!ברוכים הבאים',
                     style={'text-align': 'center', 'text-transform': 'none', 'font-family': 'sans-serif',
-                           'letter-spacing': '0em', 'text-decoration':'double'}),
+                           'letter-spacing': '0em', 'text-decoration': 'double'}),
             html.H4(children='.לפניכם כרטיסיות שונות, אחת לכל נושא',
                     style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                            'letter-spacing': '0em'}),
@@ -60,8 +62,8 @@ layout = html.Div(
             ], className="pretty_container"),
         html.Div([
             html.H4(children=':אחוז שינוי מהדו"ח הקודם, במספר תחומים',
-                            style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
-                           'letter-spacing': '0em', 'font-size':'20px'}),
+                    style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
+                           'letter-spacing': '0em', 'font-size': '20px'}),
             generate_table(df),
         ], className="pretty_container")
     ],

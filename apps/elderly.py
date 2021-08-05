@@ -260,8 +260,8 @@ layout = html.Div(
                     html.Div(
                         [
                             ':בחר אזור סטטיסטי', dcc.RadioItems(id='areas',
-                                                               options=options,
-                                                               value=0),
+                                                                options=options,
+                                                                value=0),
                         ],
                         className="mini_container",
                     ),

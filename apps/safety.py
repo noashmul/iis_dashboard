@@ -143,8 +143,8 @@ layout = html.Div(children=[
                                           'letter-spacing': '0em', 'font-size': 15}
                                    ),
                         dbc.Button(
-                             "\U000021E9" +"  " +
-                              "לחץ כאן כדי לבחור את החשיבות של כל רכיב בציון",
+                            "\U000021E9" + "  " +
+                            "לחץ כאן כדי לבחור את החשיבות של כל רכיב בציון",
                             color="link",
                             id=f"group-1-toggle",
                             n_clicks=0,
@@ -156,11 +156,12 @@ layout = html.Div(children=[
                 ),
                 dbc.Collapse(
                     dbc.CardBody([html.H4("5: רמת חשיבות נמוכה :1, רמת חשיבות גבוהה",
-                        # '1 רמת חשיבות נמוכה 5 רמת חשיבות גבוהה',
+                                          # '1 רמת חשיבות נמוכה 5 רמת חשיבות גבוהה',
 
-                                          style={'text-align': 'right','text-transform': 'none', 'font-family': 'sans-serif',
-                                   'letter-spacing': '0em', 'font-size': 15, 'font-weight': 'bold'}),
-                        html.Div([html.P(id="slider-text1", children="קונפליקטים בין שכנים",
+                                          style={'text-align': 'right', 'text-transform': 'none',
+                                                 'font-family': 'sans-serif',
+                                                 'letter-spacing': '0em', 'font-size': 15, 'font-weight': 'bold'}),
+                                  html.Div([html.P(id="slider-text1", children="קונפליקטים בין שכנים",
                                                    style={'color': 'black', 'text-align': 'center'},
                                                    ),
                                             dcc.Slider(id="Weight 1", min=1, max=5, value=scores[0], step=None,
@@ -299,9 +300,9 @@ layout = html.Div(children=[
                 html.Div(
                     [
                         ':בחר אזור סטטיסטי', dcc.RadioItems(id='areas',
-                                                           options=options,
-                                                           value=0
-                                                           ),
+                                                            options=options,
+                                                            value=0
+                                                            ),
                     ],
                     className="mini_container",
                 ),
