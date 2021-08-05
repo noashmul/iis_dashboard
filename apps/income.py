@@ -6,8 +6,6 @@ import dash_core_components as dcc
 from dash.dependencies import Input, Output
 from utils import create_horizontal_bar_plot_with_annotations
 
-
-
 statistic_area = {'הכל': 0,
                   "הדר מערב - רח' אלמותנבי": 611,
                   'גן הבהאים': 612,
@@ -85,14 +83,17 @@ def get_graphs(statzone):
         title1 = f"Average Salary per Salary type in {statzone} stat zone"
         title2 = f"Amount of workers per Salary type in {statzone} stat zone"
 
-    percentage_change = 100 * (df_avg_sal1['Average salary'] - df_avg_sal0['Average salary']) / df_avg_sal0['Average salary']
+    percentage_change = 100 * (df_avg_sal1['Average salary'] - df_avg_sal0['Average salary']) / df_avg_sal0[
+        'Average salary']
     max_y = max(df_avg_sal1['Average salary'])
 
     fig1 = create_horizontal_bar_plot_with_annotations(numeric_vals=df_avg_sal1['Average salary'],  # x
-                                                old_numeric_vals=df_avg_sal0['Average salary'],  # old x
-                                                category_vals=df_avg_sal1['Salary type'],  # y
-                                                percentage_change_value=percentage_change,  # pay attention to order
-                                                title_text=title1, text_offset_to_the_right=0.15*max_y, tickfont_size=18,
+                                                       old_numeric_vals=df_avg_sal0['Average salary'],  # old x
+                                                       category_vals=df_avg_sal1['Salary type'],  # y
+                                                       percentage_change_value=percentage_change,
+                                                       # pay attention to order
+                                                       title_text=title1, text_offset_to_the_right=0.15 * max_y,
+                                                       tickfont_size=18,
                                                        annotations_text_size=18,
                                                        is_safety=True)
     fig1.update_layout(xaxis_range=[0, max_y * 1.15])
@@ -100,25 +101,30 @@ def get_graphs(statzone):
     df_amount_of_workers1 = manipulate_df_salary_fig2(df_salary1)
     df_amount_of_workers0 = manipulate_df_salary_fig2(df_salary0)
 
-    percentage_change = 100 * (df_amount_of_workers1['Amount of workers'] - df_amount_of_workers0['Amount of workers']) / df_amount_of_workers0['Amount of workers']
+    percentage_change = 100 * (
+                df_amount_of_workers1['Amount of workers'] - df_amount_of_workers0['Amount of workers']) / \
+                        df_amount_of_workers0['Amount of workers']
     max_y = max(df_amount_of_workers1['Amount of workers'])
 
     fig2 = create_horizontal_bar_plot_with_annotations(numeric_vals=df_amount_of_workers1['Amount of workers'],  # x
-                                                old_numeric_vals=df_amount_of_workers0['Amount of workers'],  # old x
-                                                category_vals=df_amount_of_workers1['Salary type'],  # y
-                                                percentage_change_value=percentage_change,  # pay attention to order
-                                                title_text=title2,text_offset_to_the_right=0.15*max_y, is_safety=False)
+                                                       old_numeric_vals=df_amount_of_workers0['Amount of workers'],
+                                                       # old x
+                                                       category_vals=df_amount_of_workers1['Salary type'],  # y
+                                                       percentage_change_value=percentage_change,
+                                                       # pay attention to order
+                                                       title_text=title2, text_offset_to_the_right=0.15 * max_y,
+                                                       is_safety=False)
 
     fig2.update_layout(xaxis_range=[0, max_y * 1.15])
     return fig1, fig2
 
 
 @app.callback(
-Output(component_id='primary_map_income', component_property='figure'),
-Input(component_id='map_definition', component_property='value')
+    Output(component_id='primary_map_income', component_property='figure'),
+    Input(component_id='map_definition', component_property='value')
 )
 def change_map(map_def):
-    if map_def == 0: #'הצג מפת שינויים'
+    if map_def == 0:  # 'הצג מפת שינויים'
         percentage_change = 100 * (sal1.total_sal_avg - sal0.total_sal_avg) / sal0.total_sal_avg
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
                               zip(stat_zones_names_dict.keys(), percentage_change)}
@@ -128,7 +134,7 @@ def change_map(map_def):
                                         hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{customdata}%<br>')
         map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
         return map_fig
-    else: #'הצג ערך נוכחי'
+    else:  # 'הצג ערך נוכחי'
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
                               zip(stat_zones_names_dict.keys(), sal1.total_sal_avg)}
         map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
@@ -182,7 +188,6 @@ def manipulate_df_salary_fig2(df_salary):
     return df_amount_of_workers
 
 
-
 layout = html.Div(children=[html.H4(children='Choose the wanted area to see the graphs changes',
                                     style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
                                            'letter-spacing': '0em'}, className="pretty_container"
@@ -206,9 +211,9 @@ layout = html.Div(children=[html.H4(children='Choose the wanted area to see the 
                                         html.Div(
                                             [
                                                 ': בחר אזור', dcc.RadioItems(id='areas',
-                                                                                options=options,
-                                                                                value=0
-                                                                                ),
+                                                                             options=options,
+                                                                             value=0
+                                                                             ),
                                             ],
                                             className="mini_container",
                                         ),
