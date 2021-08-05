@@ -31,7 +31,7 @@ for key, value in statistic_area.items():
         options.append({'label': "  " + key + ' ' + str(value),
                         'value': value})
     else:
-        options.append({'label': "  " + key,
+        options.append({'label': "  " + 'כל האזורים הסטטיסטיים'[::-1],
                         'value': value})
 
 stat_zones_names_dict = {
@@ -54,7 +54,6 @@ stat_zones_names_dict = {
 crime0, crime1 = dfs_dict['df_crime_t0'], dfs_dict['df_crime_t1']
 for df in [crime0, crime1]:
     df['total_crime_cases'] = df[[col for col in df.columns if col != 'StatZone' and col != 'Year']].sum(axis=1)
-
 
 options_map = [{'label': ' הצג מפת שינויים ', 'value': 0}, {'label': ' הצג ערכים נוכחיים', 'value': 1}]
 
@@ -91,7 +90,8 @@ def get_graphs(statzone):
                           ).update_traces(mode='lines+markers')
         max_y = df_tot_crime_per_area['Amount of Crimes'].max()
 
-    string = (str(statzone) + "באזור סטטיסטי "[::-1]) if statzone != 'All Statistical zones' else "בכל האזורים הסטטיסטיים"[::-1]
+    string = (str(statzone) + "באזור סטטיסטי "[
+                              ::-1]) if statzone != 'All Statistical zones' else "בכל האזורים הסטטיסטיים"[::-1]
 
     # TODO this title is not visible because of the margin 0, add a title to the html
     fig1.update_layout(title_text=string + "מספר פשעים לפי חודש "[::-1],
@@ -177,7 +177,6 @@ def get_graphs(statzone):
     # TODO the next two graphs are not centered and are being cut from the bottom
     fig2 = px.bar(df_location, x=df_location.index, y=df_location['Amount of Crimes'],
                   color_discrete_sequence=['#252E3F'])
-
 
     # for_title = "crimes per location" if graph_type == "CrimeLocType" else "crimes per type"
     fig2.update_layout(title_text=string + "מספר פשעים לפי סוג מיקום "[::-1],
@@ -302,10 +301,10 @@ layout = html.Div(
                               style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                                      'letter-spacing': '0em'}, ),
                       html.H4([
-                                  'ניתן לבחור ולראות מפה המציגה את הערכים הנוכחיים של הפשיעה הכוללת בכל אזור סטטיסטי, וכן מפה המראה את השינויים מהחצי שנה הקודמת. בהמשך מוצגים גרפים אשר מציגים מידע נוסף על הפשיעה, וניתן לבחור להציג בהם מידע רק על אזור סטטיסטי מסוים. הגרף הראשון מציג את מגמת הפשיעה בשנה האחרונה, עם הפרדה בין החצי שנה הנוכחית לקודמת. הנוסף אליו מוצגים 2 גרפים המציגים את כמות הפשיעה מבחינת מיקומים ומבחינת סוגי פשעים. ב2 הגרפים מוצגת גם מגמת השינוי בחצי שנה הנוכחית מהחצי שנה הקודמת לה. שימו לב לעבור על הגרפים ולראות את המיגע בנוסף שהם מציגים']
-                              , style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
-                                       'letter-spacing': '0em', 'line-height':'1.6em'}
-                              )]
+                          'ניתן לבחור ולראות מפה המציגה את הערכים הנוכחיים של הפשיעה הכוללת בכל אזור סטטיסטי, וכן מפה המראה את השינויים מהחצי שנה הקודמת. בהמשך מוצגים גרפים אשר מציגים מידע נוסף על הפשיעה, וניתן לבחור להציג בהם מידע רק על אזור סטטיסטי מסוים. הגרף הראשון מציג את מגמת הפשיעה בשנה האחרונה, עם הפרדה בין החצי שנה הנוכחית לקודמת. בנוסף אליו מוצגים 2 גרפים המציגים את כמות הפשיעה מבחינת מיקומים ומבחינת סוגי פשעים. ב2 הגרפים מוצגת גם מגמת השינוי בחצי שנה הנוכחית מהחצי שנה הקודמת לה. שימו לב לעבור על הגרפים ולראות את המיגע בנוסף שהם מציגים']
+                          , style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
+                                   'letter-spacing': '0em', 'line-height': '1.6em'}
+                      )]
             ,
             className='pretty_container'
         ),
@@ -327,9 +326,9 @@ layout = html.Div(
                     html.Div(
                         [
                             ':בחר אזור סטטיסטי', dcc.RadioItems(id='areas',
-                                                         options=options,
-                                                         value=0
-                                                         ),
+                                                                options=options,
+                                                                value=0
+                                                                ),
                         ],
                         className="mini_container",
                     ),
