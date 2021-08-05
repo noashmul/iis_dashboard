@@ -131,6 +131,19 @@ def create_dfs_dict():
                 'df_cameras_t0': df_cameras_t0, 'df_cameras_t1': df_cameras_t1,
                 'df_stats_zone': df_stats_zone, 'df_aband_t0': df_aband_t0,
                 'df_aband_t1': df_aband_t1}
+
+    dfs_dict = add_row_to_missing_stat_zones(dfs_dict)
+    return dfs_dict
+
+
+def add_row_to_missing_stat_zones(dfs_dict):
+    for df in ['df_holocaust_t0', 'df_holocaust_t1']:
+        set_of_zones = list(set(dfs_dict[df].StatZone))
+        for statzone in list(set(dfs_dict['df_salaries_t0'].StatZone)):
+            if statzone not in set_of_zones:
+                new_row = dfs_dict[df].sample(n=1)
+                new_row['StatZone'] = statzone
+                dfs_dict[df] = dfs_dict[df].append(new_row)
     return dfs_dict
 
 

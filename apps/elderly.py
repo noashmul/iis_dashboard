@@ -49,7 +49,7 @@ def manipulate_holucaust_df(df, statzone):
          'בעיות בתקשורת בקליטה (עלייה)': 'בעיות בתקשורת וקליטה'})
     df["HoloSurvNdDesc"] = df["HoloSurvNdDesc"].apply(
         lambda x: str(x)[:-1] + '(' if str(x)[-1] == ')' else x)
-    if statzone == 'All Statistical Zones' or statzone == 623:  # TODO delete or statzone==623
+    if statzone == 'All Statistical Zones':  # TODO delete or statzone==623
         df_holocaust1_type = df.groupby(by=["HoloSurvNdDesc"]).count()[['Street']]
         df_holocaust1_type = df_holocaust1_type.sort_values(by=['Street'], ascending=False).head(5)
     else:

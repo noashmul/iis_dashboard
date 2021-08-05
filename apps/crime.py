@@ -91,10 +91,10 @@ def get_graphs(statzone):
                           ).update_traces(mode='lines+markers')
         max_y = df_tot_crime_per_area['Amount of Crimes'].max()
 
-    string = " stat zone " if statzone != 'All Statistical zones' else " "
+    string = (str(statzone) + "באזור סטטיסטי "[::-1]) if statzone != 'All Statistical zones' else "בכל האזורים הסטטיסטיים"[::-1]
 
     # TODO this title is not visible because of the margin 0, add a title to the html
-    fig1.update_layout(title_text=f"Amount of crimes per month in{string}{statzone}",
+    fig1.update_layout(title_text=string + "מספר פשעים לפי חודש "[::-1],
                        title_x=0.5,
                        yaxis=dict(
                            titlefont_size=18,
@@ -110,12 +110,14 @@ def get_graphs(statzone):
                        yaxis_range=[0, max_y * 1.1],
                        showlegend=False)
     fig1.add_vline(x=6.5, line_width=3, line_dash="dash", line_color="#EE553B")
+    fig1.update_xaxes(title='חודש'[::-1])
+    fig1.update_yaxes(title='כמות פשעים'[::-1])
 
     fig1.add_trace(go.Scatter(
         x=[3.5, 9.5],
         y=[min(fig1.data[0].y) / 2.5, min(fig1.data[0].y) / 2.5],
         mode="text",
-        text=['Previous half of year', 'Current half of year'],
+        text=['חצי השנה של הדו"ח הקודם'[::-1], 'חצי השנה של הדו"ח הנוכחי'[::-1]],
         textposition="top center",
         textfont=dict(
             family="sans serif",
@@ -176,8 +178,9 @@ def get_graphs(statzone):
     fig2 = px.bar(df_location, x=df_location.index, y=df_location['Amount of Crimes'],
                   color_discrete_sequence=['#252E3F'])
 
+
     # for_title = "crimes per location" if graph_type == "CrimeLocType" else "crimes per type"
-    fig2.update_layout(title_text=f"Amount of crimes per location in<br> {string}{statzone}",
+    fig2.update_layout(title_text=string + "מספר פשעים לפי סוג מיקום "[::-1],
                        title_x=0.5,
                        yaxis=dict(
                            titlefont_size=14,
@@ -191,8 +194,8 @@ def get_graphs(statzone):
                        showlegend=False,
                        yaxis_range=[0, max(fig2.data[0].y) * 1.2]
                        )
-    fig2.update_xaxes(title='Crime location', tickangle=45)
-
+    fig2.update_xaxes(title='סוג מיקום'[::-1], tickangle=45)
+    fig2.update_yaxes(title='כמות פשעים'[::-1])
     add_annotations_to_fig(fig=fig2, x=fig2.data[0].x, y=fig2.data[0].y,
                            percentage_change_value=percentage_change_value, old_y=old_y)
 
@@ -241,7 +244,7 @@ def get_graphs(statzone):
 
     fig3 = px.bar(df_type, x=df_type.index, y=df_type['Amount of Crimes'],
                   color_discrete_sequence=['#252E3F'])
-    fig3.update_layout(title_text=f"Amount of crimes per type in<br> {string}{statzone}",
+    fig3.update_layout(title_text=string + "מספר פשעים לפי סוג פשע "[::-1],
                        title_x=0.5,
                        yaxis=dict(
                            titlefont_size=14,
@@ -255,7 +258,8 @@ def get_graphs(statzone):
                        showlegend=False,
                        yaxis_range=[0, max(fig3.data[0].y) * 1.2],
                        )
-    fig3.update_xaxes(title='Crime type', tickangle=45)
+    fig3.update_xaxes(title='סוג פשע'[::-1], tickangle=45)
+    fig3.update_yaxes(title='כמות פשעים'[::-1])
     add_annotations_to_fig(fig=fig3, x=fig3.data[0].x, y=fig3.data[0].y,
                            percentage_change_value=percentage_change_value, old_y=old_y)
 
@@ -294,7 +298,7 @@ def change_map(map_def):
 layout = html.Div(
     children=[
         html.H4(
-            children=[html.H4(['בעמוד הנוכחי תוכלו לראות מגוון נתונים בנושא הפשיעה בהדר'],
+            children=[html.H4(['.בעמוד הנוכחי תוכלו לראות מגוון נתונים בנושא הפשיעה בהדר'],
                               style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                                      'letter-spacing': '0em'}, ),
                       html.H4([
