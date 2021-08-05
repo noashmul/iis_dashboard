@@ -101,7 +101,7 @@ def get_graphs(statzone):
                                                        tickfont_size=18,
                                                        annotations_text_size=18,
                                                        is_safety=False)
-    fig1.update_layout(xaxis_range=[0, max_y * 1.15], title_x=0.5)
+    fig1.update_layout(xaxis_range=[0, max_y * 1.15], title_x=0.5, titlefont_size=18)
 
     df_amount_of_workers1 = manipulate_df_salary_fig2(df_salary1)
     df_amount_of_workers0 = manipulate_df_salary_fig2(df_salary0)
@@ -120,7 +120,7 @@ def get_graphs(statzone):
                                                        title_text=title2, text_offset_to_the_right=0.15 * max_y,
                                                        is_safety=False)
 
-    fig2.update_layout(xaxis_range=[0, max_y * 1.15], title_x=0.5)
+    fig2.update_layout(xaxis_range=[0, max_y * 1.15], title_x=0.5, titlefont_size=18)
     return fig1, fig2
 
 
@@ -224,9 +224,9 @@ layout = html.Div(children=[html.H4(
                 html.Div(
                     [
                         ':בחר אזור סטטיסטי', dcc.RadioItems(id='areas',
-                                                     options=options,
-                                                     value=0
-                                                     ),
+                                                            options=options,
+                                                            value=0
+                                                            ),
                     ],
                     className="mini_container",
                 ),
