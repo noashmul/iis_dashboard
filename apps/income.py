@@ -7,6 +7,8 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 from utils import create_horizontal_bar_plot_with_annotations
 
+
+
 statistic_area = {'הכל': 0,
                   "הדר מערב - רח' אלמותנבי": 611,
                   'גן הבהאים': 612,
@@ -66,6 +68,76 @@ for df in [sal0, sal1]:
                               ['SalNoHKResNum_avg', 'SalHKResNum_avg', 'SalPenResNum_avg', 'SalSHNoBTLResNum_avg',
                                'IncSelfResNum_avg']]].sum(axis=1) / df['tot_res']
 
+
+
+@app.callback(
+    Output(component_id='Avg_salary', component_property='figure'),
+    Output(component_id='Amount_of_workers', component_property='figure'),
+    Input(component_id='areas', component_property='value')
+)
+def get_graphs(statzone):
+    df_salary1 = dfs_dict['df_salaries_t1']
+    df_salary1, df_avg_sal1 = manipulate_df_salary_fig1(df_salary1, statzone)
+    df_salary0 = dfs_dict['df_salaries_t0']
+    df_salary0, df_avg_sal0 = manipulate_df_salary_fig1(df_salary0, statzone)
+
+    if statzone == 0:
+        title1 = "Average Salary per Salary type in All Statistical zones"
+        title2 = "Amount of workers per Salary type in All Statistical zones"
+    else:
+        title1 = f"Average Salary per Salary type in {statzone} stat zone"
+        title2 = f"Amount of workers per Salary type in {statzone} stat zone"
+
+    percentage_change = 100 * (df_avg_sal1['Average salary'] - df_avg_sal0['Average salary']) / df_avg_sal0['Average salary']
+
+    fig1 = create_horizontal_bar_plot_with_annotations(numeric_vals=df_avg_sal1['Average salary'],  # x
+                                                old_numeric_vals=df_avg_sal0['Average salary'],  # old x
+                                                category_vals=df_avg_sal1['Salary type'],  # y
+                                                percentage_change_value=percentage_change,  # pay attention to order
+                                                title_text=title1, text_offset_to_the_right=50, is_safety=False)
+
+
+    df_amount_of_workers1 = manipulate_df_salary_fig2(df_salary1)
+    df_amount_of_workers0 = manipulate_df_salary_fig2(df_salary0)
+
+    percentage_change = 100 * (df_amount_of_workers1['Amount of workers'] - df_amount_of_workers0['Amount of workers']) / df_amount_of_workers0['Amount of workers']
+
+    fig2 = create_horizontal_bar_plot_with_annotations(numeric_vals=df_amount_of_workers1['Amount of workers'],  # x
+                                                old_numeric_vals=df_amount_of_workers0['Amount of workers'],  # old x
+                                                category_vals=df_amount_of_workers1['Salary type'],  # y
+                                                percentage_change_value=percentage_change,  # pay attention to order
+                                                title_text=title2,text_offset_to_the_right=50,is_safety=False)
+
+    return fig1, fig2
+
+
+@app.callback(
+Output(component_id='primary_map_income', component_property='figure'),
+Input(component_id='map_definition', component_property='value')
+)
+def change_map(map_def):
+    if map_def == 0: #'הצג מפת שינויים'
+        percentage_change = 100 * (sal1.total_sal_avg - sal0.total_sal_avg) / sal0.total_sal_avg
+        values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
+                              zip(stat_zones_names_dict.keys(), percentage_change)}
+        map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
+                                        map_title="% of change in total crime cases",
+                                        colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
+                                        hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{customdata}%<br>')
+        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        return map_fig
+    else: #'הצג ערך נוכחי'
+        values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
+                              zip(stat_zones_names_dict.keys(), sal1.total_sal_avg)}
+        map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
+                                        map_title="Current values in total crime cases",
+                                        colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
+                                        hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Current Value</b>: %{customdata}<br>',
+                                        changes_map=False)
+        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        return map_fig
+
+
 def manipulate_df_salary_fig1(df_salary, statzone):
     df_salary['SalNoHKResNum_avg'] = df_salary['SalNoHKResNum'] * df_salary['SalNoHKAve']
     df_salary['SalHKResNum_avg'] = df_salary['SalHKResNum'] * df_salary['SalHKAve']
@@ -106,88 +178,6 @@ def manipulate_df_salary_fig2(df_salary):
                                                  df_salary['SalPenResNum'].sum(), df_salary['SalSHNoBTLResNum'].sum(),
                                                  df_salary['IncSelfResNum'].sum()]
     return df_amount_of_workers
-
-@app.callback(
-    Output(component_id='Avg_salary', component_property='figure'),
-    Output(component_id='Amount_of_workers', component_property='figure'),
-    Input(component_id='areas', component_property='value')
-)
-def get_graphs(statzone):
-    df_salary1 = dfs_dict['df_salaries_t1']
-    df_salary1, df_avg_sal1 = manipulate_df_salary_fig1(df_salary1, statzone)
-    df_salary0 = dfs_dict['df_salaries_t0']
-    df_salary0, df_avg_sal0 = manipulate_df_salary_fig1(df_salary0, statzone)
-
-    if statzone == 0:
-        title1 = "Average Salary per Salary type in All Statistical zones"
-        title2 = "Amount of workers per Salary type in All Statistical zones"
-    else:
-        title1 = f"Average Salary per Salary type in {statzone} stat zone"
-        title2 = f"Amount of workers per Salary type in {statzone} stat zone"
-
-    fig1 = px.bar(df_avg_sal1, y=df_avg_sal1['Salary type'],
-                  x=df_avg_sal1['Average salary'], orientation='h',
-                  color_discrete_sequence=['#252E3F'])
-    fig1.update_layout(title_text=title1,
-                       yaxis=dict(
-                           titlefont_size=18,
-                           tickfont_size=18,
-                       ),
-                       xaxis=dict(
-                           titlefont_size=18,
-                           tickfont_size=18,
-                       ), xaxis_showgrid=True, yaxis_showgrid=True,
-                       template='simple_white',
-                       )
-    fig1.update_xaxes(tickangle=45)
-
-    df_amount_of_workers1 = manipulate_df_salary_fig2(df_salary1)
-    df_amount_of_workers0 = manipulate_df_salary_fig2(df_salary0)
-
-    fig2 = px.bar(df_amount_of_workers1, y=df_amount_of_workers1['Salary type'],
-                  x=df_amount_of_workers1['Amount of workers'], orientation='h',
-                  color_discrete_sequence=['#252E3F'])
-    fig2.update_layout(title_text=title2,
-                       yaxis=dict(
-                           titlefont_size=18,
-                           tickfont_size=18,
-                       ),
-                       xaxis=dict(
-                           titlefont_size=18,
-                           tickfont_size=18,
-                       ), xaxis_showgrid=True, yaxis_showgrid=True,
-                       template='simple_white',
-                       )
-    fig2.update_xaxes(tickangle=45)
-
-    return fig1, fig2
-
-
-@app.callback(
-Output(component_id='primary_map_income', component_property='figure'),
-Input(component_id='map_definition', component_property='value')
-)
-def change_map(map_def):
-    if map_def == 0: #'הצג מפת שינויים'
-        percentage_change = 100 * (sal1.total_sal_avg - sal0.total_sal_avg) / sal0.total_sal_avg
-        values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
-                              zip(stat_zones_names_dict.keys(), percentage_change)}
-        map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
-                                        map_title="% of change in total crime cases",
-                                        colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
-                                        hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{customdata}%<br>')
-        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-        return map_fig
-    else: #'הצג ערך נוכחי'
-        values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
-                              zip(stat_zones_names_dict.keys(), sal1.total_sal_avg)}
-        map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
-                                        map_title="Current values in total crime cases",
-                                        colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
-                                        hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Current Value</b>: %{customdata}<br>',
-                                        changes_map=False)
-        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-        return map_fig
 
 layout = html.Div(children=[html.H4(children='Choose the wanted area to see the graphs changes',
                                     style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
