@@ -39,7 +39,7 @@ app.layout = html.Div(
                 style={'font-size': 15},
             ),
 
-            dbc.Container(fluid=True,
+            dbc.Container(fluid=False,
                           id="page-content", className="pt-4"),
         ],
         )])

@@ -153,7 +153,7 @@ def get_graphs(statzone):
 
     fig3 = px.bar(age_group_df_new, y=age_group_df_new['Amount of citizen'],
                   x=age_group_df_new['Age group'], title=title3, color_discrete_sequence=['#252E3F'])
-    fig3.update_layout(title_text=title1,
+    fig3.update_layout(title_text=title3,
                        yaxis=dict(
                            titlefont_size=18,
                            tickfont_size=18,
@@ -197,7 +197,7 @@ layout = html.Div(children=[
         [
             html.Div(
                 [
-                    dcc.Graph(id='haredim')
+                    dcc.Graph(id='haredim'),
                 ],
                 className='narrow_container',
             ),
@@ -210,6 +210,6 @@ layout = html.Div(children=[
         ], ),
     html.Div(
         [dcc.Graph(id='age_group')
-         ], className='pretty_container')]
+         ], className='wide_container')]
 
 )
