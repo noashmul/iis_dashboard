@@ -90,10 +90,11 @@ def get_graphs(statzone):
                           ).update_traces(mode='lines+markers')
         max_y = df_tot_crime_per_area['Amount of Crimes'].max()
 
-    string = (str(statzone) + "באזור סטטיסטי "[
-                              ::-1]) if statzone != 'All Statistical zones' else "בכל האזורים הסטטיסטיים"[::-1]
+    string = (str(statzone) + "באזור סטטיסטי "[::-1]) if statzone != 'All Statistical zones' else \
+        "בכל שכונת הדר"[::-1]
 
-    # TODO this title is not visible because of the margin 0, add a title to the html
+    fig1.update_xaxes(title='חודש'[::-1])
+    fig1.update_yaxes(title='כמות פשעים'[::-1])
     fig1.update_layout(title_text=string + "מספר פשעים לפי חודש "[::-1],
                        title_x=0.5,
                        yaxis=dict(
@@ -110,8 +111,6 @@ def get_graphs(statzone):
                        yaxis_range=[0, max_y * 1.1],
                        showlegend=False)
     fig1.add_vline(x=6.5, line_width=3, line_dash="dash", line_color="#EE553B")
-    fig1.update_xaxes(title='חודש'[::-1])
-    fig1.update_yaxes(title='כמות פשעים'[::-1])
 
     fig1.add_trace(go.Scatter(
         x=[3.5, 9.5],
@@ -174,10 +173,11 @@ def get_graphs(statzone):
                 percentage_change_value.append(np.nan)
                 old_y.append(np.nan)
 
-    # TODO the next two graphs are not centered and are being cut from the bottom
     fig2 = px.bar(df_location, x=df_location.index, y=df_location['Amount of Crimes'],
                   color_discrete_sequence=['#252E3F'])
 
+    fig2.update_xaxes(title='סוג מיקום'[::-1], tickangle=45)
+    fig2.update_yaxes(title='כמות פשעים'[::-1])
     # for_title = "crimes per location" if graph_type == "CrimeLocType" else "crimes per type"
     fig2.update_layout(title_text=string + "מספר פשעים לפי סוג מיקום "[::-1],
                        title_x=0.5,
@@ -193,8 +193,7 @@ def get_graphs(statzone):
                        showlegend=False,
                        yaxis_range=[0, max(fig2.data[0].y) * 1.2]
                        )
-    fig2.update_xaxes(title='סוג מיקום'[::-1], tickangle=45)
-    fig2.update_yaxes(title='כמות פשעים'[::-1])
+
     add_annotations_to_fig(fig=fig2, x=fig2.data[0].x, y=fig2.data[0].y,
                            percentage_change_value=percentage_change_value, old_y=old_y)
 
