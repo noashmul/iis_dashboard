@@ -12,16 +12,17 @@ server = app.server
 app.config.suppress_callback_exceptions = True
 
 app.layout = html.Div(
-    [dbc.Row(
+    # [dbc.Row(
         [
-            html.H1('-', style={'color': '#252e3f'}),
-            html.Img(src="/assets/city.png", height="30px"),
-            html.H1('-', style={'color': '#252e3f'}),
-            html.H1('Hadar Neighborhood: Semi-annual report',
-                    style={'color': '#FFFFFF', 'text-transform': 'none'}, ),
-        ],
-        align="left",
-    ),
+            # html.H1('-', style={'color': '#252e3f','text-align': 'right'}),
+            # html.Img(src="/assets/city.png", height="30px", style={'align-items':'right'}),
+            html.H1('-', style={'color': '#252e3f', 'text-align': 'right'}),
+            html.H1('שכונת הדר: דו"ח חצי שנתי',
+                    style={'color': '#FFFFFF', 'text-transform': 'none','align-items':'center',
+                           'text-align': 'center', 'font-size': '60px'}, ),
+        # ],
+        # align="center",
+    # ),
         html.Div([
             dcc.Location(id="url"),
 
@@ -29,14 +30,15 @@ app.layout = html.Div(
                 children=[
                     dbc.Container(
                         [
-                            dbc.NavLink("Main", href="/main"),
-                            dbc.NavLink("Safety", href="/safety"),
-                            dbc.NavLink("Crime", href="/crime"),
-                            dbc.NavLink("Income", href="/income"),
-                            dbc.NavLink("Elderly", href="/elderly"),
-                            dbc.NavLink("Population", href="/population"),
+                            dbc.NavLink("דמוגרפיה", href="/population"),
+                            dbc.NavLink("קשישים", href="/elderly"),
+                            dbc.NavLink("הכנסה", href="/income"),
+                            dbc.NavLink("פשיעה", href="/crime"),
+                            dbc.NavLink("ביטחון", href="/safety"),
+                            dbc.NavLink("ראשי", href="/main"),
+
                         ])],
-                brand="Choose the wanted tab",
+                # brand="Choose the wanted tab",
                 color="primary",
                 dark=True,
                 style={'font-size': 15},
