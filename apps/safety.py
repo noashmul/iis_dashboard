@@ -155,8 +155,13 @@ layout = html.Div(children=[
                     ]),
                 ),
                 dbc.Collapse(
-                    dbc.CardBody([html.Div([html.P(id="slider-text1", children="קונפליקטים בין שכנים",
-                                                   style={'color': 'black', 'text-align': 'left'},
+                    dbc.CardBody([html.H4("5: רמת חשיבות נמוכה :1, רמת חשיבות גבוהה",
+                        # '1 רמת חשיבות נמוכה 5 רמת חשיבות גבוהה',
+
+                                          style={'text-align': 'right','text-transform': 'none', 'font-family': 'sans-serif',
+                                   'letter-spacing': '0em', 'font-size': 15, 'font-weight': 'bold'}),
+                        html.Div([html.P(id="slider-text1", children="קונפליקטים בין שכנים",
+                                                   style={'color': 'black', 'text-align': 'center'},
                                                    ),
                                             dcc.Slider(id="Weight 1", min=1, max=5, value=scores[0], step=None,
                                                        marks={
@@ -165,7 +170,7 @@ layout = html.Div(children=[
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text2", children="מצלמות אבטחה",
-                                                   style={'color': 'black'},
+                                                   style={'color': 'black', 'text-align': 'center'},
                                                    ),
                                             dcc.Slider(id="Weight 2", min=1, max=5, value=scores[1], step=None,
                                                        marks={
@@ -174,7 +179,7 @@ layout = html.Div(children=[
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text3", children="בתים נטושים",
-                                                   style={'color': 'black'},
+                                                   style={'color': 'black', 'text-align': 'center'},
                                                    ),
                                             dcc.Slider(id="Weight 3", min=1, max=5, value=scores[2], step=None,
                                                        marks={
@@ -183,7 +188,7 @@ layout = html.Div(children=[
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text4", children="שיחות למוקד העירייה בנושא ביטחון",
-                                                   style={'color': 'black'},
+                                                   style={'color': 'black', 'text-align': 'center'},
                                                    ),
                                             dcc.Slider(id="Weight 4", min=1, max=5, value=scores[3], step=None,
                                                        marks={
@@ -193,7 +198,7 @@ layout = html.Div(children=[
                                                        }),
                                             ], className="slider-container"),
                                   html.Div([html.P(id="slider-text5", children="שיחות למוקד העירייה בנושא סוציאלי",
-                                                   style={'color': 'black'},
+                                                   style={'color': 'black', 'text-align': 'center'},
                                                    ),
                                             dcc.Slider(id="Weight 5", min=1, max=5, value=scores[4], step=None,
                                                        marks={
@@ -202,7 +207,7 @@ layout = html.Div(children=[
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text6", children="פשיעה",
-                                                   style={'color': 'black'},
+                                                   style={'color': 'black', 'text-align': 'center'},
                                                    ),
                                             dcc.Slider(id="Weight 6", min=1, max=5, value=scores[5], step=None,
                                                        marks={
@@ -211,7 +216,7 @@ layout = html.Div(children=[
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text7", children="גניבות",
-                                                   style={'color': 'black'},
+                                                   style={'color': 'black', 'text-align': 'center'},
                                                    ),
                                             dcc.Slider(id="Weight 7", min=1, max=5, value=scores[6], step=None,
                                                        marks={
@@ -220,7 +225,7 @@ layout = html.Div(children=[
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text8", children="תקיפות גוף",
-                                                   style={'color': 'black'},
+                                                   style={'color': 'black', 'text-align': 'center'},
                                                    ),
                                             dcc.Slider(id="Weight 8", min=1, max=5, value=scores[7], step=None,
                                                        marks={
@@ -230,7 +235,7 @@ layout = html.Div(children=[
                                                        }),
                                             ], className="slider-container"),
                                   html.Div([html.P(id="slider-text9", children="תקיפות מיניות",
-                                                   style={'color': 'black'},
+                                                   style={'color': 'black', 'text-align': 'center'},
                                                    ),
                                             dcc.Slider(id="Weight 9", min=1, max=5, value=scores[8], step=None,
                                                        marks={
@@ -239,7 +244,7 @@ layout = html.Div(children=[
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text10", children="שודים",
-                                                   style={'color': 'black'},
+                                                   style={'color': 'black', 'text-align': 'center'},
                                                    ),
                                             dcc.Slider(id="Weight 10", min=1, max=5, value=scores[9], step=None,
                                                        marks={
@@ -248,7 +253,7 @@ layout = html.Div(children=[
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text11", children="הכנסה ממוצעת",
-                                                   style={'color': 'black'},
+                                                   style={'color': 'black', 'text-align': 'center'},
                                                    ),
                                             dcc.Slider(id="Weight 11", min=1, max=5, value=scores[10], step=None,
                                                        marks={
@@ -257,7 +262,7 @@ layout = html.Div(children=[
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
                                             html.P(id="slider-text12", children="צפיפות דמוגרפית",
-                                                   style={'color': 'black'},
+                                                   style={'color': 'black', 'text-align': 'center'},
                                                    ),
                                             dcc.Slider(id="Weight 12", min=1, max=5, value=scores[11], step=None,
                                                        marks={
