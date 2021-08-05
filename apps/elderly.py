@@ -178,9 +178,10 @@ def get_graphs(statzone):
 
     fig2 = px.bar(df_holocaust1_type, x=df_holocaust1_type.index, y=df_holocaust1_type['Amount of Holocaust Survivors'],
                   color_discrete_sequence=['#252E3F'])
-    title2 = "כמות ניצולי השואה על פי הצרכים שלהם בכל האזורים הסטטיסטיים"[
-             ::-1] if statzone == 'All Statistical Zones' else f"כמות ניצולי השואה על פי הצרכים שלהם באזור סטטיסטי {statzone_name}"[
-                                                               ::-1]
+    title2 = "כמות ניצולי השואה על פי הצרכים שלהם בכל האזורים הסטטיסטיים"[::-1] if statzone == 'All Statistical Zones' \
+        else f"כמות ניצולי השואה על פי הצרכים שלהם באזור סטטיסטי {statzone_name}"[::-1]
+    fig2.update_xaxes(title='סוג נזקקות'[::-1], tickangle=45)
+    fig2.update_yaxes(title='כמות ניצולי השואה'[::-1])
     fig2.update_layout(title_text=title2,
                        title_x=0.5, yaxis=dict(
             titlefont_size=18,
@@ -190,8 +191,6 @@ def get_graphs(statzone):
                            titlefont_size=18,
                            tickfont_size=18,
                        ), xaxis_showgrid=True, yaxis_showgrid=True, template='simple_white')
-    fig2.update_xaxes(title='סוג נזקקות'[::-1], tickangle=45)
-    fig2.update_yaxes(title='כמות ניצולי השואה'[::-1])
     add_annotations_to_fig(fig2, fig2.data[0].x, fig2.data[0].y, percentage_change,
                            old_y=list(df_holocaust0_type['Amount of Holocaust Survivors']))
     fig2.update_layout(showlegend=False)
