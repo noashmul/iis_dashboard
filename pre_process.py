@@ -25,7 +25,7 @@ def create_df_main_dash(d: dict):
     # Crime || Total Crimes
     d['df_crime_t0']['total_crimes'] = d['df_crime_t0'].drop(columns=['StatZone', 'Year']).sum(axis=1)
     d['df_crime_t1']['total_crimes'] = d['df_crime_t1'].drop(columns=['StatZone', 'Year']).sum(axis=1)
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'פשע', 'סה"כ מספר פשעים בשכונה',
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'פשיעה', 'סה"כ מספר פשעים בשכונה',
                                         d['df_crime_t0']['total_crimes'].sum(), d['df_crime_t1']['total_crimes'].sum())
 
     # Population || Total Population
