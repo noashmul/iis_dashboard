@@ -29,7 +29,7 @@ df_crimes_t0 = dfs_dict['df_crime_t0']
 StatZone_size_dict = get_area_in_km2_for_stat_zones()
 
 ### choose initial score for each weight
-scores = [3]*12
+scores = [3] * 12
 
 
 def calc_safety_scores(StatZone, df_salary, df_conflicts, df_cameras, df_aband, df_106,
@@ -157,7 +157,7 @@ layout = html.Div(children=[
                     ]),
                 ),
                 dbc.Collapse(
-                    dbc.CardBody([html.Div([html.P(id="slider-text1", children="ציון קונפליקטים בין שכנים",
+                    dbc.CardBody([html.Div([html.P(id="slider-text1", children="קונפליקטים בין שכנים",
                                                    style={'color': 'black', 'text-align': 'left'},
                                                    ),
                                             dcc.Slider(id="Weight 1", min=1, max=5, value=scores[0], step=None,
@@ -166,7 +166,7 @@ layout = html.Div(children=[
                                                                       "style": {"color": "#7fafdf"}, }
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
-                                            html.P(id="slider-text2", children="ציון מצלמות אבטחה",
+                                            html.P(id="slider-text2", children="מצלמות אבטחה",
                                                    style={'color': 'black'},
                                                    ),
                                             dcc.Slider(id="Weight 2", min=1, max=5, value=scores[1], step=None,
@@ -175,7 +175,7 @@ layout = html.Div(children=[
                                                                       "style": {"color": "#7fafdf"}, }
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
-                                            html.P(id="slider-text3", children="ציון בתים נטושים",
+                                            html.P(id="slider-text3", children="בתים נטושים",
                                                    style={'color': 'black'},
                                                    ),
                                             dcc.Slider(id="Weight 3", min=1, max=5, value=scores[2], step=None,
@@ -184,7 +184,7 @@ layout = html.Div(children=[
                                                                       "style": {"color": "#7fafdf"}, }
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
-                                            html.P(id="slider-text4", children="ציון שיחות למוקד העירייה בנושא ביטחון",
+                                            html.P(id="slider-text4", children="שיחות למוקד העירייה בנושא ביטחון",
                                                    style={'color': 'black'},
                                                    ),
                                             dcc.Slider(id="Weight 4", min=1, max=5, value=scores[3], step=None,
@@ -194,7 +194,7 @@ layout = html.Div(children=[
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
                                             ], className="slider-container"),
-                                  html.Div([html.P(id="slider-text5", children="ציון שיחות למוקד העירייה בנושא סוציאלי",
+                                  html.Div([html.P(id="slider-text5", children="שיחות למוקד העירייה בנושא סוציאלי",
                                                    style={'color': 'black'},
                                                    ),
                                             dcc.Slider(id="Weight 5", min=1, max=5, value=scores[4], step=None,
@@ -203,7 +203,7 @@ layout = html.Div(children=[
                                                                       "style": {"color": "#7fafdf"}, }
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
-                                            html.P(id="slider-text6", children="ציון פשיעה",
+                                            html.P(id="slider-text6", children="פשיעה",
                                                    style={'color': 'black'},
                                                    ),
                                             dcc.Slider(id="Weight 6", min=1, max=5, value=scores[5], step=None,
@@ -212,7 +212,7 @@ layout = html.Div(children=[
                                                                       "style": {"color": "#7fafdf"}, }
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
-                                            html.P(id="slider-text7", children="ציון גניבות",
+                                            html.P(id="slider-text7", children="גניבות",
                                                    style={'color': 'black'},
                                                    ),
                                             dcc.Slider(id="Weight 7", min=1, max=5, value=scores[6], step=None,
@@ -221,7 +221,7 @@ layout = html.Div(children=[
                                                                       "style": {"color": "#7fafdf"}, }
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
-                                            html.P(id="slider-text8", children="ציון תקיפות גוף",
+                                            html.P(id="slider-text8", children="תקיפות גוף",
                                                    style={'color': 'black'},
                                                    ),
                                             dcc.Slider(id="Weight 8", min=1, max=5, value=scores[7], step=None,
@@ -231,7 +231,7 @@ layout = html.Div(children=[
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
                                             ], className="slider-container"),
-                                  html.Div([html.P(id="slider-text9", children="ציון תקיפות מיניות",
+                                  html.Div([html.P(id="slider-text9", children="תקיפות מיניות",
                                                    style={'color': 'black'},
                                                    ),
                                             dcc.Slider(id="Weight 9", min=1, max=5, value=scores[8], step=None,
@@ -240,7 +240,7 @@ layout = html.Div(children=[
                                                                       "style": {"color": "#7fafdf"}, }
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
-                                            html.P(id="slider-text10", children="ציון שודים",
+                                            html.P(id="slider-text10", children="שודים",
                                                    style={'color': 'black'},
                                                    ),
                                             dcc.Slider(id="Weight 10", min=1, max=5, value=scores[9], step=None,
@@ -249,7 +249,7 @@ layout = html.Div(children=[
                                                                       "style": {"color": "#7fafdf"}, }
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
-                                            html.P(id="slider-text11", children="ציון הכנסה ממוצעת",
+                                            html.P(id="slider-text11", children="הכנסה ממוצעת",
                                                    style={'color': 'black'},
                                                    ),
                                             dcc.Slider(id="Weight 11", min=1, max=5, value=scores[10], step=None,
@@ -258,7 +258,7 @@ layout = html.Div(children=[
                                                                       "style": {"color": "#7fafdf"}, }
                                                            for num in [1, 2, 3, 4, 5]
                                                        }),
-                                            html.P(id="slider-text12", children="ציון צפיפות דמוגרפית",
+                                            html.P(id="slider-text12", children="צפיפות דמוגרפית",
                                                    style={'color': 'black'},
                                                    ),
                                             dcc.Slider(id="Weight 12", min=1, max=5, value=scores[11], step=None,
@@ -280,8 +280,8 @@ layout = html.Div(children=[
                 children=
                 [
                     html.H4(children='Heatmap of safety score of each stat zone',
-                    style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                       'letter-spacing': '0em'}),
+                            style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+                                   'letter-spacing': '0em'}),
                     html.Div(
                         id="graph-container",
                         children=[
@@ -289,13 +289,13 @@ layout = html.Div(children=[
                         ], className='map_container_safety'),
 
                 ],
-                )
+            )
         ], className="pretty_container"),
         html.Div([
             html.Div([
                 html.Div(
                     [
-                        'Choose area: ', dcc.RadioItems(id='areas',
+                        ': בחר אזור', dcc.RadioItems(id='areas',
                                                         options=options,
                                                         value=0
                                                         ),
@@ -310,12 +310,12 @@ layout = html.Div(children=[
                     className='map_container', )
             ],
                 className="row_rapper"),
-                html.H4('For each component, higher score means safer sense. For example, higher thefts score means less thefts, which is safer.',
-                        style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+            html.H4(
+                'For each component, higher score means safer sense. For example, higher thefts score means less thefts, which is safer.',
+                style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
                        'letter-spacing': '0em'})], className='pretty_container')
     ], )
 ], )
-
 
 
 @app.callback(
@@ -354,7 +354,8 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
         tmp_score = sum(np.multiply(list(row[:-1]), W))
         values_dict_t0[row.StatZone] = int(tmp_score * 100)
     scores_dict = [values_dict_t0, values_dict_t1]
-    fig1 = get_choroplethmap_fig(values_dict=values_dict_t1, map_title="Stat Zone Safety Score", is_safety_map=True, scores_dicts=scores_dict)
+    fig1 = get_choroplethmap_fig(values_dict=values_dict_t1, map_title="Stat Zone Safety Score", is_safety_map=True,
+                                 scores_dicts=scores_dict)
     fig1.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     if area in [0, '0']:
@@ -362,21 +363,40 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
     if area == 'All Statistical zones':
         score_area_val = list(df_score_t1.drop("StatZone", axis=1).mean())
         title2 = "Component scores for All Statistical zones "
+        title2 = "מרכיבי הציון עבור כל האזורים הסטטיסטיים"
+        title2 = title2[::-1]
     else:
         score_area_val = df_score_t1[df_score_t1['StatZone'] == int(area)].drop('StatZone', axis=1).values[0]
         title2 = f"Component scores for stat zone {area}"
+        title2 = f'מרכיבי הציון עבור אזור סטטיסטי {area}'
+        title2 = title2[::-1]
     score_area_val = [i * 100 for i in score_area_val]
 
-    y_label = ['ציון קונפליקטים בין שכנים', 'ציון מצלמות אבטחה', 'ציון בתים נטושים',
-               'ציון שיחות למוקד העירייה בנושא ביטחון', 'ציון שיחות למוקד העירייה בנושא סוציאלי', 'ציון פשיעה',
-               'ציון גניבות', 'ציון תקיפות גוף', 'ציון תקיפות מיניות', 'ציון שודים', 'ציון הכנסה ממוצעת ',
-               'ציון צפיפות דמוגרפית']
+    y_label = ['קונפליקטים בין שכנים', 'מצלמות אבטחה', 'בתים נטושים',
+               'שיחות למוקד העירייה בנושא ביטחון', 'שיחות למוקד העירייה בנושא סוציאלי', 'פשיעה',
+               'גניבות', 'תקיפות גוף', 'תקיפות מיניות', 'שודים', 'הכנסה ממוצעת ',
+               'צפיפות דמוגרפית']
+    y_label_data = ['הציון מעיד על עד כמה קונפליקטים בין שכנים נפוצים באזור, כאשר מעט קונפליקטים יגררו ציון גבוה יותר',
+                    'הציון מסביר עד כמה האזור מכיל מצלמות אבטחה ביחס לצפיפות התושבים באזור',
+                    'הציון מעיד על עד כמה האזור מכיל בתים נטושים, כאשר ציון גבוה מעיד על מעט בתים נטושים',
+                    'הציון מעיד על כמות פניות למוקד העירייה בנשא ביטחון, כאשר ציון גבוה מעיד על מעט פניות',
+                    'הציון מעיד על כמות פניות למוקד העירייה בנשא סוציאלי, כאשר ציון גבוה מעיד על מעט פניות',
+                    'הציון מעיד על כמות הפשיעה הכללית באזור, כאשר ציון גבוה מעיד על מעט פשיעה',
+                    'הציון מעיד על כמות הגניבות באזור, כאשר ציון גבוה יותר מעיד על פחות גניבות',
+                    'הציון מעיד על כמות תקיפות הגוף באזור, כאשר ציון גבוה יותר מעיד על פחות תקיפות גוף',
+                    'הציון מעיד על כמות תקיפות מיניות באזור, כאשר ציון גבוה יותר מעיד על פחות תקיפות מיניות',
+                    'הציון מעיד על כמות השודים באזור, כאשר ציון גבוה יותר מעיד על פחות שודים',
+                    'הציון מעיד על ההכנס הממוצעת של התושבים באזור, כאשר ציון גבוה יותר מעיל על הכנסה ממוצעת גבוהה יותר',
+                    'הציון מעיד על צפיפות התושבים באזור, כאשר ציון גבוה יותר מעיד על צפיפות נמוכה יותר']
+    y_label_data = [item[::-1] for item in y_label_data]
     y_label = [s[::-1] for s in y_label]
     fig2_df = pd.DataFrame(columns=['Score', 'Score component'])
     fig2_df['Score'] = score_area_val
-    fig2_df['Score component'] = y_label
+    fig2_df['Score Components'] = y_label
+    fig2_df['data'] = y_label_data
     fig2_df = fig2_df.sort_values(by='Score', ascending='False')
-    fig2 = px.bar(fig2_df, x=fig2_df.Score, y=fig2_df['Score component'], color_discrete_sequence=['#252E3F'])
+    fig2 = px.bar(fig2_df, x=fig2_df.Score, y=fig2_df['Score Components'], color_discrete_sequence=['#252E3F'],
+                  hover_name='data')
     fig2.update_layout(title_text=title2, barmode='stack', yaxis={'categoryorder': 'total descending'})
 
     return fig1, fig2
@@ -422,7 +442,6 @@ def reset_all_weights(n1):
         return scores
     else:
         return scores
-
 
 # if __name__ == '__main__':
 # score_area_val = list(df_scores.mean())
