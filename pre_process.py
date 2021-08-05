@@ -20,21 +20,21 @@ def create_df_main_dash(d: dict):
     Create a table for the main tab of the dashboard
     :param d: dfs_dict
     """
-    df_main_dash = pd.DataFrame(columns=['Subject', 'Description', 'Value', 'Percent_comparison'])
+    df_main_dash = pd.DataFrame(columns=['נושא', 'תיאור','ערך', 'אחוז שינוי מהדו"ח הקודם'])
 
     # Crime || Total Crimes
     d['df_crime_t0']['total_crimes'] = d['df_crime_t0'].drop(columns=['StatZone', 'Year']).sum(axis=1)
     d['df_crime_t1']['total_crimes'] = d['df_crime_t1'].drop(columns=['StatZone', 'Year']).sum(axis=1)
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Crime', 'Total Crimes in Current Half of Year',
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'פשע', 'סה"כ מספר פשעים בשכונה',
                                         d['df_crime_t0']['total_crimes'].sum(), d['df_crime_t1']['total_crimes'].sum())
 
     # Population || Total Population
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Population', 'Total Population',
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'דמוגרפיה', 'גודל אוכלוסיה כוללת',
                                         int(d['df_salaries_t0']['ResNum'].sum()),
                                         int(d['df_salaries_t1']['ResNum'].sum()))
 
     # Population || Total Haredim
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Population', 'Total Haredi Population',
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'דמוגרפיה', 'גודל אוכלוסיה חרדית',
                                         int(d['df_haredim_t0']['TotHaredim'].sum()),
                                         int(d['df_haredim_t1']['TotHaredim'].sum()))
 
@@ -55,31 +55,32 @@ def create_df_main_dash(d: dict):
         for ResNum, Salary in zip(df_salaries['ResNum_Salary'], df_salaries['weighted_salary']):
             Average_Salary_list[i] += (ResNum / (df_salaries['ResNum_Salary'].sum())) * Salary
 
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Population', 'Average Salary', int(Average_Salary_list[0]),
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'דמוגרפיה', 'שכר ממוצע', int(Average_Salary_list[0]),
                                         int(Average_Salary_list[1]))
 
     # Elderly || Senior Citizens || len(df_seniors)
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Senior Citizens', len(d['df_seniors_t0']),
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'קשישים', 'סה"כ אזרחים ותיקים', len(d['df_seniors_t0']),
                                         len(d['df_seniors_t0']))
 
     # Elderly || Lone Senior Citizens
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Lone Senior Citizens',
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'קשישים', 'סה"כ אזרחים ותיקים בודדים',
                                         d['df_seniors_t0']['SeniorAlone'].sum(),
                                         d['df_seniors_t1']['SeniorAlone'].sum())
 
     # Elderly || Senior Citizens That Recieve Food ||
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Receiving Food Senior Citizens',
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'קשישים', 'סה"כ אזרחים ותיקים מקבלי מזון',
                                         d['df_seniors_t0']['SeniorRecivFood'].sum(),
                                         d['df_seniors_t1']['SeniorRecivFood'].sum())
 
     # Elderly || Holocaust Srvivors
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Holocaust Survivors',
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'קשישים', 'סה"כ ניצולי שואה',
                                         len(d['df_holocaust_t0']), len(d['df_holocaust_t1']))
 
     # Elderly || Unrecognized Holocaust Survivors ||
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'Elderly', 'Number of Unrecognized Holocaust Survivors',
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'קשישים', 'סה"כ ניצולי שואה לא מוכרים',
                                         sum(d['df_holocaust_t0']['HoloSurvKnwn'] == "לא מוכר"),
                                         sum(d['df_holocaust_t1']['HoloSurvKnwn'] == "לא מוכר"))
+
     return df_main_dash
 
 
