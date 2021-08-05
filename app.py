@@ -8,6 +8,9 @@ from app_def import app
 # import all pages in the app
 from apps import main, safety, crime, income, elderly, population
 
+server = app.server
+app.config.suppress_callback_exceptions = True
+
 app.layout = html.Div(
     [dbc.Row(
         [
