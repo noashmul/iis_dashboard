@@ -95,8 +95,6 @@ seniors1_per_zone = seniors1.groupby(by=["StatZone"]).count()[['Street']]
 seniors0_per_zone = seniors0.groupby(by=["StatZone"]).count()[['Street']]
 
 
-
-
 @app.callback(
     Output(component_id='seniors_type', component_property='figure'),
     Output(component_id='needed_help_type', component_property='figure'),
@@ -134,9 +132,13 @@ def get_graphs(statzone):
                   )
 
     string = " Stat Zone " if statzone != 'All Statistical Zones' else " "
+    statzone_name = str(statzone)[::-1]
+    title1 = "מצב האזרחים המבוגרים בכל האזורים הסטטיסטיים"[
+             ::-1] if statzone == 'All Statistical Zones' else f"מצב האזרחים המבוגרים באזור סטטיסטי {statzone_name}"[
+                                                               ::-1]
 
     # TODO this title is not visible because of the margin 0, add a title to the html
-    fig1.update_layout(title_text=f"Status of Seniors Citizens in{string}{statzone}",
+    fig1.update_layout(title_text=title1,
                        yaxis=dict(
                            titlefont_size=18,
                        ),
@@ -176,7 +178,10 @@ def get_graphs(statzone):
 
     fig2 = px.bar(df_holocaust1_type, x=df_holocaust1_type.index, y=df_holocaust1_type['Amount of Holocaust Survivors'],
                   color_discrete_sequence=['#252E3F'])
-    fig2.update_layout(title_text=f"# of holocaust survivors per needed help <br> type in{string}{statzone}",
+    title2 = "כמות ניצולי השואה על פי הצרכים שלהם בכל האזורים הסטטיסטיים"[
+             ::-1] if statzone == 'All Statistical Zones' else f"כמות ניצולי השואה על פי הצרכים שלהם באזור סטטיסטי {statzone_name}"[
+                                                               ::-1]
+    fig2.update_layout(title_text=title2,
                        title_x=0.5, yaxis=dict(
             titlefont_size=18,
             tickfont_size=18,
@@ -185,8 +190,8 @@ def get_graphs(statzone):
                            titlefont_size=18,
                            tickfont_size=18,
                        ), xaxis_showgrid=True, yaxis_showgrid=True, template='simple_white')
-    fig2.update_xaxes(title='Needed Help Type', tickangle=45)
-    fig2.update_yaxes(title='# Of Holocaust Survivors')
+    fig2.update_xaxes(title='סוג נזקקות'[::-1], tickangle=45)
+    fig2.update_yaxes(title='כמות ניצולי השואה'[::-1])
     add_annotations_to_fig(fig2, fig2.data[0].x, fig2.data[0].y, percentage_change,
                            old_y=list(df_holocaust0_type['Amount of Holocaust Survivors']))
     fig2.update_layout(showlegend=False)
@@ -196,13 +201,12 @@ def get_graphs(statzone):
     return fig1, fig2, text3_display
 
 
-
 @app.callback(
-Output(component_id='primary_map_elderly', component_property='figure'),
-Input(component_id='map_definition', component_property='value')
+    Output(component_id='primary_map_elderly', component_property='figure'),
+    Input(component_id='map_definition', component_property='value')
 )
 def change_map(map_def):
-    if map_def == 0: #'הצג מפת שינויים'
+    if map_def == 0:  # 'הצג מפת שינויים'
         percentage_change = 100 * ((seniors1_per_zone.Street - seniors0_per_zone.Street) / seniors0_per_zone.Street)
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
                               zip(stat_zones_names_dict.keys(), percentage_change)}
@@ -213,7 +217,7 @@ def change_map(map_def):
                                         hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{customdata}%<br>')
         map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
         return map_fig
-    else: #'הצג ערך נוכחי'
+    else:  # 'הצג ערך נוכחי'
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
                               zip(stat_zones_names_dict.keys(), seniors1_per_zone.Street)}
         map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
@@ -232,7 +236,7 @@ layout = html.Div(
                               style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                                      'letter-spacing': '0em'}, ),
                       html.H4([
-                          'ניתן לבחור ולראות מפה המציגה את הערכים הנוכחיים של כמות האוכלוסיה המבוגרת בכל אזור סטטיסטי, וכן מפה המראה את השינויים מהחצי שנה הקודמת. בהמשך מוצגים גרפים אשר מציגים מידע נוסף על אוכלוסיה זו, וניתן לבחור להציג בהם מידע רק על אזור סטטיסטי מסוים.תצוגה ראשונית מדגישה את כמות ניצולי השואה (עבור הדר כולה או עבור האזור הנבחר). בנוסף, מוצגים 2 גרפים המציגים את מצב האזרחים המבוגרים והנזקקות שלהם- גרף המפרט מה סוג הנזקקות של המבוגרים באזור ואת השינוי מהחצי שנה הקודמת וגרף המפרט מי מהקששים מקבל מזון ומי בודד (במעבר על גרף העוגה ניתן לראות גם את הערכים עצמם ולא רק אחזוים)']
+                          'ניתן לבחור ולראות מפה המציגה את הערכים הנוכחיים של כמות האוכלוסיה המבוגרת בכל אזור סטטיסטי, וכן מפה המראה את השינויים מהחצי שנה הקודמת. בהמשך מוצגים גרפים אשר מציגים מידע נוסף על אוכלוסיה זו, וניתן לבחור להציג בהם מידע רק על אזור סטטיסטי מסוים. תצוגה ראשונית מדגישה את כמות ניצולי השואה (עבור הדר כולה או עבור האזור הנבחר). בנוסף, מוצגים 2 גרפים המציגים את מצב האזרחים המבוגרים והנזקקות שלהם- גרף המפרט מה סוג הנזקקות של המבוגרים באזור ואת השינוי מהחצי שנה הקודמת וגרף המפרט מי מהקששים מקבל מזון ומי בודד (במעבר על גרף העוגה ניתן לראות גם את הערכים עצמם ולא רק אחזוים)']
                           , style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                                    'letter-spacing': '0em', 'line-height': '1.6em'}
                       )]
@@ -258,8 +262,8 @@ layout = html.Div(
                     html.Div(
                         [
                             ': בחר אזור', dcc.RadioItems(id='areas',
-                                                            options=options,
-                                                            value=0),
+                                                         options=options,
+                                                         value=0),
                         ],
                         className="mini_container",
                     ),
@@ -272,7 +276,8 @@ layout = html.Div(
         html.Div(
             children=[
                 html.H4(  # TODO maybe put "All stat.." / number of stat zone like in graphs
-                    ["Number of Holocaust Survivors (for current area choose)"],
+                    # ["Number of Holocaust Survivors (for current area choose)"],
+                    [": כמות ניצולי השואה (עבור האזור הנבחר)"], style={'text-align': 'right', },
                     className="container_title",
                 ),
                 dcc.Loading(

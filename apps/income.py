@@ -77,11 +77,16 @@ def get_graphs(statzone):
     df_salary0, df_avg_sal0 = manipulate_df_salary_fig1(df_salary0, statzone)
 
     if statzone == 0:
-        title1 = "Average Salary per Salary type in All Statistical zones"
-        title2 = "Amount of workers per Salary type in All Statistical zones"
+        # title1 = "Average Salary per Salary type in All Statistical zones"
+        # title2 = "Amount of workers per Salary type in All Statistical zones"
+        title1 = "משכורת ממוצעת עבור כל סוגי המשכורות בכל האזורים הסטטיסטים"[::-1]
+        title2 = "כמות העובדים עבור כל סוגי המשכורות בכל האזורים הסטטיסטיים"[::-1]
     else:
-        title1 = f"Average Salary per Salary type in {statzone} stat zone"
-        title2 = f"Amount of workers per Salary type in {statzone} stat zone"
+        statzone_name = str(statzone)
+        # title1 = f"Average Salary per Salary type in {statzone} stat zone"
+        # title2 = f"Amount of workers per Salary type in {statzone} stat zone"
+        title1 = f"משכורת ממוצעת עבור כל סוגי המשכורות באזור סטטיסטי {statzone_name[::-1]}"[::-1]
+        title2 = f"כמות העובדים עבור כל סוגי המשכורות באזור סטטיסטי {statzone_name[::-1]}"[::-1]
 
     percentage_change = 100 * (df_avg_sal1['Average salary'] - df_avg_sal0['Average salary']) / df_avg_sal0[
         'Average salary']
@@ -96,13 +101,13 @@ def get_graphs(statzone):
                                                        tickfont_size=18,
                                                        annotations_text_size=18,
                                                        is_safety=True)
-    fig1.update_layout(xaxis_range=[0, max_y * 1.15])
+    fig1.update_layout(xaxis_range=[0, max_y * 1.15], title_x=0.5)
 
     df_amount_of_workers1 = manipulate_df_salary_fig2(df_salary1)
     df_amount_of_workers0 = manipulate_df_salary_fig2(df_salary0)
 
     percentage_change = 100 * (
-                df_amount_of_workers1['Amount of workers'] - df_amount_of_workers0['Amount of workers']) / \
+            df_amount_of_workers1['Amount of workers'] - df_amount_of_workers0['Amount of workers']) / \
                         df_amount_of_workers0['Amount of workers']
     max_y = max(df_amount_of_workers1['Amount of workers'])
 
@@ -115,7 +120,7 @@ def get_graphs(statzone):
                                                        title_text=title2, text_offset_to_the_right=0.15 * max_y,
                                                        is_safety=False)
 
-    fig2.update_layout(xaxis_range=[0, max_y * 1.15])
+    fig2.update_layout(xaxis_range=[0, max_y * 1.15], title_x=0.5)
     return fig1, fig2
 
 
@@ -188,57 +193,65 @@ def manipulate_df_salary_fig2(df_salary):
     return df_amount_of_workers
 
 
-layout = html.Div(children=[html.H4(children='Choose the wanted area to see the graphs changes',
-                                    style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                                           'letter-spacing': '0em'}, className="pretty_container"
-                                    ),
-                            html.Div([
-                                html.Div([html.H6('בחר את תצוגת המפה',
-                                                  style={'Font-weight': 'bold', 'text-transform': 'none',
-                                                         'letter-spacing': '0em', 'font-family': 'sans-serif',
-                                                         'font-size': 20}),
-                                          dcc.RadioItems(id='map_definition',
-                                                         options=options_map,
-                                                         value=0,
-                                                         labelStyle={'display': 'block'},
-                                                         inputStyle={'textAlign': 'right'}
+layout = html.Div(children=[html.H4(
+    children=[html.H4(['בעמוד הנוכחי תוכלו לראות מגוון נתונים בנושא ההכנסה של האוכלוסיה בהדר'],
+                      style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
+                             'letter-spacing': '0em'}, ),
+              html.H4([
+                  'ניתן לבחור ולראות מפה המציגה את הערכים הנוכחיים של ההכנסה הממוצעת בכל אזור סטטיסטי, וכן מפה המראה את השינויים מהחצי שנה הקודמת. בהמשך מוצגים גרפים אשר מציגים מידע נוסף על ההכנסה, וניתן לבחור להציג בהם מידע רק על אזור סטטיסטי מסוים. מוצגים 2 גרפים המציגים את כמות העובדים והשכר הממוצע עבור מגוון סוגי הכנסות.הגרפים מציגים את המצב הנוכחי ומוצג בהם השינוי מהחצי שנה שעברה (במעבר על הגרפים ניתן לראות את הערכים עצמם ואת השינוי בהם)']
+                  , style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
+                           'letter-spacing': '0em', 'line-height': '1.6em'}
+              )]
+    ,
+    className='pretty_container'
+),
+    html.Div([
+        html.Div([html.H6('בחר את תצוגת המפה',
+                          style={'Font-weight': 'bold', 'text-transform': 'none',
+                                 'letter-spacing': '0em', 'font-family': 'sans-serif',
+                                 'font-size': 20}),
+                  dcc.RadioItems(id='map_definition',
+                                 options=options_map,
+                                 value=0,
+                                 labelStyle={'display': 'block'},
+                                 inputStyle={'textAlign': 'right'}
 
-                                                         ), ], style={'textAlign': 'center', 'font-size': 17,
-                                                                      'font-family': 'sans-serif',
-                                                                      'letter-spacing': '0em'}),
-                                html.Div(
-                                    [
-                                        html.Div(
-                                            [
-                                                ': בחר אזור', dcc.RadioItems(id='areas',
-                                                                             options=options,
-                                                                             value=0
-                                                                             ),
-                                            ],
-                                            className="mini_container",
-                                        ),
-                                        html.Div([
-                                            dcc.Graph(id='primary_map_income')
-                                        ], className="map_container"),
-                                    ],
-                                    # id="info-container1",
-                                    className="row_rapper",
-                                ), ], className="pretty_container"),
-                            html.Div(
-                                [
-                                    html.Div(
-                                        [
-                                            dcc.Graph(id='Avg_salary')
-                                        ],
-                                        className='pretty_container',
-                                    ),
-                                    html.Div(
-                                        [
-                                            dcc.Graph(id='Amount_of_workers')
-                                        ],
-                                        className='pretty_container',
-                                    ),
-                                ], )
-                            ]
+                                 ), ], style={'textAlign': 'center', 'font-size': 17,
+                                              'font-family': 'sans-serif',
+                                              'letter-spacing': '0em'}),
+        html.Div(
+            [
+                html.Div(
+                    [
+                        ': בחר אזור', dcc.RadioItems(id='areas',
+                                                     options=options,
+                                                     value=0
+                                                     ),
+                    ],
+                    className="mini_container",
+                ),
+                html.Div([
+                    dcc.Graph(id='primary_map_income')
+                ], className="map_container"),
+            ],
+            # id="info-container1",
+            className="row_rapper",
+        ), ], className="pretty_container"),
+    html.Div(
+        [
+            html.Div(
+                [
+                    dcc.Graph(id='Avg_salary')
+                ],
+                className='pretty_container',
+            ),
+            html.Div(
+                [
+                    dcc.Graph(id='Amount_of_workers')
+                ],
+                className='pretty_container',
+            ),
+        ], )
+]
 
-                  )
+)
