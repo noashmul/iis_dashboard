@@ -210,6 +210,6 @@ layout = html.Div(children=[
         ], ),
     html.Div(
         [dcc.Graph(id='age_group')
-         ], className='wide_container')]
+         ], className='pretty_container')]
 
 )

@@ -32,7 +32,6 @@ def blank_fig(height):
         "data": [],
         "layout": {
             "height": height,
-            # "template": template,
             "xaxis": {"visible": False},
             "yaxis": {"visible": False},
         },
@@ -138,7 +137,6 @@ def get_graphs(statzone):
                                                       list(pie_df['status'])[2]: '#636EFA',
                                                       list(pie_df['status'])[3]: 'darkblue'}
                   )
-    # fig1.update_layout(legend={'traceorder':'reversed+grouped'})
 
     string = " Stat Zone " if statzone != 'All Statistical Zones' else " "
 

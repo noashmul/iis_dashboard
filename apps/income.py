@@ -184,13 +184,13 @@ layout = html.Div(children=[html.H4(children='Choose the wanted area to see the 
                                         [
                                             dcc.Graph(id='Avg_salary')
                                         ],
-                                        className='wide_container',
+                                        className='pretty_container',
                                     ),
                                     html.Div(
                                         [
                                             dcc.Graph(id='Amount_of_workers')
                                         ],
-                                        className='wide_container',
+                                        className='pretty_container',
                                     ),
                                 ], )
                             ]
