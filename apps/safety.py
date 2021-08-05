@@ -127,13 +127,10 @@ for key, value in statistic_area.items():
     else:
         options.append({'label': "  " + key,
                         'value': value})
-# 'A personal safety score is a combination of 12 different components, which represent different aspects of personal safety. \
-#          Please customize the importance of each component according to your needs. '
-
-# "Click here to customize the importance of each component"
 
 layout = html.Div(children=[
-    html.Div([html.H4('ציון הביטחון האישי הוא קומבינציה של 12 קומפוננטות שונות, המציגות הביטים שונים של ביטחון אישי. אנא בחר את החשיבות של המשקולות השונות בהתאם לצרכים שלך '
+    html.Div([html.H4(
+        'ציון הביטחון האישי הוא קומבינציה של 12 קומפוננטות שונות, המציגות הביטים שונים של ביטחון אישי. אנא בחר את החשיבות של המשקולות השונות בהתאם לצרכים שלך '
         ,
         style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                'letter-spacing': '0em'}, )],
@@ -300,9 +297,9 @@ layout = html.Div(children=[
                 html.Div(
                     [
                         'בחר אזור סטטיסטי', dcc.RadioItems(id='areas',
-                                                        options=options,
-                                                        value=0
-                                                        ),
+                                                     options=options,
+                                                     value=0
+                                                     ),
                     ],
                     className="mini_container",
                 ),
@@ -314,10 +311,6 @@ layout = html.Div(children=[
                     className='map_container', )
             ],
                 className="row_rapper"),
-            # html.H4(
-            #     'For each component, higher score means safer sense. For example, higher thefts score means less thefts, which is safer.',
-            #     style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-            #            'letter-spacing': '0em'})
         ], className='pretty_container')
     ], )
 ], )
@@ -373,7 +366,6 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
         score_area_val_t1 = df_score_t1[df_score_t1['StatZone'] == int(area)].drop('StatZone', axis=1).values[0]
         score_area_val_t0 = df_score_t0[df_score_t0['StatZone'] == int(area)].drop('StatZone', axis=1).values[0]
         title2 = f'מרכיבי הציון עבור אזור סטטיסטי {str(area)[::-1]}'[::-1]
-    # score_area_val = [i * 100 for i in score_area_val]
     score_area_val_t1 = [i * 100 for i in score_area_val_t1]
     score_area_val_t0 = [i * 100 for i in score_area_val_t0]
 
@@ -399,21 +391,20 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
     fig2_df['Score_t1'] = score_area_val_t1
     fig2_df['Score_t0'] = score_area_val_t0
     fig2_df['Score component'] = y_label
-    fig2_df['diff'] = 100*(fig2_df['Score_t1']-fig2_df['Score_t0']) / fig2_df['Score_t0']
+    fig2_df['diff'] = 100 * (fig2_df['Score_t1'] - fig2_df['Score_t0']) / fig2_df['Score_t0']
     fig2_df['diff'].replace([np.inf, -np.inf], 0, inplace=True)
     fig2_df['diff'].replace([np.nan], 0, inplace=True)
     fig2_df['data'] = y_label_data
 
     fig2_df = fig2_df.sort_values(by='Score_t1', ascending='False')
     max_y = max(fig2_df['Score_t1'])
-    fig2 = create_horizontal_bar_plot_with_annotations(numeric_vals=fig2_df['Score_t1'], old_numeric_vals = fig2_df['Score_t0'],
-                                                       category_vals =fig2_df['Score component'], percentage_change_value= fig2_df['diff'],
-                                                       title_text=title2, text_offset_to_the_right = 0.2*max_y, tickfont_size=12, annotations_text_size=14,
+    fig2 = create_horizontal_bar_plot_with_annotations(numeric_vals=fig2_df['Score_t1'],
+                                                       old_numeric_vals=fig2_df['Score_t0'],
+                                                       category_vals=fig2_df['Score component'],
+                                                       percentage_change_value=fig2_df['diff'],
+                                                       title_text=title2, text_offset_to_the_right=0.2 * max_y,
+                                                       tickfont_size=12, annotations_text_size=14,
                                                        is_safety=True, y_label_data=fig2_df['data'])
-    # fig2.update_traces(hovertemplate="data",data=fig2_df)
-    # fig2 = px.bar(fig2_df, x=fig2_df.Score, y=fig2_df['Score component'], color_discrete_sequence=['#252E3F'])
-    # fig2.update_layout(title_text=title2, barmode='stack', yaxis={'categoryorder': 'total descending'})
-
     return fig1, fig2
 
 
@@ -457,52 +448,3 @@ def reset_all_weights(n1):
         return scores
     else:
         return scores
-
-# if __name__ == '__main__':
-# score_area_val = list(df_scores.mean())
-# area=611
-# score_area_val = list(df_scores[df_scores['StatZone'] == area].drop("StatZone", axis=1).values[0])
-# X_label = ["Neighbors' Conflicts", "Security Cameras", 'Abandoned houses',
-#            'Calls to 106 - Security', 'Calls to 106 - Social', 'Crime', 'Thefts',
-#            'BodyAssaults','SexualAssaults','Robbery', 'Average Income', 'Demographic density']
-# fig2 = px.bar(x=X_label, y=score_area_val, title=f"Component scores for stat zone {area}")
-# fig2.show()
-# a = 1
-#     app.run_server(debug=True)
-#     values_dict = dict.fromkeys([611, 612, 613, 621, 622, 623, 631, 632, 633, 634, 641, 642, 643, 644], 0.)
-#     data = dict.fromkeys([611, 612, 613, 621, 622, 623, 631, 632, 633, 634, 641, 642, 643, 644], 0.)
-#     W = [1,2,3,4,5,6,7,8,9,10,11,12]
-#     W = [float(i)/sum(W) for i in W]
-#     #load dfs
-#     df_salaries_t1 = dfs_dict['df_salaries_t1']
-#     df_conflicts_t1 = dfs_dict['df_conflicts_t1']
-#     df_cameras = dfs_dict['df_cameras_t1']
-#     df_aband = dfs_dict['df_aband_t1']
-#     df_106 = dfs_dict['df_106_t1']
-#     df_crimes = dfs_dict['df_crime_t1']
-#
-#     for StatZone in values_dict.keys():
-#         X_features = calc_safety_scores(StatZone, df_salaries_t1, df_conflicts_t1, df_cameras, df_aband, df_106,
-#                                         df_crimes)
-#         data[StatZone] = X_features
-#
-#     df_scores = pd.DataFrame(data.values(),
-#                          columns=['conflicts_s', 'cameras_s', 'aband_s', 'security_106_s', 'social_106_s', 'crime_s', \
-#                                   'crime_thefts_s', 'crime_BodyAssaults_s', 'crime_SexualAssaults_s', 'crime_Robbery_s', \
-#                                   'income_avg_s', 'Demographic_density_s'])
-#     df_scores['StatZone'] = data.keys()
-#     for col in df_scores.columns[:-1]:
-#         df_scores[col] = (df_scores[col] - df_scores[col].min()) / (df_scores[col].max() - df_scores[col].min())
-#
-#     SafetyScore_lst =[]
-#     for idx,row in df_scores.iterrows():
-#         tmp_score = sum(np.multiply(list(row[:-1]),W))
-#         SafetyScore_lst.append(tmp_score)
-#
-#     df_scores['SafetyScore'] = SafetyScore_lst
-#
-#     for StatZone in values_dict.keys():
-#         area_score = df_scores[df_scores['StatZone']==StatZone]['SafetyScore'].values[0]
-#         values_dict[StatZone] = area_score
-#
-#

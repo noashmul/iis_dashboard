@@ -51,10 +51,8 @@ def create_horizontal_bar_plot_with_annotations(numeric_vals,  # x
                                                 titlefont_size=18,
                                                 tickfont_size=18,
                                                 tickangle=45,
-                                                is_safety = False
+                                                is_safety=False
                                                 ):
-
-
     if is_safety:
         fig = go.Figure()
         fig.add_trace(
@@ -64,8 +62,9 @@ def create_horizontal_bar_plot_with_annotations(numeric_vals,  # x
                 marker=dict(color=bar_color),
                 name='',
                 orientation='h',
-                customdata=[f'{int(old_y_i)}→{int(y_i)}<br>{hover}' if (not np.isnan(old_y_i) and not np.isnan(y_i)) else ''
-                            for old_y_i, y_i,hover in zip(old_numeric_vals, numeric_vals, y_label_data)],
+                customdata=[
+                    f'{int(old_y_i)}→{int(y_i)}<br>{hover}' if (not np.isnan(old_y_i) and not np.isnan(y_i)) else ''
+                    for old_y_i, y_i, hover in zip(old_numeric_vals, numeric_vals, y_label_data)],
                 hovertemplate='%{customdata}<br>'
             )
         )
@@ -99,7 +98,7 @@ def create_horizontal_bar_plot_with_annotations(numeric_vals,  # x
                                 showarrow=False))
     fig.update_layout(annotations=annotations)
 
-    fig.update_layout(title_text=title_text,
+    fig.update_layout(title_text=title_text, title_x=0.5,
                       yaxis=dict(
                           titlefont_size=titlefont_size,
                           tickfont_size=tickfont_size,
