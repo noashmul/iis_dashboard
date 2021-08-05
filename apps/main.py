@@ -8,11 +8,11 @@ def generate_table(dataframe, max_rows=10):
     val = ['table-light', 'table-primary'] * 10
     return html.Table([
         html.Thead(
-            html.Tr([html.Th(col, scope="col", className="table-dark", dir='rtl') for col in dataframe.columns])
+            html.Tr([html.Th(col, scope="col", className="table-dark", dir='rtl', style={'font-size':'17px'}) for col in dataframe.columns])
         ),
         html.Tbody([
             html.Tr([
-                html.Th(dataframe.iloc[i][col], scope="row", className=val[i], dir='rtl') for col in dataframe.columns
+                html.Th(dataframe.iloc[i][col], scope="row", className=val[i], dir='rtl', style={'font-size':'14px'}) for col in dataframe.columns
             ]) for i in range(min(len(dataframe), max_rows))
         ])
     ], className="table table-hover")
@@ -61,7 +61,7 @@ layout = html.Div(
         html.Div([
             html.H4(children=':אחוז שינוי מהדו"ח הקודם, במספר תחומים',
                             style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
-                           'letter-spacing': '0em'}),
+                           'letter-spacing': '0em', 'font-size':'20px'}),
             generate_table(df),
         ], className="pretty_container")
     ],
