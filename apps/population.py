@@ -186,18 +186,18 @@ layout = html.Div(children=[
                    'letter-spacing': '0em'}, className="pretty_container"
             ),
     html.Div([
-        html.Div([html.H6('בחר את תצוגת המפה', style={'Font-weight':'bold','text-transform': 'none',
-                                                      'letter-spacing': '0em','font-family': 'sans-serif',
-                                                      'font-size': 20}),
-                  dcc.RadioItems(id='map_definition',
-                                                      options=options_map,
-                                                      value=0,
-                                                      labelStyle={'display': 'block'},
-                                                      inputStyle={'textAlign': 'right'}
-
-                                                      ), ], style={'textAlign': 'center', 'font-size': 17,
-                                                                   'font-family': 'sans-serif',
-                                                                   'letter-spacing': '0em'}),
+        # html.Div([html.H6('בחר את תצוגת המפה', style={'Font-weight':'bold','text-transform': 'none',
+        #                                               'letter-spacing': '0em','font-family': 'sans-serif',
+        #                                               'font-size': 20}),
+        #           dcc.RadioItems(id='map_definition',
+        #                                               options=options_map,
+        #                                               value=0,
+        #                                               labelStyle={'display': 'block'},
+        #                                               inputStyle={'textAlign': 'right'}
+        #
+        #                                               ), ], style={'textAlign': 'center', 'font-size': 17,
+        #                                                            'font-family': 'sans-serif',
+        #                                                            'letter-spacing': '0em'}),
         html.Div(
             [
                 html.Div(
