@@ -85,9 +85,9 @@ def create_df_main_dash(d: dict):
 
 
 def create_dfs_dict():
-    if 'allfiles.zip' not in os.listdir():
+    path_to_zip_file = 'allfiles.zip'
+    if path_to_zip_file not in os.listdir():
         url = 'https://drive.google.com/uc?id=10g8dG0ADChvWiGKDLaSDzve6mIiR0NhY'
-        path_to_zip_file = 'allfiles.zip'
         gdown.download(url, path_to_zip_file, quiet=False)
 
     with zipfile.ZipFile(path_to_zip_file, 'r') as zip_ref:
