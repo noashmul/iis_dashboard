@@ -28,6 +28,9 @@ df_crimes_t1 = dfs_dict['df_crime_t1']
 df_crimes_t0 = dfs_dict['df_crime_t0']
 StatZone_size_dict = get_area_in_km2_for_stat_zones()
 
+### choose initial score for each weight
+scores = [3]*12
+
 
 def calc_safety_scores(StatZone, df_salary, df_conflicts, df_cameras, df_aband, df_106,
                        df_crimes):
@@ -137,7 +140,7 @@ layout = html.Div(children=[
         dbc.Card(
             [
                 dbc.CardHeader(
-                    html.H2(
+                    html.H2([
                         dbc.Button(
                             "\U0001F446" + "  Click here to customize the importance of each component   "
                             + "\U000021E9",
@@ -147,13 +150,17 @@ layout = html.Div(children=[
                             style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
                                    'letter-spacing': '0em', 'font-size': 20},
                         ),
-                    ),
+                        dbc.Button('reset to original scores', id='reset_weights', n_clicks=0, color='dark',
+                                   style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
+                                          'letter-spacing': '0em', 'font-size': 15}
+                                   )
+                    ]),
                 ),
                 dbc.Collapse(
                     dbc.CardBody([html.Div([html.P(id="slider-text1", children="ציון קונפליקטים בין שכנים",
                                                    style={'color': 'black', 'text-align': 'left'},
                                                    ),
-                                            dcc.Slider(id="Weight 1", min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 1", min=1, max=5, value=scores[0], step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
@@ -162,7 +169,7 @@ layout = html.Div(children=[
                                             html.P(id="slider-text2", children="ציון מצלמות אבטחה",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 2", min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 2", min=1, max=5, value=scores[1], step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
@@ -171,7 +178,7 @@ layout = html.Div(children=[
                                             html.P(id="slider-text3", children="ציון בתים נטושים",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 3", min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 3", min=1, max=5, value=scores[2], step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
@@ -180,7 +187,7 @@ layout = html.Div(children=[
                                             html.P(id="slider-text4", children="ציון שיחות למוקד העירייה בנושא ביטחון",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 4", min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 4", min=1, max=5, value=scores[3], step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
@@ -190,7 +197,7 @@ layout = html.Div(children=[
                                   html.Div([html.P(id="slider-text5", children="ציון שיחות למוקד העירייה בנושא סוציאלי",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 5", min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 5", min=1, max=5, value=scores[4], step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
@@ -199,7 +206,7 @@ layout = html.Div(children=[
                                             html.P(id="slider-text6", children="ציון פשיעה",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 6", min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 6", min=1, max=5, value=scores[5], step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
@@ -208,7 +215,7 @@ layout = html.Div(children=[
                                             html.P(id="slider-text7", children="ציון גניבות",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 7", min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 7", min=1, max=5, value=scores[6], step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
@@ -217,7 +224,7 @@ layout = html.Div(children=[
                                             html.P(id="slider-text8", children="ציון תקיפות גוף",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 8", min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 8", min=1, max=5, value=scores[7], step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
@@ -227,7 +234,7 @@ layout = html.Div(children=[
                                   html.Div([html.P(id="slider-text9", children="ציון תקיפות מיניות",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 9", min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 9", min=1, max=5, value=scores[8], step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
@@ -236,7 +243,7 @@ layout = html.Div(children=[
                                             html.P(id="slider-text10", children="ציון שודים",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 10", min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 10", min=1, max=5, value=scores[9], step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
@@ -245,7 +252,7 @@ layout = html.Div(children=[
                                             html.P(id="slider-text11", children="ציון הכנסה ממוצעת",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 11", min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 11", min=1, max=5, value=scores[10], step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
@@ -254,7 +261,7 @@ layout = html.Div(children=[
                                             html.P(id="slider-text12", children="ציון צפיפות דמוגרפית",
                                                    style={'color': 'black'},
                                                    ),
-                                            dcc.Slider(id="Weight 12", min=1, max=5, value=1, step=None,
+                                            dcc.Slider(id="Weight 12", min=1, max=5, value=scores[11], step=None,
                                                        marks={
                                                            str(num): {"label": str(num),
                                                                       "style": {"color": "#7fafdf"}, }
@@ -391,6 +398,31 @@ def toggle_accordion(n1, is_open1):
     if button_id == "group-1-toggle" and n1:
         return [not is_open1]
     return [False]
+
+
+@app.callback(
+    Output(component_id='Weight 1', component_property='value'),
+    Output(component_id='Weight 2', component_property='value'),
+    Output(component_id='Weight 3', component_property='value'),
+    Output(component_id='Weight 4', component_property='value'),
+    Output(component_id='Weight 5', component_property='value'),
+    Output(component_id='Weight 6', component_property='value'),
+    Output(component_id='Weight 7', component_property='value'),
+    Output(component_id='Weight 8', component_property='value'),
+    Output(component_id='Weight 9', component_property='value'),
+    Output(component_id='Weight 10', component_property='value'),
+    Output(component_id='Weight 11', component_property='value'),
+    Output(component_id='Weight 12', component_property='value'),
+    # Output(component_id='areas', component_property='value'),
+    Input(component_id='reset_weights', component_property='n_clicks'),
+)
+def reset_all_weights(n1):
+    ctx = dash.callback_context
+    if not ctx.triggered:
+        return scores
+    else:
+        return scores
+
 
 # if __name__ == '__main__':
 # score_area_val = list(df_scores.mean())
