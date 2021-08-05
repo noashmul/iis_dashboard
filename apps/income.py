@@ -47,7 +47,7 @@ for key, value in statistic_area.items():
         options.append({'label': "  " + key + ' ' + str(value),
                         'value': value})
     else:
-        options.append({'label': "  " + key,
+        options.append({'label': "  " + 'כל האזורים הסטטיסטיים',
                         'value': value})
 
 sal0, sal1 = dfs_dict['df_salaries_t0'], dfs_dict['df_salaries_t1']

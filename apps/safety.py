@@ -2,14 +2,10 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-import plotly.express as px
 from app_def import app
 from choroplethmapbox import get_choroplethmap_fig
 import dash_bootstrap_components as dbc
 from dash.dependencies import State
-import numpy as np
-# import plotly.io as pio
-# pio.renderers.default = "browser"
 from choroplethmapbox import get_area_in_km2_for_stat_zones
 from pre_process import *
 from utils import *
@@ -297,9 +293,9 @@ layout = html.Div(children=[
                 html.Div(
                     [
                         'בחר אזור סטטיסטי', dcc.RadioItems(id='areas',
-                                                     options=options,
-                                                     value=0
-                                                     ),
+                                                           options=options,
+                                                           value=0
+                                                           ),
                     ],
                     className="mini_container",
                 ),

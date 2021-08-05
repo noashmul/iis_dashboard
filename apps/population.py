@@ -46,7 +46,7 @@ for key, value in statistic_area.items():
         options.append({'label': "  " + key + ' ' + str(value),
                         'value': value})
     else:
-        options.append({'label': "  " + key,
+        options.append({'label': "  " + 'כל האזורים הסטטיסטיים',
                         'value': value})
 
 options_map = [{'label': ' הצג מפת שינויים ', 'value': 0}, {'label': ' הצג ערכים נוכחיים', 'value': 1}]

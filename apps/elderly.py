@@ -67,9 +67,8 @@ for key, value in statistic_area.items():
         options.append({'label': "  " + key + ' ' + str(value),
                         'value': value})
     else:
-        options.append({'label': "  " + key,
+        options.append({'label': "  " + 'כל האזורים הסטטיסטיים',
                         'value': value})
-
 stat_zones_names_dict = {
     611: "הדר מערב - רח' אלמותנבי",
     612: 'גן הבהאים',
@@ -261,8 +260,8 @@ layout = html.Div(
                     html.Div(
                         [
                             'בחר אזור סטטיסטי', dcc.RadioItems(id='areas',
-                                                         options=options,
-                                                         value=0),
+                                                               options=options,
+                                                               value=0),
                         ],
                         className="mini_container",
                     ),

@@ -31,7 +31,7 @@ for key, value in statistic_area.items():
         options.append({'label': "  " + key + ' ' + str(value),
                         'value': value})
     else:
-        options.append({'label': "  " + 'כל האזורים הסטטיסטיים'[::-1],
+        options.append({'label': "  " + 'כל האזורים הסטטיסטיים',
                         'value': value})
 
 stat_zones_names_dict = {
