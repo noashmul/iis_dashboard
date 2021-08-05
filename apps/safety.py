@@ -29,7 +29,7 @@ df_crimes_t0 = dfs_dict['df_crime_t0']
 StatZone_size_dict = get_area_in_km2_for_stat_zones()
 
 ### choose initial score for each weight
-scores = [3]*12
+scores = [3] * 12
 
 
 def calc_safety_scores(StatZone, df_salary, df_conflicts, df_cameras, df_aband, df_106,
@@ -280,8 +280,8 @@ layout = html.Div(children=[
                 children=
                 [
                     html.H4(children='Heatmap of safety score of each stat zone',
-                    style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                       'letter-spacing': '0em'}),
+                            style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+                                   'letter-spacing': '0em'}),
                     html.Div(
                         id="graph-container",
                         children=[
@@ -289,7 +289,7 @@ layout = html.Div(children=[
                         ], className='map_container_safety'),
 
                 ],
-                )
+            )
         ], className="pretty_container"),
         html.Div([
             html.Div([
@@ -310,12 +310,12 @@ layout = html.Div(children=[
                     className='map_container', )
             ],
                 className="row_rapper"),
-                html.H4('For each component, higher score means safer sense. For example, higher thefts score means less thefts, which is safer.',
-                        style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+            html.H4(
+                'For each component, higher score means safer sense. For example, higher thefts score means less thefts, which is safer.',
+                style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
                        'letter-spacing': '0em'})], className='pretty_container')
     ], )
 ], )
-
 
 
 @app.callback(
@@ -354,7 +354,8 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
         tmp_score = sum(np.multiply(list(row[:-1]), W))
         values_dict_t0[row.StatZone] = int(tmp_score * 100)
     scores_dict = [values_dict_t0, values_dict_t1]
-    fig1 = get_choroplethmap_fig(values_dict=values_dict_t1, map_title="Stat Zone Safety Score", is_safety_map=True, scores_dicts=scores_dict)
+    fig1 = get_choroplethmap_fig(values_dict=values_dict_t1, map_title="Stat Zone Safety Score", is_safety_map=True,
+                                 scores_dicts=scores_dict)
     fig1.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     if area in [0, '0']:
@@ -422,7 +423,6 @@ def reset_all_weights(n1):
         return scores
     else:
         return scores
-
 
 # if __name__ == '__main__':
 # score_area_val = list(df_scores.mean())

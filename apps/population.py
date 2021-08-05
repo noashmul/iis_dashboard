@@ -49,12 +49,12 @@ for key, value in statistic_area.items():
         options.append({'label': "  " + key,
                         'value': value})
 
-options_map = [{'label': 'הצג מפת שינויים', 'value': 0}, {'label': 'הצג ערכים נוכחיים', 'value': 1}]
+options_map = [{'label': ' הצג מפת שינויים ', 'value': 0}, {'label': ' הצג ערכים נוכחיים', 'value': 1}]
 
 citizen0, citizen1 = dfs_dict['df_salaries_t0'], dfs_dict['df_salaries_t1']
 
-# percentage change in % units from time0 to time1
 
+# percentage change in % units from time0 to time1
 
 
 @app.callback(
@@ -166,11 +166,11 @@ def get_graphs(statzone):
 
 
 @app.callback(
-Output(component_id='primary_map_population', component_property='figure'),
-Input(component_id='map_definition', component_property='value')
+    Output(component_id='primary_map_population', component_property='figure'),
+    Input(component_id='map_definition', component_property='value')
 )
 def change_map(map_def):
-    if map_def == 0: #'הצג מפת שינויים'
+    if map_def == 0:  # 'הצג מפת שינויים'
         percentage_change = 100 * (citizen1.ResNum - citizen0.ResNum) / citizen0.ResNum
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
                               zip(stat_zones_names_dict.keys(), percentage_change)}
@@ -180,7 +180,7 @@ def change_map(map_def):
                                         hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{customdata}%<br>')
         map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
         return map_fig
-    else: #'הצג ערך נוכחי'
+    else:  # 'הצג ערך נוכחי'
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
                               zip(stat_zones_names_dict.keys(), citizen1.ResNum)}
         map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
@@ -198,18 +198,18 @@ layout = html.Div(children=[
                    'letter-spacing': '0em'}, className="pretty_container"
             ),
     html.Div([
-        html.Div([html.H6('בחר את תצוגת המפה', style={'Font-weight':'bold','text-transform': 'none',
-                                                      'letter-spacing': '0em','font-family': 'sans-serif',
+        html.Div([html.H6('בחר את תצוגת המפה', style={'Font-weight': 'bold', 'text-transform': 'none',
+                                                      'letter-spacing': '0em', 'font-family': 'sans-serif',
                                                       'font-size': 20}),
                   dcc.RadioItems(id='map_definition',
-                                                      options=options_map,
-                                                      value=0,
-                                                      labelStyle={'display': 'block'},
-                                                      inputStyle={'textAlign': 'right'}
+                                 options=options_map,
+                                 value=0,
+                                 labelStyle={'display': 'block'},
+                                 inputStyle={'textAlign': 'right'}
 
-                                                      ), ], style={'textAlign': 'center', 'font-size': 17,
-                                                                   'font-family': 'sans-serif',
-                                                                   'letter-spacing': '0em'}),
+                                 ), ], style={'textAlign': 'center', 'font-size': 17,
+                                              'font-family': 'sans-serif',
+                                              'letter-spacing': '0em'}),
         html.Div(
             [
                 html.Div(

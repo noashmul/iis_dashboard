@@ -23,7 +23,7 @@ statistic_area = {'הכל': 0,
                   "רמת ויז'ניץ": 643,
                   'מעונות גאולה': 644}
 
-options_map = [{'label': 'הצג מפת שינויים', 'value': 0}, {'label': 'הצג ערכים נוכחיים', 'value': 1}]
+options_map = [{'label': ' הצג מפת שינויים ', 'value': 0}, {'label': ' הצג ערכים נוכחיים', 'value': 1}]
 
 
 def blank_fig(height):

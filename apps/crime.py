@@ -55,10 +55,7 @@ crime0, crime1 = dfs_dict['df_crime_t0'], dfs_dict['df_crime_t1']
 for df in [crime0, crime1]:
     df['total_crime_cases'] = df[[col for col in df.columns if col != 'StatZone' and col != 'Year']].sum(axis=1)
 
-options_map = [{'label': 'הצג מפת שינויים', 'value': 0}, {'label': 'הצג ערכים נוכחיים', 'value': 1}]
-
-
-
+options_map = [{'label': ' הצג מפת שינויים ', 'value': 0}, {'label': ' הצג ערכים נוכחיים', 'value': 1}]
 
 
 @app.callback(
@@ -265,11 +262,11 @@ def get_graphs(statzone):
 
 
 @app.callback(
-Output(component_id='primary_map_crime', component_property='figure'),
-Input(component_id='map_definition', component_property='value')
+    Output(component_id='primary_map_crime', component_property='figure'),
+    Input(component_id='map_definition', component_property='value')
 )
 def change_map(map_def):
-    if map_def == 0: #'הצג מפת שינויים'
+    if map_def == 0:  # 'הצג מפת שינויים'
         # percentage change in % units from time0 to time1
         percentage_change = 100 * (crime1.total_crime_cases - crime0.total_crime_cases) / crime0.total_crime_cases
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
@@ -281,7 +278,7 @@ def change_map(map_def):
                                         hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{customdata}%<br>')
         map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
         return map_fig
-    else: #'הצג ערך נוכחי'
+    else:  # 'הצג ערך נוכחי'
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
                               zip(stat_zones_names_dict.keys(), crime1.total_crime_cases)}
         map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
@@ -291,6 +288,7 @@ def change_map(map_def):
                                         changes_map=False)
         map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
         return map_fig
+
 
 layout = html.Div(
     children=[html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?

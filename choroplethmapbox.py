@@ -130,6 +130,8 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
     :type shp_path: str
     :param is_safety_map: True if this is the
     :type is_safety_map: bool
+    :param scores_dicts: list of two dictionaries with the safety scores
+    :param changes_map: bool - if True the map shows the percentage of change
     :return: plotly fig map
     """
     # Verify stat_zones_names_dict is sorted by key
@@ -147,17 +149,20 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
     # Define the heatmap values
     z = list(values_dict.values())
 
-    if not is_safety_map:
-        max_abs_val = max(abs(max(z)), abs(min(z)))
-        z.append(- max_abs_val)
-        z.append(max_abs_val)
-    else:
-        z.append(0)
-        z.append(100)
-        colorscale = 'greens'
+    if changes_map:
+        if not is_safety_map:
+            max_abs_val = max(abs(max(z)), abs(min(z)))
+            z.append(- max_abs_val)
+            z.append(max_abs_val)
+        else:
+            z.append(0)
+            z.append(100)
+            colorscale = [[0, 'red'], [0.5, 'white'], [1, 'green']]  # 'greens'  # 'reds_r'
 
-    chosen_color_scale = colorscale if colorscale is not None else (
-        [[0, 'red'], [0.5, 'white'], [1, 'green']])  # colorscale for safety tab
+        chosen_color_scale = colorscale if colorscale is not None else (
+            [[0, 'red'], [0.5, 'white'], [1, 'green']])  # colorscale for safety tab
+    else:
+        chosen_color_scale = 'tealgrn'
 
     # my mapbox_access_token must be used only for special mapbox style
     mapboxt = open(".mapbox_token").read()
