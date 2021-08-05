@@ -214,7 +214,7 @@ layout = html.Div(children=[
             [
                 html.Div(
                     [
-                        'Choose area: ', dcc.RadioItems(id='areas',
+                        ': בחר אזור', dcc.RadioItems(id='areas',
                                                         options=options,
                                                         value=0,
                                                         ),
