@@ -133,7 +133,7 @@ def get_graphs(statzone):
 
     string = " Stat Zone " if statzone != 'All Statistical Zones' else " "
     statzone_name = str(statzone)[::-1]
-    title1 = "מצב האזרחים המבוגרים בכל האזורים הסטטיסטיים"[
+    title1 = "מצב האזרחים המבוגרים בכל שכונת הדר"[
              ::-1] if statzone == 'All Statistical Zones' else f"מצב האזרחים המבוגרים באזור סטטיסטי {statzone_name}"[
                                                                ::-1]
 
@@ -178,7 +178,7 @@ def get_graphs(statzone):
 
     fig2 = px.bar(df_holocaust1_type, x=df_holocaust1_type.index, y=df_holocaust1_type['Amount of Holocaust Survivors'],
                   color_discrete_sequence=['#252E3F'])
-    title2 = "כמות ניצולי השואה על פי הצרכים שלהם בכל האזורים הסטטיסטיים"[::-1] if statzone == 'All Statistical Zones' \
+    title2 = "כמות ניצולי השואה על פי הצרכים שלהם בכל שכונת"[::-1] if statzone == 'All Statistical Zones' \
         else f"כמות ניצולי השואה על פי הצרכים שלהם באזור סטטיסטי {statzone_name}"[::-1]
     fig2.update_xaxes(title='סוג נזקקות'[::-1], tickangle=45)
     fig2.update_yaxes(title='כמות ניצולי השואה'[::-1])

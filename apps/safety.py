@@ -364,15 +364,11 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
     if area == 'All Statistical zones':
         score_area_val_t1 = list(df_score_t1.drop("StatZone", axis=1).mean())
         score_area_val_t0 = list(df_score_t0.drop("StatZone", axis=1).mean())
-        title2 = "Component scores for All Statistical zones "
-        title2 = "מרכיבי הציון עבור כל האזורים הסטטיסטיים"
-        title2 = title2[::-1]
+        title2 = "פירוט ציונים עבור אספקטים שונים של ביטחון אישי בשכונת הדר"[::-1]
     else:
         score_area_val_t1 = df_score_t1[df_score_t1['StatZone'] == int(area)].drop('StatZone', axis=1).values[0]
         score_area_val_t0 = df_score_t0[df_score_t0['StatZone'] == int(area)].drop('StatZone', axis=1).values[0]
-        title2 = f"Component scores for stat zone {area}"
-        title2 = f'מרכיבי הציון עבור אזור סטטיסטי {area}'
-        title2 = title2[::-1]
+        title2 = f'מרכיבי הציון עבור אזור סטטיסטי {str(area)[::-1]}'[::-1]
     # score_area_val = [i * 100 for i in score_area_val]
     score_area_val_t1 = [i * 100 for i in score_area_val_t1]
     score_area_val_t0 = [i * 100 for i in score_area_val_t0]

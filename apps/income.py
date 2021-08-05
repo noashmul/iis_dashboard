@@ -79,8 +79,8 @@ def get_graphs(statzone):
     if statzone == 0:
         # title1 = "Average Salary per Salary type in All Statistical zones"
         # title2 = "Amount of workers per Salary type in All Statistical zones"
-        title1 = "משכורת ממוצעת עבור כל סוגי המשכורות בכל האזורים הסטטיסטים"[::-1]
-        title2 = "כמות העובדים עבור כל סוגי המשכורות בכל האזורים הסטטיסטיים"[::-1]
+        title1 = "משכורת ממוצעת עבור כל סוגי המשכורות בכל שכונת הדר"[::-1]
+        title2 = "כמות העובדים עבור כל סוגי המשכורות בכל שכונת הדר"[::-1]
     else:
         statzone_name = str(statzone)
         # title1 = f"Average Salary per Salary type in {statzone} stat zone"
