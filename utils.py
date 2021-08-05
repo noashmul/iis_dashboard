@@ -49,7 +49,8 @@ def create_horizontal_bar_plot_with_annotations(numeric_vals,  # x
                                                 annotations_text_size=18,
                                                 titlefont_size=18,
                                                 tickfont_size=18,
-                                                tickangle=45
+                                                tickangle=45,
+                                                is_safety = False
                                                 ):
     fig = go.Figure()
     fig.add_trace(
@@ -91,6 +92,8 @@ def create_horizontal_bar_plot_with_annotations(numeric_vals,  # x
                       ), xaxis_showgrid=True, yaxis_showgrid=True,
                       template='simple_white',
                       )
+    if is_safety:
+        fig.update_layout(barmode='stack', yaxis={'categoryorder': 'total descending'})
     fig.update_xaxes(tickangle=tickangle)
 
     return fig

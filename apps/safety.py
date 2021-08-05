@@ -12,6 +12,7 @@ import numpy as np
 # pio.renderers.default = "browser"
 from choroplethmapbox import get_area_in_km2_for_stat_zones
 from pre_process import *
+from utils import *
 
 #### Create scores #####
 df_salaries_t1 = dfs_dict['df_salaries_t1']
@@ -361,16 +362,20 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
     if area in [0, '0']:
         area = 'All Statistical zones'
     if area == 'All Statistical zones':
-        score_area_val = list(df_score_t1.drop("StatZone", axis=1).mean())
+        score_area_val_t1 = list(df_score_t1.drop("StatZone", axis=1).mean())
+        score_area_val_t0 = list(df_score_t0.drop("StatZone", axis=1).mean())
         title2 = "Component scores for All Statistical zones "
         title2 = "מרכיבי הציון עבור כל האזורים הסטטיסטיים"
         title2 = title2[::-1]
     else:
-        score_area_val = df_score_t1[df_score_t1['StatZone'] == int(area)].drop('StatZone', axis=1).values[0]
+        score_area_val_t1 = df_score_t1[df_score_t1['StatZone'] == int(area)].drop('StatZone', axis=1).values[0]
+        score_area_val_t0 = df_score_t0[df_score_t0['StatZone'] == int(area)].drop('StatZone', axis=1).values[0]
         title2 = f"Component scores for stat zone {area}"
         title2 = f'מרכיבי הציון עבור אזור סטטיסטי {area}'
         title2 = title2[::-1]
-    score_area_val = [i * 100 for i in score_area_val]
+    # score_area_val = [i * 100 for i in score_area_val]
+    score_area_val_t1 = [i * 100 for i in score_area_val_t1]
+    score_area_val_t0 = [i * 100 for i in score_area_val_t0]
 
     y_label = ['קונפליקטים בין שכנים', 'מצלמות אבטחה', 'בתים נטושים',
                'שיחות למוקד העירייה בנושא ביטחון', 'שיחות למוקד העירייה בנושא סוציאלי', 'פשיעה',
@@ -391,13 +396,22 @@ def update_output_div(w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, area):
     y_label_data = [item[::-1] for item in y_label_data]
     y_label = [s[::-1] for s in y_label]
     fig2_df = pd.DataFrame(columns=['Score', 'Score component'])
-    fig2_df['Score'] = score_area_val
-    fig2_df['Score Components'] = y_label
+    fig2_df['Score_t1'] = score_area_val_t1
+    fig2_df['Score_t0'] = score_area_val_t0
+    fig2_df['Score component'] = y_label
+    fig2_df['diff'] = 100*(fig2_df['Score_t1']-fig2_df['Score_t0']) / fig2_df['Score_t0']
+    fig2_df['diff'].replace([np.inf, -np.inf], 0, inplace=True)
     fig2_df['data'] = y_label_data
-    fig2_df = fig2_df.sort_values(by='Score', ascending='False')
-    fig2 = px.bar(fig2_df, x=fig2_df.Score, y=fig2_df['Score Components'], color_discrete_sequence=['#252E3F'],
-                  hover_name='data')
-    fig2.update_layout(title_text=title2, barmode='stack', yaxis={'categoryorder': 'total descending'})
+    # print(fig2_df['diff'].isnull().sum(axis=0))
+    fig2_df = fig2_df.sort_values(by='Score_t1', ascending='False')
+
+    fig2 = create_horizontal_bar_plot_with_annotations(numeric_vals=fig2_df['Score_t1'], old_numeric_vals = fig2_df['Score_t0'],
+                                                       category_vals =fig2_df['Score component'], percentage_change_value= fig2_df['diff'],
+                                                       title_text=title2, text_offset_to_the_right = 20, tickfont_size=12, annotations_text_size=14,
+                                                       is_safety=True)
+
+    # fig2 = px.bar(fig2_df, x=fig2_df.Score, y=fig2_df['Score component'], color_discrete_sequence=['#252E3F'])
+    # fig2.update_layout(title_text=title2, barmode='stack', yaxis={'categoryorder': 'total descending'})
 
     return fig1, fig2
 
