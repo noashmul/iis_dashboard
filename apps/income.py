@@ -89,25 +89,30 @@ def get_graphs(statzone):
         title2 = f"Amount of workers per Salary type in {statzone} stat zone"
 
     percentage_change = 100 * (df_avg_sal1['Average salary'] - df_avg_sal0['Average salary']) / df_avg_sal0['Average salary']
+    max_y = max(df_avg_sal1['Average salary'])
 
     fig1 = create_horizontal_bar_plot_with_annotations(numeric_vals=df_avg_sal1['Average salary'],  # x
                                                 old_numeric_vals=df_avg_sal0['Average salary'],  # old x
                                                 category_vals=df_avg_sal1['Salary type'],  # y
                                                 percentage_change_value=percentage_change,  # pay attention to order
-                                                title_text=title1, text_offset_to_the_right=50, is_safety=False)
-
+                                                title_text=title1, text_offset_to_the_right=0.15*max_y, tickfont_size=18,
+                                                       annotations_text_size=18,
+                                                       is_safety=True)
+    fig1.update_layout(xaxis_range=[0, max_y * 1.15])
 
     df_amount_of_workers1 = manipulate_df_salary_fig2(df_salary1)
     df_amount_of_workers0 = manipulate_df_salary_fig2(df_salary0)
 
     percentage_change = 100 * (df_amount_of_workers1['Amount of workers'] - df_amount_of_workers0['Amount of workers']) / df_amount_of_workers0['Amount of workers']
+    max_y = max(df_amount_of_workers1['Amount of workers'])
 
     fig2 = create_horizontal_bar_plot_with_annotations(numeric_vals=df_amount_of_workers1['Amount of workers'],  # x
                                                 old_numeric_vals=df_amount_of_workers0['Amount of workers'],  # old x
                                                 category_vals=df_amount_of_workers1['Salary type'],  # y
                                                 percentage_change_value=percentage_change,  # pay attention to order
-                                                title_text=title2,text_offset_to_the_right=50,is_safety=False)
+                                                title_text=title2,text_offset_to_the_right=0.15*max_y, is_safety=False)
 
+    fig2.update_layout(xaxis_range=[0, max_y * 1.15])
     return fig1, fig2
 
 
@@ -178,6 +183,7 @@ def manipulate_df_salary_fig2(df_salary):
                                                  df_salary['SalPenResNum'].sum(), df_salary['SalSHNoBTLResNum'].sum(),
                                                  df_salary['IncSelfResNum'].sum()]
     return df_amount_of_workers
+
 
 layout = html.Div(children=[html.H4(children='Choose the wanted area to see the graphs changes',
                                     style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
