@@ -103,7 +103,7 @@ df_score_t1, values_dict_t1 = create_safety_table(df_salaries_t1, df_conflicts_t
 df_score_t0, values_dict_t0 = create_safety_table(df_salaries_t0, df_conflicts_t0, df_cameras_t0, df_aband_t0,
                                                   df_106_t0, df_crimes_t0)
 
-statistic_area = {'הכל': 0,
+statistic_area = {'כל האזורים הסטטיסטיים': 0,
                   "הדר מערב - רח' אלמותנבי": 611,
                   'גן הבהאים': 612,
                   "הדר מערב - רח' מסדה": 613,
@@ -127,12 +127,15 @@ for key, value in statistic_area.items():
     else:
         options.append({'label': "  " + key,
                         'value': value})
+# 'A personal safety score is a combination of 12 different components, which represent different aspects of personal safety. \
+#          Please customize the importance of each component according to your needs. '
+
+# "Click here to customize the importance of each component"
 
 layout = html.Div(children=[
-    html.Div([html.H4(
-        'A personal safety score is a combination of 12 different components, which represent different aspects of personal safety. \
-         Please customize the importance of each component according to your needs. ',
-        style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+    html.Div([html.H4('ציון הביטחון האישי הוא קומבינציה של 12 קומפוננטות שונות, המציגות הביטים שונים של ביטחון אישי. אנא בחר את החשיבות של המשקולות השונות בהתאם לצרכים שלך '
+        ,
+        style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                'letter-spacing': '0em'}, )],
         className='pretty_container'
     ),
@@ -143,7 +146,7 @@ layout = html.Div(children=[
                 dbc.CardHeader(
                     html.H2([
                         dbc.Button(
-                            "\U0001F446" + "  Click here to customize the importance of each component   "
+                            "\U0001F446" + "לחץ כאן כדי לבחור את החשיבות של כל רכיב בציון"
                             + "\U000021E9",
                             color="link",
                             id=f"group-1-toggle",
@@ -151,7 +154,7 @@ layout = html.Div(children=[
                             style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
                                    'letter-spacing': '0em', 'font-size': 20},
                         ),
-                        dbc.Button('reset to original scores', id='reset_weights', n_clicks=0, color='dark',
+                        dbc.Button('החזר למשקולות המקוריות', id='reset_weights', n_clicks=0, color='dark',
                                    style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                                           'letter-spacing': '0em', 'font-size': 15}
                                    )
@@ -280,8 +283,8 @@ layout = html.Div(children=[
             html.Div(
                 children=
                 [
-                    html.H4(children='Heatmap of safety score of each stat zone',
-                            style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+                    html.H4(children=' מפת חום של ציון ביטחון אישי באזורים הסטטיסטיים ',
+                            style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                                    'letter-spacing': '0em'}),
                     html.Div(
                         id="graph-container",
@@ -311,10 +314,11 @@ layout = html.Div(children=[
                     className='map_container', )
             ],
                 className="row_rapper"),
-            html.H4(
-                'For each component, higher score means safer sense. For example, higher thefts score means less thefts, which is safer.',
-                style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                       'letter-spacing': '0em'})], className='pretty_container')
+            # html.H4(
+            #     'For each component, higher score means safer sense. For example, higher thefts score means less thefts, which is safer.',
+            #     style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+            #            'letter-spacing': '0em'})
+        ], className='pretty_container')
     ], )
 ], )
 
