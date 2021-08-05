@@ -65,8 +65,10 @@ options_map = [{'label': ' שינוי באחוזים מהדו"ח הקודם ', '
     Input(component_id='areas', component_property='value')
 )
 def get_graphs(statzone):
-    df_crimes = dfs_dict['df_crime_2010_to_2015']
-    df_crimes = df_crimes[df_crimes['Year'] == 2012]
+    df_crimes_cases_t0 = dfs_dict['df_crimes_cases_t0']
+    df_crimes_cases_t1 = dfs_dict['df_crimes_cases_t1']
+    df_crimes = pd.concat([df_crimes_cases_t0, df_crimes_cases_t1])
+
     if statzone == 0:
         statzone = 'All Statistical zones'
 

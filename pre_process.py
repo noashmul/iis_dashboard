@@ -20,7 +20,7 @@ def create_df_main_dash(d: dict):
     Create a table for the main tab of the dashboard
     :param d: dfs_dict
     """
-    df_main_dash = pd.DataFrame(columns=['נושא', 'תיאור','ערך', 'אחוז שינוי מהדו"ח הקודם'])
+    df_main_dash = pd.DataFrame(columns=['נושא', 'תיאור', 'ערך', 'אחוז שינוי מהדו"ח הקודם'])
 
     # Crime || Total Crimes
     d['df_crime_t0']['total_crimes'] = d['df_crime_t0'].drop(columns=['StatZone', 'Year']).sum(axis=1)
@@ -86,7 +86,7 @@ def create_df_main_dash(d: dict):
 
 def create_dfs_dict():
     if 'allfiles.zip' not in os.listdir():
-        url = 'https://drive.google.com/uc?id=15VpXTC6CX791p313ugitIjhk2MIv-E5c'
+        url = 'https://drive.google.com/uc?id=10g8dG0ADChvWiGKDLaSDzve6mIiR0NhY'
         path_to_zip_file = 'allfiles.zip'
         gdown.download(url, path_to_zip_file, quiet=False)
 
@@ -95,7 +95,8 @@ def create_dfs_dict():
 
     df_crime_t0 = pd.read_csv('data/df_crime_t0.csv')
     df_crime_t1 = pd.read_csv('data/df_crime_t1.csv')
-    df_crime_2010_to_2015 = pd.read_csv('data/df_crime_2010_to_2015.csv')
+    df_crimes_cases_t0 = pd.read_csv('data/df_crimes_cases_t0.csv')
+    df_crimes_cases_t1 = pd.read_csv('data/df_crimes_cases_t1.csv')
     df_conflicts_t0 = pd.read_csv('data/df_conflicts_t0.csv')
     df_conflicts_t1 = pd.read_csv('data/df_conflicts_t1.csv')
 
@@ -121,7 +122,7 @@ def create_dfs_dict():
     df_aband_t1 = pd.read_csv('data/df_aband_t1.csv')
 
     dfs_dict = {'df_crime_t0': df_crime_t0, 'df_crime_t1': df_crime_t1,
-                'df_crime_2010_to_2015': df_crime_2010_to_2015,
+                'df_crimes_cases_t0': df_crimes_cases_t0, 'df_crimes_cases_t1': df_crimes_cases_t1,
                 'df_conflicts_t0': df_conflicts_t0, 'df_conflicts_t1': df_conflicts_t1,
                 'df_salaries_t0': df_salaries_t0, 'df_salaries_t1': df_salaries_t1,
                 'df_haredim_t0': df_haredim_t0, 'df_haredim_t1': df_haredim_t1,
@@ -144,6 +145,15 @@ def add_row_to_missing_stat_zones(dfs_dict):
                 new_row = dfs_dict[df].sample(n=1)
                 new_row['StatZone'] = statzone
                 dfs_dict[df] = dfs_dict[df].append(new_row)
+
+    if df in ['df_holocaust_t0', 'df_holocaust_t1']:
+        for statzone in list(set(dfs_dict[df].StatZone)):
+            set_of_helps = dfs_dict[df][dfs_dict[df]['StatZone'] == statzone]['HoloSurvNdDesc']
+            while len(set_of_helps)==set_of_helps.isna().sum():
+                new_row = dfs_dict[df].sample(n=1)
+                new_row['StatZone'] = statzone
+                dfs_dict[df] = dfs_dict[df].append(new_row)
+                set_of_helps = dfs_dict[df][dfs_dict[df]['StatZone'] == statzone]['HoloSurvNdDesc']
     return dfs_dict
 
 
