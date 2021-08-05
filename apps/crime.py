@@ -55,7 +55,7 @@ crime0, crime1 = dfs_dict['df_crime_t0'], dfs_dict['df_crime_t1']
 for df in [crime0, crime1]:
     df['total_crime_cases'] = df[[col for col in df.columns if col != 'StatZone' and col != 'Year']].sum(axis=1)
 
-options_map = [{'label': ' הצג מפת שינויים ', 'value': 0}, {'label': ' הצג ערכים נוכחיים', 'value': 1}]
+options_map = [{'label': ' שינוי באחוזים מהדו"ח הקודם ', 'value': 0}, {'label': ' ערכי הדו"ח הנוכחי', 'value': 1}]
 
 
 @app.callback(
@@ -270,7 +270,7 @@ def get_graphs(statzone):
     Input(component_id='map_definition', component_property='value')
 )
 def change_map(map_def):
-    if map_def == 0:  # 'הצג מפת שינויים'
+    if map_def == 0:  # 'שינוי באחוזים מהדו"ח הקודם'
         # percentage change in % units from time0 to time1
         percentage_change = 100 * (crime1.total_crime_cases - crime0.total_crime_cases) / crime0.total_crime_cases
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in

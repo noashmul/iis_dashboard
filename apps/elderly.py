@@ -23,7 +23,7 @@ statistic_area = {'הכל': 0,
                   "רמת ויז'ניץ": 643,
                   'מעונות גאולה': 644}
 
-options_map = [{'label': ' הצג מפת שינויים ', 'value': 0}, {'label': ' הצג ערכים נוכחיים', 'value': 1}]
+options_map = [{'label': ' שינוי באחוזים מהדו"ח הקודם ', 'value': 0}, {'label': ' ערכי הדו"ח הנוכחי', 'value': 1}]
 
 
 def blank_fig(height):
@@ -204,7 +204,7 @@ def get_graphs(statzone):
     Input(component_id='map_definition', component_property='value')
 )
 def change_map(map_def):
-    if map_def == 0:  # 'הצג מפת שינויים'
+    if map_def == 0:  # 'שינוי באחוזים מהדו"ח הקודם'
         percentage_change = 100 * ((seniors1_per_zone.Street - seniors0_per_zone.Street) / seniors0_per_zone.Street)
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
                               zip(stat_zones_names_dict.keys(), percentage_change)}

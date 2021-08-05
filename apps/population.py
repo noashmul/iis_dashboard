@@ -49,7 +49,7 @@ for key, value in statistic_area.items():
         options.append({'label': "  " + 'כל האזורים הסטטיסטיים',
                         'value': value})
 
-options_map = [{'label': ' הצג מפת שינויים ', 'value': 0}, {'label': ' הצג ערכים נוכחיים', 'value': 1}]
+options_map = [{'label': ' שינוי באחוזים מהדו"ח הקודם ', 'value': 0}, {'label': ' ערכי הדו"ח הנוכחי', 'value': 1}]
 
 citizen0, citizen1 = dfs_dict['df_salaries_t0'], dfs_dict['df_salaries_t1']
 
