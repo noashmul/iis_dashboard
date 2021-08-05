@@ -39,6 +39,9 @@ stat_zones_names_dict = {
     644: 'מעונות גאולה'
 }
 
+options_map = [{'label': 'הצג מפת שינויים', 'value': 0}, {'label': 'הצג ערכים נוכחיים', 'value': 1}]
+
+
 options = list()
 for key, value in statistic_area.items():
     if key != 'הכל':
@@ -62,15 +65,8 @@ for df in [sal0, sal1]:
                               ['SalNoHKResNum_avg', 'SalHKResNum_avg', 'SalPenResNum_avg', 'SalSHNoBTLResNum_avg',
                                'IncSelfResNum_avg']]].sum(axis=1) / df['tot_res']
 
-# percentage change in % units from time0 to time1
-percentage_change = 100 * (sal1.total_sal_avg - sal0.total_sal_avg) / sal0.total_sal_avg
-values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
-                      zip(stat_zones_names_dict.keys(), percentage_change)}
-map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
-                                map_title="% of change in total crime cases",
-                                colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
-                                hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Precentage of change</b>: %{customdata}%<br>')
-map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+
+
 
 
 @app.callback(
@@ -154,12 +150,50 @@ def get_graphs(statzone):
     return fig1, fig2
 
 
+@app.callback(
+Output(component_id='primary_map_income', component_property='figure'),
+Input(component_id='map_definition', component_property='value')
+)
+def change_map(map_def):
+    if map_def == 0: #'הצג מפת שינויים'
+        percentage_change = 100 * (sal1.total_sal_avg - sal0.total_sal_avg) / sal0.total_sal_avg
+        values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
+                              zip(stat_zones_names_dict.keys(), percentage_change)}
+        map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
+                                        map_title="% of change in total crime cases",
+                                        colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
+                                        hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{customdata}%<br>')
+        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        return map_fig
+    else: #'הצג ערך נוכחי'
+        values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
+                              zip(stat_zones_names_dict.keys(), sal1.total_sal_avg)}
+        map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
+                                        map_title="Current values in total crime cases",
+                                        colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
+                                        hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Current Value</b>: %{customdata}<br>',
+                                        changes_map=False)
+        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        return map_fig
+
 layout = html.Div(children=[html.H4(children='Choose the wanted area to see the graphs changes',
                                     style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
                                            'letter-spacing': '0em'}, className="pretty_container"
                                     ),
                             html.Div([
+                                html.Div([html.H6('בחר את תצוגת המפה',
+                                                  style={'Font-weight': 'bold', 'text-transform': 'none',
+                                                         'letter-spacing': '0em', 'font-family': 'sans-serif',
+                                                         'font-size': 20}),
+                                          dcc.RadioItems(id='map_definition',
+                                                         options=options_map,
+                                                         value=0,
+                                                         labelStyle={'display': 'block'},
+                                                         inputStyle={'textAlign': 'right'}
 
+                                                         ), ], style={'textAlign': 'center', 'font-size': 17,
+                                                                      'font-family': 'sans-serif',
+                                                                      'letter-spacing': '0em'}),
                                 html.Div(
                                     [
                                         html.Div(
@@ -172,7 +206,7 @@ layout = html.Div(children=[html.H4(children='Choose the wanted area to see the 
                                             className="mini_container",
                                         ),
                                         html.Div([
-                                            dcc.Graph(figure=map_fig)
+                                            dcc.Graph(id='primary_map_income')
                                         ], className="map_container"),
                                     ],
                                     # id="info-container1",

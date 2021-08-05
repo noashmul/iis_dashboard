@@ -111,7 +111,8 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
                           colorscale=None,
                           hovertemplate=None,
                           add_stat_numbers_to_map: bool = True,
-                          scores_dicts=None):
+                          scores_dicts=None,
+                          changes_map=True):
     """
     Creates and returns a plotly pig of Choroplethmapbox (map)
     Hadar StatZones polygons are used for the heatmap
@@ -174,7 +175,10 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
                 customdata.append(f'  ({up}{val}% change)' if val > 0 else f'  ({val}% change)')
         hovertemplate = '<b>StatZone</b>: %{text}' + '<br>🛡️<b>Safety Score</b>🛡️: <b>%{z}</b>%{customdata}'
     else:
-        customdata = [str(val) if val < 0 else (f'+{val}' if val > 0 else f'{val}') for val in z]
+        if changes_map:
+            customdata = [str(val) if val < 0 else (f'+{val}' if val > 0 else f'{val}') for val in z]
+        else:
+            customdata = [str(val) if val < 0 else (f'{val}' if val > 0 else f'{val}') for val in z]
     fig = go.Figure(go.Choroplethmapbox(z=z,
                                         below=True,
                                         locations=locations,
@@ -185,7 +189,8 @@ def get_choroplethmap_fig(values_dict: dict, map_title: str,
                                         hoverinfo='all',
                                         name='',
                                         customdata=customdata,
-                                        hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Value</b>: %{customdata}<br>' \
+                                        hovertemplate=
+                                        '<b>StatZone</b>: %{text}' + '<br><b>Value</b>: %{customdata}<br>' \
                                             if hovertemplate is None else hovertemplate
                                         )
                     )

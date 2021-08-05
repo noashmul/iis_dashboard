@@ -23,6 +23,8 @@ statistic_area = {'הכל': 0,
                   "רמת ויז'ניץ": 643,
                   'מעונות גאולה': 644}
 
+options_map = [{'label': 'הצג מפת שינויים', 'value': 0}, {'label': 'הצג ערכים נוכחיים', 'value': 1}]
+
 
 def blank_fig(height):
     """
@@ -92,15 +94,7 @@ seniors0, seniors1 = dfs_dict['df_seniors_t0'], dfs_dict['df_seniors_t1']
 seniors1_per_zone = seniors1.groupby(by=["StatZone"]).count()[['Street']]
 seniors0_per_zone = seniors0.groupby(by=["StatZone"]).count()[['Street']]
 
-percentage_change = 100 * ((seniors1_per_zone.Street - seniors0_per_zone.Street) / seniors0_per_zone.Street)
-values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
-                      zip(stat_zones_names_dict.keys(), percentage_change)}
 
-map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
-                                map_title="% of change in seniors amount",
-                                colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
-                                hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Precentage of change</b>: %{customdata}%<br>')
-map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
 
 @app.callback(
@@ -127,8 +121,9 @@ def get_graphs(statzone):
     food0_alone0 = len(df_seniors1[(df_seniors1['SeniorAlone'] == 0) &
                                    (df_seniors1['SeniorRecivFood'] == 0)])
 
-    pie_df = pd.DataFrame.from_dict({'status': ['קשישים בודדים ומקבלי מזון', 'קשישים מקבלי מזון', 'קשישים בודדים', 'אחר'],
-                                     'amount': [food1_alone1, food1_alone0, food0_alone1, food0_alone0]})
+    pie_df = pd.DataFrame.from_dict(
+        {'status': ['קשישים בודדים ומקבלי מזון', 'קשישים מקבלי מזון', 'קשישים בודדים', 'אחר'],
+         'amount': [food1_alone1, food1_alone0, food0_alone1, food0_alone0]})
 
     pie_df['status'] = pie_df['status'].apply(lambda x: str(x)[::-1])
     fig1 = px.pie(pie_df, values='amount', names='status', title='Status of seniors citizens',
@@ -201,12 +196,54 @@ def get_graphs(statzone):
     return fig1, fig2, text3_display
 
 
+
+@app.callback(
+Output(component_id='primary_map_elderly', component_property='figure'),
+Input(component_id='map_definition', component_property='value')
+)
+def change_map(map_def):
+    if map_def == 0: #'הצג מפת שינויים'
+        percentage_change = 100 * ((seniors1_per_zone.Street - seniors0_per_zone.Street) / seniors0_per_zone.Street)
+        values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
+                              zip(stat_zones_names_dict.keys(), percentage_change)}
+
+        map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
+                                        map_title="% of change in seniors amount",
+                                        colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
+                                        hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Percentage of change</b>: %{customdata}%<br>')
+        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        return map_fig
+    else: #'הצג ערך נוכחי'
+        values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
+                              zip(stat_zones_names_dict.keys(), seniors1_per_zone.Street)}
+        map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
+                                        map_title="Current values in total crime cases",
+                                        colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],
+                                        hovertemplate='<b>StatZone</b>: %{text}' + '<br><b>Current Value</b>: %{customdata}<br>',
+                                        changes_map=False)
+        map_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        return map_fig
+
+
 layout = html.Div(
     children=[
-            html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
-                    style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                           'letter-spacing': '0em'}, className='pretty_container'),
-              html.Div([
+        html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
+                style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+                       'letter-spacing': '0em'}, className='pretty_container'),
+        html.Div([
+            html.Div([html.H6('בחר את תצוגת המפה',
+                              style={'Font-weight': 'bold', 'text-transform': 'none',
+                                     'letter-spacing': '0em', 'font-family': 'sans-serif',
+                                     'font-size': 20}),
+                      dcc.RadioItems(id='map_definition',
+                                     options=options_map,
+                                     value=0,
+                                     labelStyle={'display': 'block'},
+                                     inputStyle={'textAlign': 'right'}
+
+                                     ), ], style={'textAlign': 'center', 'font-size': 17,
+                                                  'font-family': 'sans-serif',
+                                                  'letter-spacing': '0em'}),
             html.Div(
                 [
                     html.Div(
@@ -218,7 +255,7 @@ layout = html.Div(
                         className="mini_container",
                     ),
                     html.Div([
-                        dcc.Graph(figure=map_fig)
+                        dcc.Graph(id='primary_map_elderly')
                     ], className="map_container"),
                 ],
                 className="row_rapper",
@@ -242,15 +279,15 @@ layout = html.Div(
             className="pretty_container",
         ),
 
-              html.Div([
-                  html.Div(
-                      [dcc.Graph(id='seniors_type')],
-                      className='narrow_container',
-                  ),
-                  html.Div(
-                      [dcc.Graph(id='needed_help_type')],
-                      className='narrow_container', ),
-              ]),
-              ],
+        html.Div([
+            html.Div(
+                [dcc.Graph(id='seniors_type')],
+                className='narrow_container',
+            ),
+            html.Div(
+                [dcc.Graph(id='needed_help_type')],
+                className='narrow_container', ),
+        ]),
+    ],
     style={"text-align": "justify"},
 )
