@@ -49,6 +49,9 @@ for key, value in statistic_area.items():
         options.append({'label': "  " + key,
                         'value': value})
 
+# options_map = [{'הצג מפת שינויים': 0, 'הצג ערך נוכחי': 1}]
+options_map = [{'label': 'הצג מפת שינויים', 'value': 0}, {'label': 'הצג ערכים נוכחיים', 'value': 1}]
+
 citizen0, citizen1 = dfs_dict['df_salaries_t0'], dfs_dict['df_salaries_t1']
 
 # percentage change in % units from time0 to time1
@@ -170,25 +173,44 @@ def get_graphs(statzone):
     return fig1, fig2, fig3
 
 
+@app.callback(
+Output(component_id='primary_map_population', component_property='figure'),
+Input(component_id='map_definition', component_property='value')
+)
+def change_map(map_def):
+    return map_fig
+
 layout = html.Div(children=[
     html.H4(children='Choose the wanted area to see the graphs changes',
             style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
                    'letter-spacing': '0em'}, className="pretty_container"
             ),
     html.Div([
+        html.Div([html.H6('בחר את תצוגת המפה', style={'Font-weight':'bold','text-transform': 'none',
+                                                      'letter-spacing': '0em','font-family': 'sans-serif',
+                                                      'font-size': 20}),
+                  dcc.RadioItems(id='map_definition',
+                                                      options=options_map,
+                                                      value=0,
+                                                      labelStyle={'display': 'block'},
+                                                      inputStyle={'textAlign': 'right'}
+
+                                                      ), ], style={'textAlign': 'center', 'font-size': 17,
+                                                                   'font-family': 'sans-serif',
+                                                                   'letter-spacing': '0em'}),
         html.Div(
             [
                 html.Div(
                     [
                         'Choose area: ', dcc.RadioItems(id='areas',
                                                         options=options,
-                                                        value=0
+                                                        value=0,
                                                         ),
                     ],
                     className="mini_container",
                 ),
                 html.Div([
-                    dcc.Graph(figure=map_fig)
+                    dcc.Graph(figure=map_fig, id='primary_map_population')
                 ], className="map_container"),
             ],
             className="row_rapper",
