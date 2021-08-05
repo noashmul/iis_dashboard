@@ -100,7 +100,7 @@ def get_graphs(statzone):
                                                        title_text=title1, text_offset_to_the_right=0.15 * max_y,
                                                        tickfont_size=18,
                                                        annotations_text_size=18,
-                                                       is_safety=True)
+                                                       is_safety=False)
     fig1.update_layout(xaxis_range=[0, max_y * 1.15], title_x=0.5)
 
     df_amount_of_workers1 = manipulate_df_salary_fig2(df_salary1)
