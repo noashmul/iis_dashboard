@@ -95,7 +95,7 @@ def get_graphs(statzone):
 
     fig1.update_xaxes(title='חודש'[::-1])
     fig1.update_yaxes(title='כמות פשעים'[::-1])
-    fig1.update_layout(title_text=string + "מספר פשעים לפי חודש "[::-1],
+    fig1.update_layout(title_text=string + "מספר פשעים לפי חודש "[::-1], titlefont_size=18,
                        title_x=0.5,
                        yaxis=dict(
                            titlefont_size=18,
@@ -179,15 +179,15 @@ def get_graphs(statzone):
     fig2.update_xaxes(title='סוג מיקום'[::-1], tickangle=45)
     fig2.update_yaxes(title='כמות פשעים'[::-1])
     # for_title = "crimes per location" if graph_type == "CrimeLocType" else "crimes per type"
-    fig2.update_layout(title_text=string + "מספר פשעים לפי סוג מיקום "[::-1],
+    fig2.update_layout(title_text=string + "מספר פשעים לפי סוג מיקום "[::-1], titlefont_size=18,
                        title_x=0.5,
                        yaxis=dict(
-                           titlefont_size=14,
-                           tickfont_size=14,
+                           titlefont_size=18,
+                           tickfont_size=18,
                        ),
                        xaxis=dict(
-                           titlefont_size=14,
-                           tickfont_size=14,
+                           titlefont_size=18,
+                           tickfont_size=18,
                        ), xaxis_showgrid=True, yaxis_showgrid=True,
                        template='simple_white',
                        showlegend=False,
@@ -242,22 +242,23 @@ def get_graphs(statzone):
 
     fig3 = px.bar(df_type, x=df_type.index, y=df_type['Amount of Crimes'],
                   color_discrete_sequence=['#252E3F'])
-    fig3.update_layout(title_text=string + "מספר פשעים לפי סוג פשע "[::-1],
+    fig3.update_xaxes(title='סוג פשע'[::-1], tickangle=45)
+    fig3.update_yaxes(title='כמות פשעים'[::-1])
+    fig3.update_layout(title_text=string + "מספר פשעים לפי סוג פשע "[::-1], titlefont_size=18,
                        title_x=0.5,
                        yaxis=dict(
-                           titlefont_size=14,
-                           tickfont_size=14,
+                           titlefont_size=18,
+                           tickfont_size=18,
                        ),
                        xaxis=dict(
-                           titlefont_size=14,
-                           tickfont_size=14,
+                           titlefont_size=18,
+                           tickfont_size=18,
                        ), xaxis_showgrid=True, yaxis_showgrid=True,
                        template='simple_white',
                        showlegend=False,
                        yaxis_range=[0, max(fig3.data[0].y) * 1.2],
                        )
-    fig3.update_xaxes(title='סוג פשע'[::-1], tickangle=45)
-    fig3.update_yaxes(title='כמות פשעים'[::-1])
+
     add_annotations_to_fig(fig=fig3, x=fig3.data[0].x, y=fig3.data[0].y,
                            percentage_change_value=percentage_change_value, old_y=old_y)
 
