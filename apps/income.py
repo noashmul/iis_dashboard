@@ -5,6 +5,7 @@ import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Input, Output
 import plotly.express as px
+from utils import create_horizontal_bar_plot_with_annotations
 
 statistic_area = {'הכל': 0,
                   "הדר מערב - רח' אלמותנבי": 611,
@@ -65,17 +66,7 @@ for df in [sal0, sal1]:
                               ['SalNoHKResNum_avg', 'SalHKResNum_avg', 'SalPenResNum_avg', 'SalSHNoBTLResNum_avg',
                                'IncSelfResNum_avg']]].sum(axis=1) / df['tot_res']
 
-
-
-
-
-@app.callback(
-    Output(component_id='Avg_salary', component_property='figure'),
-    Output(component_id='Amount_of_workers', component_property='figure'),
-    Input(component_id='areas', component_property='value')
-)
-def get_graphs(statzone):
-    df_salary = dfs_dict['df_salaries_t1']
+def manipulate_df_salary_fig1(df_salary, statzone):
     df_salary['SalNoHKResNum_avg'] = df_salary['SalNoHKResNum'] * df_salary['SalNoHKAve']
     df_salary['SalHKResNum_avg'] = df_salary['SalHKResNum'] * df_salary['SalHKAve']
     df_salary['SalPenResNum_avg'] = df_salary['SalPenResNum'] * df_salary['SalPenAve']
@@ -97,18 +88,45 @@ def get_graphs(statzone):
                                         df_salary['SalPenResNum_avg'].sum() / df_salary['SalPenResNum'].sum(),
                                         df_salary['SalSHNoBTLResNum_avg'].sum() / df_salary['SalSHNoBTLResNum'].sum(),
                                         df_salary['IncSelfResNum_avg'].sum() / df_salary['IncSelfResNum'].sum()]
-        title1 = "Average Salary per Salary type in All Statistical zones"
-        title2 = "Amount of workers per Salary type in All Statistical zones"
     else:
         df_salary = df_salary[df_salary['StatZone'] == statzone]
         df_avg_sal['Average salary'] = [df_salary['SalNoHKAve'].sum(), df_salary['SalHKAve'].sum(),
                                         df_salary['SalPenAve'].sum(), df_salary['SalSHNoBTLAve'].sum(),
                                         df_salary['IncSelfAve'].sum()]
+    return df_salary, df_avg_sal
+
+
+def manipulate_df_salary_fig2(df_salary):
+    df_amount_of_workers = pd.DataFrame(columns=['Salary type', 'Amount of workers'])
+    df_amount_of_workers['Salary type'] = ['שכר כולל מעבודה (לא כולל עבודה במשק בית(', 'שכר כולל מעבודה במשק בית',
+                                           'שכר כולל מפנסיה',
+                                           'שכר כולל מקצבת שארים (שלא מהביטוח הלאומי(', 'הכנסה מעבודה עצמאית']
+    df_amount_of_workers['Salary type'] = [s[::-1].strip(' ') for s in df_amount_of_workers['Salary type']]
+    df_amount_of_workers['Amount of workers'] = [df_salary['SalNoHKResNum'].sum(), df_salary['SalHKResNum'].sum(),
+                                                 df_salary['SalPenResNum'].sum(), df_salary['SalSHNoBTLResNum'].sum(),
+                                                 df_salary['IncSelfResNum'].sum()]
+    return df_amount_of_workers
+
+@app.callback(
+    Output(component_id='Avg_salary', component_property='figure'),
+    Output(component_id='Amount_of_workers', component_property='figure'),
+    Input(component_id='areas', component_property='value')
+)
+def get_graphs(statzone):
+    df_salary1 = dfs_dict['df_salaries_t1']
+    df_salary1, df_avg_sal1 = manipulate_df_salary_fig1(df_salary1, statzone)
+    df_salary0 = dfs_dict['df_salaries_t0']
+    df_salary0, df_avg_sal0 = manipulate_df_salary_fig1(df_salary0, statzone)
+
+    if statzone == 0:
+        title1 = "Average Salary per Salary type in All Statistical zones"
+        title2 = "Amount of workers per Salary type in All Statistical zones"
+    else:
         title1 = f"Average Salary per Salary type in {statzone} stat zone"
         title2 = f"Amount of workers per Salary type in {statzone} stat zone"
 
-    fig1 = px.bar(df_avg_sal, y=df_avg_sal['Salary type'],
-                  x=df_avg_sal['Average salary'], orientation='h',
+    fig1 = px.bar(df_avg_sal1, y=df_avg_sal1['Salary type'],
+                  x=df_avg_sal1['Average salary'], orientation='h',
                   color_discrete_sequence=['#252E3F'])
     fig1.update_layout(title_text=title1,
                        yaxis=dict(
@@ -123,16 +141,11 @@ def get_graphs(statzone):
                        )
     fig1.update_xaxes(tickangle=45)
 
-    df_amount_of_workers = pd.DataFrame(columns=['Salary type', 'Amount of workers'])
-    df_amount_of_workers['Salary type'] = ['שכר כולל מעבודה (לא כולל עבודה במשק בית(', 'שכר כולל מעבודה במשק בית',
-                                           'שכר כולל מפנסיה',
-                                           'שכר כולל מקצבת שארים (שלא מהביטוח הלאומי(', 'הכנסה מעבודה עצמאית']
-    df_amount_of_workers['Salary type'] = [s[::-1].strip(' ') for s in df_amount_of_workers['Salary type']]
-    df_amount_of_workers['Amount of workers'] = [df_salary['SalNoHKResNum'].sum(), df_salary['SalHKResNum'].sum(),
-                                                 df_salary['SalPenResNum'].sum(), df_salary['SalSHNoBTLResNum'].sum(),
-                                                 df_salary['IncSelfResNum'].sum()]
-    fig2 = px.bar(df_amount_of_workers, y=df_amount_of_workers['Salary type'],
-                  x=df_amount_of_workers['Amount of workers'], orientation='h',
+    df_amount_of_workers1 = manipulate_df_salary_fig2(df_salary1)
+    df_amount_of_workers0 = manipulate_df_salary_fig2(df_salary0)
+
+    fig2 = px.bar(df_amount_of_workers1, y=df_amount_of_workers1['Salary type'],
+                  x=df_amount_of_workers1['Amount of workers'], orientation='h',
                   color_discrete_sequence=['#252E3F'])
     fig2.update_layout(title_text=title2,
                        yaxis=dict(
