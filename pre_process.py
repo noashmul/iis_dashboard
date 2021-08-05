@@ -90,8 +90,8 @@ def create_dfs_dict():
         path_to_zip_file = 'allfiles.zip'
         gdown.download(url, path_to_zip_file, quiet=False)
 
-        with zipfile.ZipFile(path_to_zip_file, 'r') as zip_ref:
-            zip_ref.extractall("data")
+    with zipfile.ZipFile(path_to_zip_file, 'r') as zip_ref:
+        zip_ref.extractall("data")
 
     df_crime_t0 = pd.read_csv('data/df_crime_t0.csv')
     df_crime_t1 = pd.read_csv('data/df_crime_t1.csv')
