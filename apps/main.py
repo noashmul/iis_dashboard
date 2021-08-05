@@ -36,7 +36,7 @@ layout = html.Div(
         html.Div(children=[
             html.H2(children='!ברוכים הבאים',
                     style={'text-align': 'center', 'text-transform': 'none', 'font-family': 'sans-serif',
-                           'letter-spacing': '0em'}),
+                           'letter-spacing': '0em', 'text-decoration':'double'}),
             html.H4(children='.לפניכם כרטיסיות שונות, אחת לכל נושא',
                     style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                            'letter-spacing': '0em'}),
