@@ -259,7 +259,7 @@ layout = html.Div(
                 [
                     html.Div(
                         [
-                            'בחר אזור סטטיסטי', dcc.RadioItems(id='areas',
+                            ':בחר אזור סטטיסטי', dcc.RadioItems(id='areas',
                                                                options=options,
                                                                value=0),
                         ],
