@@ -55,7 +55,8 @@ crime0, crime1 = dfs_dict['df_crime_t0'], dfs_dict['df_crime_t1']
 for df in [crime0, crime1]:
     df['total_crime_cases'] = df[[col for col in df.columns if col != 'StatZone' and col != 'Year']].sum(axis=1)
 
-options_map = [{'label': ' הצג מפת שינויים ', 'value': 0}, {'label': ' הצג ערכים נוכחיים', 'value': 1}]
+
+options_map = [{'label': 'הצג מפת שינויים', 'value': 0}, {'label': 'הצג ערכים נוכחיים', 'value': 1}]
 
 
 @app.callback(
@@ -291,66 +292,75 @@ def change_map(map_def):
 
 
 layout = html.Div(
-    children=[html.H4(children='Choose the wanted area to see the graphs changes',  # TODO adjust title?
-                      style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                             'letter-spacing': '0em'}, className='pretty_container'
-                      ),
-              html.Div([
-                  html.Div([html.H6('בחר את תצוגת המפה', style={'Font-weight': 'bold', 'text-transform': 'none',
-                                                                'letter-spacing': '0em', 'font-family': 'sans-serif',
-                                                                'font-size': 20}),
-                            dcc.RadioItems(id='map_definition',
-                                           options=options_map,
-                                           value=0,
-                                           labelStyle={'display': 'block'},
-                                           inputStyle={'textAlign': 'right'}
+    children=[
+        html.H4(
+            children=[html.H4(['בעמוד הנוכחי תוכלו לראות מגוון נתונים בנושא הפשיעה בהדר'],
+                              style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
+                                     'letter-spacing': '0em'}, ),
+                      html.H4([
+                                  'ניתן לבחור ולראות מפה המציגה את הערכים הנוכחיים של הפשיעה הכוללת בכל אזור סטטיסטי, וכן מפה המראה את השינויים מהחצי שנה הקודמת. בהמשך מוצגים גרפים אשר מציגים מידע נוסף על הפשיעה, וניתן לבחור להציג בהם מידע רק על אזור סטטיסטי מסוים. הגרף הראשון מציג את מגמת הפשיעה בשנה האחרונה, עם הפרדה בין החצי שנה הנוכחית לקודמת. הנוסף אליו מוצגים 2 גרפים המציגים את כמות הפשיעה מבחינת מיקומים ומבחינת סוגי פשעים. ב2 הגרפים מוצגת גם מגמת השינוי בחצי שנה הנוכחית מהחצי שנה הקודמת לה. שימו לב לעבור על הגרפים ולראות את המיגע הנוסף שהם מציגים']
+                              , style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
+                                       'letter-spacing': '0em', 'line-height':'1.6em'}
+                              )]
+            ,
+            className='pretty_container'
+        ),
+        html.Div([
+            html.Div([html.H6('בחר את תצוגת המפה', style={'Font-weight': 'bold', 'text-transform': 'none',
+                                                          'letter-spacing': '0em', 'font-family': 'sans-serif',
+                                                          'font-size': 20}),
+                      dcc.RadioItems(id='map_definition',
+                                     options=options_map,
+                                     value=0,
+                                     labelStyle={'display': 'block'},
+                                     inputStyle={'textAlign': 'right'}
 
-                                           ), ], style={'textAlign': 'center', 'font-size': 17,
-                                                        'font-family': 'sans-serif',
-                                                        'letter-spacing': '0em'}),
-                  html.Div(
-                      [
-                          html.Div(
-                              [
-                                  ': בחר אזור', dcc.RadioItems(id='areas',
-                                                                  options=options,
-                                                                  value=0
-                                                                  ),
-                              ],
-                              className="mini_container",
-                          ),
-                          html.Div([
-                              dcc.Graph(id='primary_map_crime')
-                          ], className="map_container"),
-                      ],
-                      # id="info-container1",
-                      className="row_rapper",
-                  ),
-              ], className='pretty_container'),
-              html.Div(
-                  [
-                      dcc.Graph(id='crime_trend_graph')
-                  ], className="pretty_container"
-              ),
-              # html.Div(
-              #     [
-              html.Div(
-                  [
-                      dcc.Graph(id='crime_location_type')
-                  ],
-                  className='pretty_container',
-              ),
-              html.Div(
-                  [
-                      dcc.Graph(id='crime_type')
-                  ],
-                  className='pretty_container',
-              ),
-              #     ],
-              #     id="info-container2",
-              #     className="row container-display",
-              # )
-              ],
+                                     ), ], style={'textAlign': 'center', 'font-size': 17,
+                                                  'font-family': 'sans-serif',
+                                                  'letter-spacing': '0em'}),
+            html.Div(
+                [
+                    html.Div(
+                        [
+                            ': בחר אזור', dcc.RadioItems(id='areas',
+                                                         options=options,
+                                                         value=0
+                                                         ),
+                        ],
+                        className="mini_container",
+                    ),
+                    html.Div([
+                        dcc.Graph(id='primary_map_crime')
+                    ], className="map_container"),
+                ],
+                # id="info-container1",
+                className="row_rapper",
+            ),
+        ], className='pretty_container'),
+        html.Div(
+            [
+                dcc.Graph(id='crime_trend_graph')
+            ], className="pretty_container"
+        ),
+        # html.Div(
+        #     [
+        html.Div(
+            [
+                dcc.Graph(id='crime_location_type')
+            ],
+            className='pretty_container',
+        ),
+        html.Div(
+            [
+                dcc.Graph(id='crime_type')
+            ],
+            className='pretty_container',
+        ),
+        #     ],
+        #     id="info-container2",
+        #     className="row container-display",
+        # )
+    ],
     # className="pretty_container twelve columns",
     style={"text-align": "justify"},
 )
