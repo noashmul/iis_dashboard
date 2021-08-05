@@ -126,7 +126,7 @@ for key, value in statistic_area.items():
 
 layout = html.Div(children=[
     html.Div([html.H4(
-        'ציון הביטחון האישי הוא קומבינציה של 12 קומפוננטות שונות, המציגות הביטים שונים של ביטחון אישי. אנא בחר את החשיבות של המשקולות השונות בהתאם לצרכים שלך '
+        'ציון הביטחון האישי הוא קומבינציה של 12 רכיבים שונות המציגים הביטים שונים של ביטחון אישי. אנא בחר את החשיבות של כל רכיב בהתאם להעדפותיך '
         ,
         style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                'letter-spacing': '0em'}, )],
@@ -138,19 +138,20 @@ layout = html.Div(children=[
             [
                 dbc.CardHeader(
                     html.H2([
+                        dbc.Button('אפס חשיבות רכיבים', id='reset_weights', n_clicks=0, color='dark',
+                                   style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
+                                          'letter-spacing': '0em', 'font-size': 15}
+                                   ),
                         dbc.Button(
-                            "\U0001F446" + "לחץ כאן כדי לבחור את החשיבות של כל רכיב בציון"
-                            + "\U000021E9",
+                             "\U000021E9" +"  " +
+                              "לחץ כאן כדי לבחור את החשיבות של כל רכיב בציון",
                             color="link",
                             id=f"group-1-toggle",
                             n_clicks=0,
                             style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                                   'letter-spacing': '0em', 'font-size': 20},
+                                   'letter-spacing': '0em', 'font-size': 20, 'font-weight': 'bold'},
                         ),
-                        dbc.Button('החזר למשקולות המקוריות', id='reset_weights', n_clicks=0, color='dark',
-                                   style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
-                                          'letter-spacing': '0em', 'font-size': 15}
-                                   )
+
                     ]),
                 ),
                 dbc.Collapse(

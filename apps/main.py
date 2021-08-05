@@ -45,7 +45,7 @@ layout = html.Div(
                 style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                        'letter-spacing': '0em'}),
             html.H5(
-                children='.הדו"ח מציג דאטה עבור יולי 2020 - דצמבר 2020, ושינויים מהדו"ח הקודם שהוא עבור ינואר 2020 - יוני 2020*',
+                children='.הדו"ח מציג נתונים עבור יולי 2020 - דצמבר 2020, ושינויים מהדו"ח הקודם שהוא עבור ינואר 2020 - יוני 2020*',
                 style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                        'letter-spacing': '0em'}
             )
