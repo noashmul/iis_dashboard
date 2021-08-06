@@ -127,21 +127,24 @@ for key, value in statistic_area.items():
 
 layout = html.Div(children=[
     html.Div([html.H4(
-        '"ציון הביטחון האישי הוא קומבינציה של 12 רכיבים שונות המציגים הביטים שונים של ביטחון אישי. אנא בחר את החשיבות של כל רכיב בהתאם להעדפותיך בכרטיסיית "משקולות ביטחון '
-        ,
+        '`ציון הביטחון האישי הוא קומבינציה של 12 רכיבים שונות המציגים הביטים שונים של ביטחון אישי. אנא בחר את החשיבות של כל רכיב בהתאם להעדפותיך בכרטיסיית `משקולות ביטחון ',
         style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
-               'letter-spacing': '0em'}, )],
+               'letter-spacing': '0em'}, ),
+        html.H4(
+            'מפת חום של ציון ביטחון אישי באזורים הסטטיסטיים',
+            style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
+                   'letter-spacing': '0em'}, )
+    ],
         className='pretty_container'
     ),
-
     html.Div(children=[
         html.Div([
             html.Div(
                 children=
                 [
-                    html.H4(children=' מפת חום של ציון ביטחון אישי באזורים הסטטיסטיים ',
-                            style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
-                                   'letter-spacing': '0em'}),
+                    # html.H4(children='  ',
+                    #         style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
+                    #                'letter-spacing': '0em'}),
                     html.Div(
                         id="graph-container",
                         children=[
