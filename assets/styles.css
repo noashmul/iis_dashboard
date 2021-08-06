@@ -163,14 +163,12 @@ body {
     background-color: #f9f9f9;
     padding-left: 10px;
     padding-right: 10px;
-    /*padding: 2rem 6rem 4rem 4rem;*/
-    /*height: 15rem;*/
-    /*overflow: scroll;*/
 }
 
 .slider-container input {
     width: 20%;
 }
+
 
 .button-radius {
     border-radius: 5px;

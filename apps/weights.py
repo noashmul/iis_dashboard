@@ -134,152 +134,154 @@ layout = html.Div(children=[
         className='pretty_container'
     ),
 
-    html.Div([html.Div(
-        dbc.Card(
-            [
-                dbc.CardHeader(
-                    html.H2([
-                        dbc.Button('אפס חשיבות רכיבים', id='reset_weights_weights', n_clicks=0, color='dark',
-                                   style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
-                                          'letter-spacing': '0em', 'font-size': 15}
-                                   ),
-                        dbc.Button(
-                            "\U000021E9" + "  " +
-                            "לחץ כאן כדי לבחור את החשיבות של כל רכיב בציון",
-                            color="link",
-                            id=f"group-1-toggle",
-                            n_clicks=0,
-                            style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-                                   'letter-spacing': '0em', 'font-size': 20, 'font-weight': 'bold'},
-                        ),
+    html.Div([html.Div([
+        # dbc.Card(
+        #     [
+        #         dbc.CardHeader(
+        #             html.H2([
+        html.Div([html.Div([
+            dbc.Button('אפס חשיבות רכיבים', id='reset_weights_weights', n_clicks=0, color='dark',
+                       style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
+                              'letter-spacing': '0em', 'font-size': 15}
+                       ),
+            html.H4("5: רמת חשיבות נמוכה :1, רמת חשיבות גבוהה", style={'text-align': 'right', 'text-transform': 'none',
+                                                                       'font-family': 'sans-serif',
+                                                                       'letter-spacing': '0em', 'font-size': 15,
+                                                                       'font-weight': 'bold'}),
+            # dbc.Button(
+            #     "\U000021E9" + "  " +
+            #     "לחץ כאן כדי לבחור את החשיבות של כל רכיב בציון",
+            #     color="link",
+            #     id=f"group-1-toggle",
+            #     n_clicks=0,
+            #     style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
+            #            'letter-spacing': '0em', 'font-size': 20, 'font-weight': 'bold'},
+            # ),
 
-                    ]),
-                ),
-                dbc.Collapse(
-                    dbc.CardBody([html.H4("5: רמת חשיבות נמוכה :1, רמת חשיבות גבוהה",
-                                          # '1 רמת חשיבות נמוכה 5 רמת חשיבות גבוהה',
-
-                                          style={'text-align': 'right', 'text-transform': 'none',
-                                                 'font-family': 'sans-serif',
-                                                 'letter-spacing': '0em', 'font-size': 15, 'font-weight': 'bold'}),
-                                  html.Div([html.P(id="slider-text1", children="קונפליקטים בין שכנים",
-                                                   style={'color': 'black', 'text-align': 'center'},
-                                                   ),
-                                            dcc.Slider(id="Weight 1_weights", min=1, max=5, value=scores[0], step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4, 5]
-                                                       }),
-                                            html.P(id="slider-text2", children="מצלמות אבטחה",
-                                                   style={'color': 'black', 'text-align': 'center'},
-                                                   ),
-                                            dcc.Slider(id="Weight 2_weights", min=1, max=5, value=scores[1], step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4, 5]
-                                                       }),
-                                            html.P(id="slider-text3", children="בתים נטושים",
-                                                   style={'color': 'black', 'text-align': 'center'},
-                                                   ),
-                                            dcc.Slider(id="Weight 3_weights", min=1, max=5, value=scores[2], step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4, 5]
-                                                       }),
-                                            html.P(id="slider-text4", children="שיחות למוקד העירייה בנושא ביטחון",
-                                                   style={'color': 'black', 'text-align': 'center'},
-                                                   ),
-                                            dcc.Slider(id="Weight 4_weights", min=1, max=5, value=scores[3], step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4, 5]
-                                                       }),
-                                            ], className="slider-container"),
-                                  html.Div([html.P(id="slider-text5", children="שיחות למוקד העירייה בנושא סוציאלי",
-                                                   style={'color': 'black', 'text-align': 'center'},
-                                                   ),
-                                            dcc.Slider(id="Weight 5_weights", min=1, max=5, value=scores[4], step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4, 5]
-                                                       }),
-                                            html.P(id="slider-text6", children="פשיעה",
-                                                   style={'color': 'black', 'text-align': 'center'},
-                                                   ),
-                                            dcc.Slider(id="Weight 6_weights", min=1, max=5, value=scores[5], step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4, 5]
-                                                       }),
-                                            html.P(id="slider-text7", children="גניבות",
-                                                   style={'color': 'black', 'text-align': 'center'},
-                                                   ),
-                                            dcc.Slider(id="Weight 7_weights", min=1, max=5, value=scores[6], step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4, 5]
-                                                       }),
-                                            html.P(id="slider-text8", children="תקיפות גוף",
-                                                   style={'color': 'black', 'text-align': 'center'},
-                                                   ),
-                                            dcc.Slider(id="Weight 8_weights", min=1, max=5, value=scores[7], step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4, 5]
-                                                       }),
-                                            ], className="slider-container"),
-                                  html.Div([html.P(id="slider-text9", children="תקיפות מיניות",
-                                                   style={'color': 'black', 'text-align': 'center'},
-                                                   ),
-                                            dcc.Slider(id="Weight 9_weights", min=1, max=5, value=scores[8], step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4, 5]
-                                                       }),
-                                            html.P(id="slider-text10", children="שודים",
-                                                   style={'color': 'black', 'text-align': 'center'},
-                                                   ),
-                                            dcc.Slider(id="Weight 10_weights", min=1, max=5, value=scores[9], step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4, 5]
-                                                       }),
-                                            html.P(id="slider-text11", children="הכנסה ממוצעת",
-                                                   style={'color': 'black', 'text-align': 'center'},
-                                                   ),
-                                            dcc.Slider(id="Weight 11_weights", min=1, max=5, value=scores[10],
-                                                       step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4, 5]
-                                                       }),
-                                            html.P(id="slider-text12", children="צפיפות דמוגרפית",
-                                                   style={'color': 'black', 'text-align': 'center'},
-                                                   ),
-                                            dcc.Slider(id="Weight 12_weights", min=1, max=5, value=scores[11],
-                                                       step=None,
-                                                       marks={
-                                                           str(num): {"label": str(num),
-                                                                      "style": {"color": "#7fafdf"}, }
-                                                           for num in [1, 2, 3, 4, 5]
-                                                       }), ], className="slider-container"),
-                                  ]),
-                    id=f"collapse-1_weights",
-                    is_open=False,
-                ),
-            ]
-        ), className='accordion'), ], className='pretty_container'),
+            # ]),
+            # ),
+            # dbc.Collapse(
+            #     dbc.CardBody([
+        ], className='row_rapper'), ], className='pretty_container'),
+        html.Div([html.P(id="slider-text1", children="קונפליקטים בין שכנים",
+                         style={'color': 'black', 'text-align': 'center'},
+                         ),
+                  dcc.Slider(id="Weight 1_weights", min=1, max=5, value=scores[0], step=None,
+                             marks={
+                                 str(num): {"label": str(num),
+                                            "style": {"color": "#7fafdf"}, }
+                                 for num in [1, 2, 3, 4, 5]
+                             }),
+                  html.P(id="slider-text2", children="מצלמות אבטחה",
+                         style={'color': 'black', 'text-align': 'center'},
+                         ),
+                  dcc.Slider(id="Weight 2_weights", min=1, max=5, value=scores[1], step=None,
+                             marks={
+                                 str(num): {"label": str(num),
+                                            "style": {"color": "#7fafdf"}, }
+                                 for num in [1, 2, 3, 4, 5]
+                             }),
+                  html.P(id="slider-text3", children="בתים נטושים",
+                         style={'color': 'black', 'text-align': 'center'},
+                         ),
+                  dcc.Slider(id="Weight 3_weights", min=1, max=5, value=scores[2], step=None,
+                             marks={
+                                 str(num): {"label": str(num),
+                                            "style": {"color": "#7fafdf"}, }
+                                 for num in [1, 2, 3, 4, 5]
+                             }),
+                  html.P(id="slider-text4", children="שיחות למוקד העירייה בנושא ביטחון",
+                         style={'color': 'black', 'text-align': 'center'},
+                         ),
+                  dcc.Slider(id="Weight 4_weights", min=1, max=5, value=scores[3], step=None,
+                             marks={
+                                 str(num): {"label": str(num),
+                                            "style": {"color": "#7fafdf"}, }
+                                 for num in [1, 2, 3, 4, 5]
+                             }),
+                  ], className="slider-container"),
+        html.Div([html.P(id="slider-text5", children="שיחות למוקד העירייה בנושא סוציאלי",
+                         style={'color': 'black', 'text-align': 'center'},
+                         ),
+                  dcc.Slider(id="Weight 5_weights", min=1, max=5, value=scores[4], step=None,
+                             marks={
+                                 str(num): {"label": str(num),
+                                            "style": {"color": "#7fafdf"}, }
+                                 for num in [1, 2, 3, 4, 5]
+                             }),
+                  html.P(id="slider-text6", children="פשיעה",
+                         style={'color': 'black', 'text-align': 'center'},
+                         ),
+                  dcc.Slider(id="Weight 6_weights", min=1, max=5, value=scores[5], step=None,
+                             marks={
+                                 str(num): {"label": str(num),
+                                            "style": {"color": "#7fafdf"}, }
+                                 for num in [1, 2, 3, 4, 5]
+                             }),
+                  html.P(id="slider-text7", children="גניבות",
+                         style={'color': 'black', 'text-align': 'center'},
+                         ),
+                  dcc.Slider(id="Weight 7_weights", min=1, max=5, value=scores[6], step=None,
+                             marks={
+                                 str(num): {"label": str(num),
+                                            "style": {"color": "#7fafdf"}, }
+                                 for num in [1, 2, 3, 4, 5]
+                             }),
+                  html.P(id="slider-text8", children="תקיפות גוף",
+                         style={'color': 'black', 'text-align': 'center'},
+                         ),
+                  dcc.Slider(id="Weight 8_weights", min=1, max=5, value=scores[7], step=None,
+                             marks={
+                                 str(num): {"label": str(num),
+                                            "style": {"color": "#7fafdf"}, }
+                                 for num in [1, 2, 3, 4, 5]
+                             }),
+                  ], className="slider-container"),
+        html.Div([html.P(id="slider-text9", children="תקיפות מיניות",
+                         style={'color': 'black', 'text-align': 'center'},
+                         ),
+                  dcc.Slider(id="Weight 9_weights", min=1, max=5, value=scores[8], step=None,
+                             marks={
+                                 str(num): {"label": str(num),
+                                            "style": {"color": "#7fafdf"}, }
+                                 for num in [1, 2, 3, 4, 5]
+                             }),
+                  html.P(id="slider-text10", children="שודים",
+                         style={'color': 'black', 'text-align': 'center'},
+                         ),
+                  dcc.Slider(id="Weight 10_weights", min=1, max=5, value=scores[9], step=None,
+                             marks={
+                                 str(num): {"label": str(num),
+                                            "style": {"color": "#7fafdf"}, }
+                                 for num in [1, 2, 3, 4, 5]
+                             }),
+                  html.P(id="slider-text11", children="הכנסה ממוצעת",
+                         style={'color': 'black', 'text-align': 'center'},
+                         ),
+                  dcc.Slider(id="Weight 11_weights", min=1, max=5, value=scores[10],
+                             step=None,
+                             marks={
+                                 str(num): {"label": str(num),
+                                            "style": {"color": "#7fafdf"}, }
+                                 for num in [1, 2, 3, 4, 5]
+                             }),
+                  html.P(id="slider-text12", children="צפיפות דמוגרפית",
+                         style={'color': 'black', 'text-align': 'center'},
+                         ),
+                  dcc.Slider(id="Weight 12_weights", min=1, max=5, value=scores[11],
+                             step=None,
+                             marks={
+                                 str(num): {"label": str(num),
+                                            "style": {"color": "#7fafdf"}, }
+                                 for num in [1, 2, 3, 4, 5]
+                             }), ], className="slider-container")],
+        # ]),
+        # id=f"collapse-1_weights",
+        # is_open=False,
+        # ),
+        # ]
+        # ),), ],
+    )]),
     html.Div(id='fake_output')]
 )
 
