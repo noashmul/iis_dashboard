@@ -76,6 +76,7 @@ body {
     box-shadow: 2px 2px 2px lightgrey;
 }
 
+
 .mini_pretty_container {
     width: 45%;
     border-radius: 5px;
@@ -175,8 +176,8 @@ body {
     border-radius: 5px;
 }
 
-#group-1-toggle{
-    margin-left:30%;
+#group-1-toggle {
+    margin-left: 30%;
 }
 
 #radio-button {
