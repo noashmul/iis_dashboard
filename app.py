@@ -24,7 +24,7 @@ app.layout = html.Div(
                     dbc.Container(
                         [
                             dbc.NavLink("משקולות ביטחון", href="/weights"),
-                            dbc.NavLink("ביטחון - מסך אימרסיבי  ||  ", href="/safety_immersive"),
+                            dbc.NavLink("ביטחון - מסך אימרסיבי   ||", href="/safety_immersive"),
                             dbc.NavLink("דמוגרפיה", href="/population"),
                             dbc.NavLink("קשישים", href="/elderly"),
                             dbc.NavLink("הכנסה", href="/income"),

@@ -139,7 +139,7 @@ layout = html.Div(children=[
             [
                 dbc.CardHeader(
                     html.H2([
-                        dbc.Button('אפס חשיבות רכיבים', id='reset_weights', n_clicks=0, color='dark',
+                        dbc.Button('אפס חשיבות רכיבים', id='reset_weights_weights', n_clicks=0, color='dark',
                                    style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
                                           'letter-spacing': '0em', 'font-size': 15}
                                    ),
