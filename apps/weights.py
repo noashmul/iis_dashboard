@@ -135,10 +135,6 @@ layout = html.Div(children=[
     ),
 
     html.Div([html.Div([
-        # dbc.Card(
-        #     [
-        #         dbc.CardHeader(
-        #             html.H2([
         html.Div([html.Div([
             dbc.Button('אפס חשיבות רכיבים', id='reset_weights_weights', n_clicks=0, color='dark',
                        style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
@@ -148,20 +144,6 @@ layout = html.Div(children=[
                                                                        'font-family': 'sans-serif',
                                                                        'letter-spacing': '0em', 'font-size': 15,
                                                                        'font-weight': 'bold'}),
-            # dbc.Button(
-            #     "\U000021E9" + "  " +
-            #     "לחץ כאן כדי לבחור את החשיבות של כל רכיב בציון",
-            #     color="link",
-            #     id=f"group-1-toggle",
-            #     n_clicks=0,
-            #     style={'text-align': 'left', 'text-transform': 'none', 'font-family': 'sans-serif',
-            #            'letter-spacing': '0em', 'font-size': 20, 'font-weight': 'bold'},
-            # ),
-
-            # ]),
-            # ),
-            # dbc.Collapse(
-            #     dbc.CardBody([
         ], className='row_rapper'), ], className='pretty_container'),
         html.Div([html.P(id="slider-text1", children="קונפליקטים בין שכנים",
                          style={'color': 'black', 'text-align': 'center'},
@@ -275,12 +257,6 @@ layout = html.Div(children=[
                                             "style": {"color": "#7fafdf"}, }
                                  for num in [1, 2, 3, 4, 5]
                              }), ], className="slider-container")],
-        # ]),
-        # id=f"collapse-1_weights",
-        # is_open=False,
-        # ),
-        # ]
-        # ),), ],
     )]),
     html.Div(id='fake_output')]
 )

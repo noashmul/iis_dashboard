@@ -55,7 +55,7 @@ def create_df_main_dash(d: dict):
         for ResNum, Salary in zip(df_salaries['ResNum_Salary'], df_salaries['weighted_salary']):
             Average_Salary_list[i] += (ResNum / (df_salaries['ResNum_Salary'].sum())) * Salary
 
-    df_main_dash = add_row_to_main_dash(df_main_dash, 'דמוגרפיה', 'שכר ממוצע', int(Average_Salary_list[0]),
+    df_main_dash = add_row_to_main_dash(df_main_dash, 'הכנסה', 'שכר ממוצע', int(Average_Salary_list[0]),
                                         int(Average_Salary_list[1]))
 
     # Elderly || Senior Citizens || len(df_seniors)

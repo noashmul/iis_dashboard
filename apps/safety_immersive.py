@@ -142,9 +142,6 @@ layout = html.Div(children=[
             html.Div(
                 children=
                 [
-                    # html.H4(children='  ',
-                    #         style={'text-align': 'right', 'text-transform': 'none', 'font-family': 'sans-serif',
-                    #                'letter-spacing': '0em'}),
                     html.Div(
                         id="graph-container",
                         children=[
