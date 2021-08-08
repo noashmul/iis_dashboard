@@ -13,10 +13,13 @@ app.config.suppress_callback_exceptions = True
 
 app.layout = html.Div(
     [
-        html.H1('-', style={'color': '#252e3f', 'text-align': 'right'}),
-        html.H1('שכונת הדר: דו"ח חצי שנתי',
-                style={'color': '#FFFFFF', 'text-transform': 'none', 'align-items': 'center',
-                       'text-align': 'center', 'font-size': '60px'}, ),
+        html.Div([
+            html.Img(src='../assets/city.png', height='60px', alt='logo', style={'float': 'right'}),
+            html.H1('שכונת הדר: דו"ח חצי שנתי',
+                    style={'color': '#FFFFFF', 'text-transform': 'none', 'align-items': 'center',
+                           'text-align': 'center', 'font-size': '60px', 'position': 'relative'}),
+        ]),
+
         html.Div([
             dcc.Location(id="url"),
             dbc.NavbarSimple(
