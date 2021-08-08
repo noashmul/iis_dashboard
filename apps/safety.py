@@ -65,7 +65,7 @@ def calc_safety_scores(StatZone, df_salary, df_conflicts, df_cameras, df_aband, 
     # ******************* PART 3 -INCOME SCORES **********************#
     income_avg_s = df_area_salary['IncSelfAve'] / HaifaAvgIncome
     Demographic_density_area = population / StatZone_size_dict[StatZone]
-    Demographic_density_s = Demographic_density_area / Demographic_density_haifa
+    Demographic_density_s = 1-Demographic_density_area / Demographic_density_haifa
 
     X_features = [conflicts_s, cameras_s, aband_s, security_106_s, social_106_s, crime_s, \
                   crime_thefts_s, crime_BodyAssaults_s, crime_SexualAssaults_s, crime_Robbery_s, \
