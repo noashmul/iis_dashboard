@@ -117,8 +117,6 @@ def create_dfs_dict():
     df_cameras_t0 = pd.read_csv('data/df_cameras_t0.csv')
     df_cameras_t1 = pd.read_csv('data/df_cameras_t1.csv')
 
-    df_stats_zone = pd.read_csv('data/df_stats_zone.csv')
-
     df_aband_t0 = pd.read_csv('data/df_aband_t0.csv')
     df_aband_t1 = pd.read_csv('data/df_aband_t1.csv')
 
@@ -131,8 +129,7 @@ def create_dfs_dict():
                 'df_holocaust_t0': df_holocaust_t0, 'df_holocaust_t1': df_holocaust_t1,
                 'df_106_t0': df_106_t0, 'df_106_t1': df_106_t1,
                 'df_cameras_t0': df_cameras_t0, 'df_cameras_t1': df_cameras_t1,
-                'df_stats_zone': df_stats_zone, 'df_aband_t0': df_aband_t0,
-                'df_aband_t1': df_aband_t1}
+                'df_aband_t0': df_aband_t0, 'df_aband_t1': df_aband_t1}
 
     dfs_dict = add_row_to_missing_stat_zones(dfs_dict)
     return dfs_dict
@@ -150,7 +147,7 @@ def add_row_to_missing_stat_zones(dfs_dict):
     if df in ['df_holocaust_t0', 'df_holocaust_t1']:
         for statzone in list(set(dfs_dict[df].StatZone)):
             set_of_helps = dfs_dict[df][dfs_dict[df]['StatZone'] == statzone]['HoloSurvNdDesc']
-            while len(set_of_helps)==set_of_helps.isna().sum():
+            while len(set_of_helps) == set_of_helps.isna().sum():
                 new_row = dfs_dict[df].sample(n=1)
                 new_row['StatZone'] = statzone
                 dfs_dict[df] = dfs_dict[df].append(new_row)
