@@ -21,7 +21,7 @@ The dashboard is available:
 
 ## Report
 
-Find our project submission report under [project_report.pdf]("project_report.pdf")
+Find our project submission report under [project_report.pdf](project_report.pdf)
 
 ## 
 
