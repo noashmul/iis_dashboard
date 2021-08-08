@@ -34,9 +34,9 @@ def calc_safety_scores(StatZone, df_salary, df_conflicts, df_cameras, df_aband, 
     df_area_salary = df_salary[df_salary['StatZone'] == StatZone]
     df_area_cameras = df_cameras[df_cameras['StatZone'] == StatZone]
     df_ares_aband = df_aband[df_aband['StatZone'] == StatZone]
-    df_area_106_security = df_106[(df_106['stat_zone_number'] == StatZone) &
+    df_area_106_security = df_106[(df_106['StatZone'] == StatZone) &
                                   (df_106['בעל המשימה'] == 'בטחון')]
-    df_area_106_social = df_106[(df_106['stat_zone_number'] == StatZone) &
+    df_area_106_social = df_106[(df_106['StatZone'] == StatZone) &
                                 (df_106['בעל המשימה'] == 'רווחה הדר/עיר תחתית')]
 
     df_area_crimes = df_crimes[df_crimes['StatZone'] == StatZone]
