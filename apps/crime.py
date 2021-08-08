@@ -24,7 +24,9 @@ for df in [crime0, crime1]:
 )
 def get_graphs(statzone):
     df_crimes_cases_t0 = dfs_dict['df_crimes_cases_t0']
+    df_crimes_cases_t0['tmp_col'] = 1
     df_crimes_cases_t1 = dfs_dict['df_crimes_cases_t1']
+    df_crimes_cases_t1['tmp_col'] = 1
     df_crimes = pd.concat([df_crimes_cases_t0, df_crimes_cases_t1])
 
     if statzone == 0:
@@ -32,19 +34,19 @@ def get_graphs(statzone):
 
     """fig1"""
     if statzone == 'All Statistical zones':
-        df_total_crimes = df_crimes.groupby(by=["Month"]).count()[['Street']] // 14
+        df_total_crimes = df_crimes.groupby(by=["Month"]).count()[['tmp_col']] // 14
         df_total_crime_all = pd.DataFrame(columns=['Month', 'Amount of Crimes'])
-        df_total_crime_all['Month'] = df_total_crimes['Street'].index
-        df_total_crime_all['Amount of Crimes'] = df_total_crimes['Street'].values
+        df_total_crime_all['Month'] = df_total_crimes['tmp_col'].index
+        df_total_crime_all['Amount of Crimes'] = df_total_crimes['tmp_col'].values
         fig1 = px.scatter(df_total_crime_all, x=df_total_crime_all['Month']
                           , y=df_total_crime_all['Amount of Crimes'], color_discrete_sequence=['#252E3F'],
                           ).update_traces(mode='lines+markers')
         max_y = df_total_crime_all['Amount of Crimes'].max()
     else:
-        df_total_crimes = df_crimes.groupby(by=["StatZone", "Month"]).count()[['Street']]
+        df_total_crimes = df_crimes.groupby(by=["StatZone", "Month"]).count()[['tmp_col']]
         df_tot_crime_per_area = pd.DataFrame(columns=['Month', 'Amount of Crimes'])
-        df_tot_crime_per_area['Month'] = df_total_crimes.loc[statzone]['Street'].index
-        df_tot_crime_per_area['Amount of Crimes'] = df_total_crimes.loc[statzone]['Street'].values
+        df_tot_crime_per_area['Month'] = df_total_crimes.loc[statzone]['tmp_col'].index
+        df_tot_crime_per_area['Amount of Crimes'] = df_total_crimes.loc[statzone]['tmp_col'].values
         fig1 = px.scatter(df_tot_crime_per_area, x=df_tot_crime_per_area['Month']
                           , y=df_tot_crime_per_area['Amount of Crimes'], color_discrete_sequence=['#252E3F'],
                           ).update_traces(mode='lines+markers')
@@ -92,16 +94,16 @@ def get_graphs(statzone):
     percentage_change_value, old_y = [], []
 
     if statzone == 'All Statistical zones':
-        df_location = current_semi_annual.groupby(by=["CrimeLocType"]).count()[['Street']] // 14
-        df_location = df_location.sort_values(by=['Street'], ascending=False).head(10)
+        df_location = current_semi_annual.groupby(by=["CrimeLocType"]).count()[['tmp_col']] // 14
+        df_location = df_location.sort_values(by=['tmp_col'], ascending=False).head(10)
         df_location.index = [s[::-1].strip(' ') for s in df_location.index]
-        df_location.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+        df_location.rename(columns={'tmp_col': 'Amount of Crimes'}, inplace=True)
 
-        prev_df_location = previous_semi_annual.groupby(by=["CrimeLocType"]).count()[['Street']] // 14
-        prev_df_location = prev_df_location.sort_values(by=['Street'], ascending=False)
+        prev_df_location = previous_semi_annual.groupby(by=["CrimeLocType"]).count()[['tmp_col']] // 14
+        prev_df_location = prev_df_location.sort_values(by=['tmp_col'], ascending=False)
         prev_df_location.index = [s[::-1].strip(' ') for s in prev_df_location.index]
         prev_df_location = prev_df_location.loc[[idx for idx in df_location.index if idx in prev_df_location.index]]
-        prev_df_location.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+        prev_df_location.rename(columns={'tmp_col': 'Amount of Crimes'}, inplace=True)
 
         for idx in df_location.index:
             if idx in prev_df_location.index:
@@ -113,16 +115,16 @@ def get_graphs(statzone):
                 old_y.append(np.nan)
 
     else:
-        df_location = current_semi_annual.groupby(by=["StatZone", "CrimeLocType"]).count()[['Street']]
-        df_location = df_location.loc[statzone].sort_values(by=['Street'], ascending=False).head(10)
+        df_location = current_semi_annual.groupby(by=["StatZone", "CrimeLocType"]).count()[['tmp_col']]
+        df_location = df_location.loc[statzone].sort_values(by=['tmp_col'], ascending=False).head(10)
         df_location.index = [s[::-1].strip(' ') for s in df_location.index]
-        df_location.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+        df_location.rename(columns={'tmp_col': 'Amount of Crimes'}, inplace=True)
 
-        prev_df_location = previous_semi_annual.groupby(by=["StatZone", "CrimeLocType"]).count()[['Street']]
-        prev_df_location = prev_df_location.loc[statzone].sort_values(by=['Street'], ascending=False)
+        prev_df_location = previous_semi_annual.groupby(by=["StatZone", "CrimeLocType"]).count()[['tmp_col']]
+        prev_df_location = prev_df_location.loc[statzone].sort_values(by=['tmp_col'], ascending=False)
         prev_df_location.index = [s[::-1].strip(' ') for s in prev_df_location.index]
         prev_df_location = prev_df_location.loc[[idx for idx in df_location.index if idx in prev_df_location.index]]
-        prev_df_location.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+        prev_df_location.rename(columns={'tmp_col': 'Amount of Crimes'}, inplace=True)
 
         for idx in df_location.index:
             if idx in prev_df_location.index:
@@ -160,16 +162,16 @@ def get_graphs(statzone):
     """fig3"""
     percentage_change_value, old_y = [], []
     if statzone == 'All Statistical zones':
-        df_type = current_semi_annual.groupby(by=["CrimeType"]).count()[['Street']] // 14
-        df_type = df_type.sort_values(by=['Street'], ascending=False).head(10)
+        df_type = current_semi_annual.groupby(by=["CrimeType"]).count()[['tmp_col']] // 14
+        df_type = df_type.sort_values(by=['tmp_col'], ascending=False).head(10)
         df_type.index = [s[::-1].strip(' ') for s in df_type.index]
-        df_type.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+        df_type.rename(columns={'tmp_col': 'Amount of Crimes'}, inplace=True)
 
-        prev_df_type = previous_semi_annual.groupby(by=["CrimeType"]).count()[['Street']] // 14
-        prev_df_type = prev_df_type.sort_values(by=['Street'], ascending=False)
+        prev_df_type = previous_semi_annual.groupby(by=["CrimeType"]).count()[['tmp_col']] // 14
+        prev_df_type = prev_df_type.sort_values(by=['tmp_col'], ascending=False)
         prev_df_type.index = [s[::-1].strip(' ') for s in prev_df_type.index]
         prev_df_type = prev_df_type.loc[[idx for idx in df_type.index if idx in prev_df_type.index]]
-        prev_df_type.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+        prev_df_type.rename(columns={'tmp_col': 'Amount of Crimes'}, inplace=True)
 
         for idx in df_type.index:
             if idx in prev_df_type.index:
@@ -180,16 +182,16 @@ def get_graphs(statzone):
                 percentage_change_value.append(np.nan)
                 old_y.append(np.nan)
     else:
-        df_type = current_semi_annual.groupby(by=["StatZone", "CrimeType"]).count()[['Street']]
-        df_type = df_type.loc[statzone].sort_values(by=['Street'], ascending=False).head(10)
+        df_type = current_semi_annual.groupby(by=["StatZone", "CrimeType"]).count()[['tmp_col']]
+        df_type = df_type.loc[statzone].sort_values(by=['tmp_col'], ascending=False).head(10)
         df_type.index = [s[::-1].strip(' ') for s in df_type.index]
-        df_type.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+        df_type.rename(columns={'tmp_col': 'Amount of Crimes'}, inplace=True)
 
-        prev_df_type = previous_semi_annual.groupby(by=["StatZone", "CrimeType"]).count()[['Street']]
-        prev_df_type = prev_df_type.loc[statzone].sort_values(by=['Street'], ascending=False)
+        prev_df_type = previous_semi_annual.groupby(by=["StatZone", "CrimeType"]).count()[['tmp_col']]
+        prev_df_type = prev_df_type.loc[statzone].sort_values(by=['tmp_col'], ascending=False)
         prev_df_type.index = [s[::-1].strip(' ') for s in prev_df_type.index]
         prev_df_type = prev_df_type.loc[[idx for idx in df_type.index if idx in prev_df_type.index]]
-        prev_df_type.rename(columns={'Street': 'Amount of Crimes'}, inplace=True)
+        prev_df_type.rename(columns={'tmp_col': 'Amount of Crimes'}, inplace=True)
 
         for idx in df_type.index:
             if idx in prev_df_type.index:

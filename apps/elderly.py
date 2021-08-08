@@ -24,6 +24,7 @@ def blank_fig(height):
 
 def manipulate_holucaust_df(df, statzone):
     df["HoloSurvNdDesc"].dropna()
+    df['tmp_col'] = 1
     df = df.replace(
         {'בעיות הנובעות ממחלות אקוטיות או כרוניות (למעט בריאות הנפש)': 'מחלות אקוטיות או כרוניות',
          'בעיות הנובעות מרמת הכנסה נמוכה או מירידה ברמת הכנסה': 'רמת הכנסה נמוכה',
@@ -32,24 +33,25 @@ def manipulate_holucaust_df(df, statzone):
     df["HoloSurvNdDesc"] = df["HoloSurvNdDesc"].apply(
         lambda x: str(x)[:-1] + '(' if str(x)[-1] == ')' else x)
     if statzone == 'All Statistical Zones':  # TODO delete or statzone==623
-        df_holocaust1_type = df.groupby(by=["HoloSurvNdDesc"]).count()[['Street']]
-        df_holocaust1_type = df_holocaust1_type.sort_values(by=['Street'], ascending=False).head(5)
+        df_holocaust1_type = df.groupby(by=["HoloSurvNdDesc"]).count()[['tmp_col']]
+        df_holocaust1_type = df_holocaust1_type.sort_values(by=['tmp_col'], ascending=False).head(5)
     else:
-        df_holocaust1_type = df.groupby(by=["StatZone", "HoloSurvNdDesc"]).count()[['Street']]
-        df_holocaust1_type = df_holocaust1_type.loc[statzone].sort_values(by=['Street'], ascending=False).head(5)
+        df_holocaust1_type = df.groupby(by=["StatZone", "HoloSurvNdDesc"]).count()[['tmp_col']]
+        df_holocaust1_type = df_holocaust1_type.loc[statzone].sort_values(by=['tmp_col'], ascending=False).head(5)
 
     df_holocaust1_type.index = [s[::-1].strip(' ') for s in df_holocaust1_type.index]
-    df_holocaust1_type.rename(columns={'Street': 'Amount of Holocaust Survivors'}, inplace=True)
+    df_holocaust1_type.rename(columns={'tmp_col': 'Amount of Holocaust Survivors'}, inplace=True)
     return df_holocaust1_type
 
 
 
 # Calculate % change in total amount of seniors from time t0 to t1
 seniors0, seniors1 = dfs_dict['df_seniors_t0'], dfs_dict['df_seniors_t1']
-
+seniors0['tmp_col'] = 1
+seniors1['tmp_col'] = 1
 # percentage change in % units from time0 to time1
-seniors1_per_zone = seniors1.groupby(by=["StatZone"]).count()[['Street']]
-seniors0_per_zone = seniors0.groupby(by=["StatZone"]).count()[['Street']]
+seniors1_per_zone = seniors1.groupby(by=["StatZone"]).count()[['tmp_col']]
+seniors0_per_zone = seniors0.groupby(by=["StatZone"]).count()[['tmp_col']]
 
 
 @app.callback(
@@ -162,7 +164,7 @@ def get_graphs(statzone):
 )
 def change_map(map_def):
     if map_def == 0:  # 'שינוי באחוזים מהדו"ח הקודם'
-        percentage_change = 100 * ((seniors1_per_zone.Street - seniors0_per_zone.Street) / seniors0_per_zone.Street)
+        percentage_change = 100 * ((seniors1_per_zone.tmp_col - seniors0_per_zone.tmp_col) / seniors0_per_zone.tmp_col)
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
                               zip(stat_zones_names_dict.keys(), percentage_change)}
 
@@ -174,7 +176,7 @@ def change_map(map_def):
         return map_fig
     else:  # 'הצג ערך נוכחי'
         values_for_heatmap = {statzone_code: perc_change for statzone_code, perc_change in
-                              zip(stat_zones_names_dict.keys(), seniors1_per_zone.Street)}
+                              zip(stat_zones_names_dict.keys(), seniors1_per_zone.tmp_col)}
         map_fig = get_choroplethmap_fig(values_dict={k: int(v) for k, v in values_for_heatmap.items()},
                                         map_title="Current values in total crime cases",
                                         colorscale=[[0, '#561162'], [0.5, 'white'], [1, '#0B3B70']],

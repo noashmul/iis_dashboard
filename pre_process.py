@@ -1,7 +1,4 @@
 import pandas as pd
-import gdown
-import zipfile
-import os
 
 
 def percentage_change(a, b):
@@ -85,15 +82,6 @@ def create_df_main_dash(d: dict):
 
 
 def create_dfs_dict():
-    path_to_zip_file = 'allfiles.zip'
-    if path_to_zip_file not in os.listdir():  # download zip from google drive only if it doesn't exist on os.listdir
-        url = 'https://drive.google.com/uc?id=10g8dG0ADChvWiGKDLaSDzve6mIiR0NhY'
-        gdown.download(url, path_to_zip_file, quiet=False)
-
-    if 'data' not in os.listdir():  # unzip the zip file only if you it didn't occured yet
-        with zipfile.ZipFile(path_to_zip_file, 'r') as zip_ref:
-            zip_ref.extractall("data")
-
     df_crime_t0 = pd.read_csv('data/df_crime_t0.csv')
     df_crime_t1 = pd.read_csv('data/df_crime_t1.csv')
     df_crimes_cases_t0 = pd.read_csv('data/df_crimes_cases_t0.csv')
