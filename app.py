@@ -1,6 +1,6 @@
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 
 # must add this line in order for the app to be deployed successfully on Heroku
@@ -33,7 +33,6 @@ app.layout = html.Div(
                             dbc.NavLink("ראשי", href="/main"),
 
                         ])],
-                # brand="Choose the wanted tab",
                 color="primary",
                 dark=True,
                 style={'font-size': 15},

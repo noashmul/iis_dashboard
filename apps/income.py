@@ -4,51 +4,8 @@ from pre_process import *
 import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Input, Output
-from utils import create_horizontal_bar_plot_with_annotations
+from utils import create_horizontal_bar_plot_with_annotations, options_map, stat_zones_names_dict, options
 
-statistic_area = {'הכל': 0,
-                  "הדר מערב - רח' אלמותנבי": 611,
-                  'גן הבהאים': 612,
-                  "הדר מערב - רח' מסדה": 613,
-                  'הדר עליון -בי"ח בני ציון': 621,
-                  "הדר עליון - רח' הפועל": 622,
-                  "רמת הדר - רח' המיימוני": 623,
-                  'הדר מרכז - התיאטרון העירוני': 631,
-                  "הדר מרכז - רח' הרצליה": 632,
-                  'הדר מרכז - בית העירייה': 633,
-                  'הדר מרכז - שוק תלפיות': 634,
-                  'הדר מזרח - רח\' יל"ג': 641,
-                  'הדר מזרח - גאולה': 642,
-                  "רמת ויז'ניץ": 643,
-                  'מעונות גאולה': 644}
-
-stat_zones_names_dict = {
-    611: "הדר מערב - רח' אלמותנבי",
-    612: 'גן הבהאים',
-    613: "הדר מערב - רח' מסדה",
-    621: 'הדר עליון -בי"ח בני ציון',
-    622: "הדר עליון - רח' הפועל",
-    623: "רמת הדר - רח' המיימוני",
-    631: 'הדר מרכז - התיאטרון העירוני',
-    632: "הדר מרכז - רח' הרצליה",
-    633: 'הדר מרכז - בית העירייה',
-    634: 'הדר מרכז - שוק תלפיות',
-    641: 'הדר מזרח - רח\' יל"ג',
-    642: 'הדר מזרח - גאולה',
-    643: "רמת ויז'ניץ",
-    644: 'מעונות גאולה'
-}
-
-options_map = [{'label': ' שינוי באחוזים מהדו"ח הקודם ', 'value': 0}, {'label': ' ערכי הדו"ח הנוכחי', 'value': 1}]
-
-options = list()
-for key, value in statistic_area.items():
-    if key != 'הכל':
-        options.append({'label': "  " + key + ' ' + str(value),
-                        'value': value})
-    else:
-        options.append({'label': "  " + 'כל האזורים הסטטיסטיים',
-                        'value': value})
 
 sal0, sal1 = dfs_dict['df_salaries_t0'], dfs_dict['df_salaries_t1']
 for df in [sal0, sal1]:
@@ -77,14 +34,10 @@ def get_graphs(statzone):
     df_salary0, df_avg_sal0 = manipulate_df_salary_fig1(df_salary0, statzone)
 
     if statzone == 0:
-        # title1 = "Average Salary per Salary type in All Statistical zones"
-        # title2 = "Amount of workers per Salary type in All Statistical zones"
         title1 = "משכורת ממוצעת עבור כל סוגי המשכורות בכל שכונת הדר"[::-1]
         title2 = "כמות העובדים עבור כל סוגי המשכורות בכל שכונת הדר"[::-1]
     else:
         statzone_name = str(statzone)
-        # title1 = f"Average Salary per Salary type in {statzone} stat zone"
-        # title2 = f"Amount of workers per Salary type in {statzone} stat zone"
         title1 = f"משכורת ממוצעת עבור כל סוגי המשכורות באזור סטטיסטי {statzone_name[::-1]}"[::-1]
         title2 = f"כמות העובדים עבור כל סוגי המשכורות באזור סטטיסטי {statzone_name[::-1]}"[::-1]
 
@@ -165,9 +118,6 @@ def manipulate_df_salary_fig1(df_salary, statzone):
     df_avg_sal['Salary type'] = [s[::-1].strip(' ') for s in df_avg_sal['Salary type']]
 
     if statzone == 0:
-        statzone = 'All Statistical zones'
-        # df_salary = df_salary[['SalNoHKResNum', 'SalHKResNum', 'SalPenResNum', 'SalSHNoBTLResNum', 'IncSelfResNum',
-        #                        'SalNoHKAve', 'SalHKAve', 'SalPenAve', 'SalSHNoBTLAve', 'IncSelfAve']]
         df_avg_sal['Average salary'] = [df_salary['SalNoHKResNum_avg'].sum() / df_salary['SalNoHKResNum'].sum(),
                                         df_salary['SalHKResNum_avg'].sum() / df_salary['SalHKResNum'].sum(),
                                         df_salary['SalPenResNum_avg'].sum() / df_salary['SalPenResNum'].sum(),
@@ -234,7 +184,6 @@ layout = html.Div(children=[html.H4(
                     dcc.Graph(id='primary_map_income')
                 ], className="map_container"),
             ],
-            # id="info-container1",
             className="row_rapper",
         ), ], className="pretty_container"),
     html.Div(

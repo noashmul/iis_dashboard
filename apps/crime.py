@@ -1,7 +1,7 @@
 from choroplethmapbox import get_choroplethmap_fig
 from app_def import app
 from pre_process import *
-from utils import add_annotations_to_fig
+from utils import add_annotations_to_fig, options_map, stat_zones_names_dict, options
 import plotly.graph_objects as go
 import dash_html_components as html
 import dash_core_components as dcc
@@ -9,53 +9,11 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 import numpy as np
 
-statistic_area = {'הכל': 0,
-                  "הדר מערב - רח' אלמותנבי": 611,
-                  'גן הבהאים': 612,
-                  "הדר מערב - רח' מסדה": 613,
-                  'הדר עליון -בי"ח בני ציון': 621,
-                  "הדר עליון - רח' הפועל": 622,
-                  "רמת הדר - רח' המיימוני": 623,
-                  'הדר מרכז - התיאטרון העירוני': 631,
-                  "הדר מרכז - רח' הרצליה": 632,
-                  'הדר מרכז - בית העירייה': 633,
-                  'הדר מרכז - שוק תלפיות': 634,
-                  'הדר מזרח - רח\' יל"ג': 641,
-                  'הדר מזרח - גאולה': 642,
-                  "רמת ויז'ניץ": 643,
-                  'מעונות גאולה': 644}
-
-options = list()
-for key, value in statistic_area.items():
-    if key != 'הכל':
-        options.append({'label': "  " + key + ' ' + str(value),
-                        'value': value})
-    else:
-        options.append({'label': "  " + 'כל האזורים הסטטיסטיים',
-                        'value': value})
-
-stat_zones_names_dict = {
-    611: "הדר מערב - רח' אלמותנבי",
-    612: 'גן הבהאים',
-    613: "הדר מערב - רח' מסדה",
-    621: 'הדר עליון -בי"ח בני ציון',
-    622: "הדר עליון - רח' הפועל",
-    623: "רמת הדר - רח' המיימוני",
-    631: 'הדר מרכז - התיאטרון העירוני',
-    632: "הדר מרכז - רח' הרצליה",
-    633: 'הדר מרכז - בית העירייה',
-    634: 'הדר מרכז - שוק תלפיות',
-    641: 'הדר מזרח - רח\' יל"ג',
-    642: 'הדר מזרח - גאולה',
-    643: "רמת ויז'ניץ",
-    644: 'מעונות גאולה'
-}
 # Calculate % change in total crime cases from time t0 to t1
 crime0, crime1 = dfs_dict['df_crime_t0'], dfs_dict['df_crime_t1']
 for df in [crime0, crime1]:
     df['total_crime_cases'] = df[[col for col in df.columns if col != 'StatZone' and col != 'Year']].sum(axis=1)
 
-options_map = [{'label': ' שינוי באחוזים מהדו"ח הקודם ', 'value': 0}, {'label': ' ערכי הדו"ח הנוכחי', 'value': 1}]
 
 
 @app.callback(
@@ -338,7 +296,6 @@ layout = html.Div(
                         dcc.Graph(id='primary_map_crime')
                     ], className="map_container"),
                 ],
-                # id="info-container1",
                 className="row_rapper",
             ),
         ], className='pretty_container'),
@@ -347,8 +304,6 @@ layout = html.Div(
                 dcc.Graph(id='crime_trend_graph')
             ], className="pretty_container"
         ),
-        # html.Div(
-        #     [
         html.Div(
             [
                 dcc.Graph(id='crime_location_type')
@@ -361,11 +316,6 @@ layout = html.Div(
             ],
             className='pretty_container',
         ),
-        #     ],
-        #     id="info-container2",
-        #     className="row container-display",
-        # )
     ],
-    # className="pretty_container twelve columns",
     style={"text-align": "justify"},
 )

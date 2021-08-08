@@ -1,60 +1,14 @@
 from app_def import app
 from choroplethmapbox import get_choroplethmap_fig
 from pre_process import *
-from utils import add_annotations_to_fig
+from utils import add_annotations_to_fig, options_map, stat_zones_names_dict, options
 import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Input, Output
 import plotly.express as px
 
-statistic_area = {'הכל': 0,
-                  "הדר מערב - רח' אלמותנבי": 611,
-                  'גן הבהאים': 612,
-                  "הדר מערב - רח' מסדה": 613,
-                  'הדר עליון -בי"ח בני ציון': 621,
-                  "הדר עליון - רח' הפועל": 622,
-                  "רמת הדר - רח' המיימוני": 623,
-                  'הדר מרכז - התיאטרון העירוני': 631,
-                  "הדר מרכז - רח' הרצליה": 632,
-                  'הדר מרכז - בית העירייה': 633,
-                  'הדר מרכז - שוק תלפיות': 634,
-                  'הדר מזרח - רח\' יל"ג': 641,
-                  'הדר מזרח - גאולה': 642,
-                  "רמת ויז'ניץ": 643,
-                  'מעונות גאולה': 644}
-
-stat_zones_names_dict = {
-    611: "הדר מערב - רח' אלמותנבי",
-    612: 'גן הבהאים',
-    613: "הדר מערב - רח' מסדה",
-    621: 'הדר עליון -בי"ח בני ציון',
-    622: "הדר עליון - רח' הפועל",
-    623: "רמת הדר - רח' המיימוני",
-    631: 'הדר מרכז - התיאטרון העירוני',
-    632: "הדר מרכז - רח' הרצליה",
-    633: 'הדר מרכז - בית העירייה',
-    634: 'הדר מרכז - שוק תלפיות',
-    641: 'הדר מזרח - רח\' יל"ג',
-    642: 'הדר מזרח - גאולה',
-    643: "רמת ויז'ניץ",
-    644: 'מעונות גאולה'
-}
-
-options = list()
-for key, value in statistic_area.items():
-    if key != 'הכל':
-        options.append({'label': "  " + key + ' ' + str(value),
-                        'value': value})
-    else:
-        options.append({'label': "  " + 'כל האזורים הסטטיסטיים',
-                        'value': value})
-
-options_map = [{'label': ' שינוי באחוזים מהדו"ח הקודם ', 'value': 0}, {'label': ' ערכי הדו"ח הנוכחי', 'value': 1}]
 
 citizen0, citizen1 = dfs_dict['df_salaries_t0'], dfs_dict['df_salaries_t1']
-
-
-# percentage change in % units from time0 to time1
 
 
 @app.callback(

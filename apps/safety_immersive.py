@@ -100,31 +100,6 @@ df_score_t1, values_dict_t1 = create_safety_table(df_salaries_t1, df_conflicts_t
 df_score_t0, values_dict_t0 = create_safety_table(df_salaries_t0, df_conflicts_t0, df_cameras_t0, df_aband_t0,
                                                   df_106_t0, df_crimes_t0)
 
-statistic_area = {'כל האזורים הסטטיסטיים': 0,
-                  "הדר מערב - רח' אלמותנבי": 611,
-                  'גן הבהאים': 612,
-                  "הדר מערב - רח' מסדה": 613,
-                  'הדר עליון -בי"ח בני ציון': 621,
-                  "הדר עליון - רח' הפועל": 622,
-                  "רמת הדר - רח' המיימוני": 623,
-                  'הדר מרכז - התיאטרון העירוני': 631,
-                  "הדר מרכז - רח' הרצליה": 632,
-                  'הדר מרכז - בית העירייה': 633,
-                  'הדר מרכז - שוק תלפיות': 634,
-                  'הדר מזרח - רח\' יל"ג': 641,
-                  'הדר מזרח - גאולה': 642,
-                  "רמת ויז'ניץ": 643,
-                  'מעונות גאולה': 644}
-
-options = list()
-for key, value in statistic_area.items():
-    if key != 'כל האזורים הסטטיסטיים':
-        options.append({'label': "  " + key + ' ' + str(value),
-                        'value': value})
-    else:
-        options.append({'label': "  " + key,
-                        'value': value})
-
 layout = html.Div(children=[
     html.Div([html.H4(
         '`ציון הביטחון האישי הוא קומבינציה של 12 רכיבים שונות המציגים הביטים שונים של ביטחון אישי. אנא בחר את החשיבות של כל רכיב בהתאם להעדפותיך בכרטיסיית `משקולות ביטחון ',

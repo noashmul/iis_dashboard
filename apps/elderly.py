@@ -5,25 +5,7 @@ import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Input, Output
 import plotly.express as px
-from utils import add_annotations_to_fig
-
-statistic_area = {'הכל': 0,
-                  "הדר מערב - רח' אלמותנבי": 611,
-                  'גן הבהאים': 612,
-                  "הדר מערב - רח' מסדה": 613,
-                  'הדר עליון -בי"ח בני ציון': 621,
-                  "הדר עליון - רח' הפועל": 622,
-                  "רמת הדר - רח' המיימוני": 623,
-                  'הדר מרכז - התיאטרון העירוני': 631,
-                  "הדר מרכז - רח' הרצליה": 632,
-                  'הדר מרכז - בית העירייה': 633,
-                  'הדר מרכז - שוק תלפיות': 634,
-                  'הדר מזרח - רח\' יל"ג': 641,
-                  'הדר מזרח - גאולה': 642,
-                  "רמת ויז'ניץ": 643,
-                  'מעונות גאולה': 644}
-
-options_map = [{'label': ' שינוי באחוזים מהדו"ח הקודם ', 'value': 0}, {'label': ' ערכי הדו"ח הנוכחי', 'value': 1}]
+from utils import add_annotations_to_fig, options_map, stat_zones_names_dict, options
 
 
 def blank_fig(height):
@@ -61,30 +43,6 @@ def manipulate_holucaust_df(df, statzone):
     return df_holocaust1_type
 
 
-options = list()
-for key, value in statistic_area.items():
-    if key != 'הכל':
-        options.append({'label': "  " + key + ' ' + str(value),
-                        'value': value})
-    else:
-        options.append({'label': "  " + 'כל האזורים הסטטיסטיים',
-                        'value': value})
-stat_zones_names_dict = {
-    611: "הדר מערב - רח' אלמותנבי",
-    612: 'גן הבהאים',
-    613: "הדר מערב - רח' מסדה",
-    621: 'הדר עליון -בי"ח בני ציון',
-    622: "הדר עליון - רח' הפועל",
-    623: "רמת הדר - רח' המיימוני",
-    631: 'הדר מרכז - התיאטרון העירוני',
-    632: "הדר מרכז - רח' הרצליה",
-    633: 'הדר מרכז - בית העירייה',
-    634: 'הדר מרכז - שוק תלפיות',
-    641: 'הדר מזרח - רח\' יל"ג',
-    642: 'הדר מזרח - גאולה',
-    643: "רמת ויז'ניץ",
-    644: 'מעונות גאולה'
-}
 
 # Calculate % change in total amount of seniors from time t0 to t1
 seniors0, seniors1 = dfs_dict['df_seniors_t0'], dfs_dict['df_seniors_t1']
@@ -136,7 +94,6 @@ def get_graphs(statzone):
              ::-1] if statzone == 'All Statistical Zones' else f"מצב האזרחים המבוגרים באזור סטטיסטי {statzone_name}"[
                                                                ::-1]
 
-    # TODO this title is not visible because of the margin 0, add a title to the html
     fig1.update_layout(title_text=title1,
                        yaxis=dict(
                            titlefont_size=18,
@@ -273,8 +230,7 @@ layout = html.Div(
             )], className='pretty_container'),
         html.Div(
             children=[
-                html.H4(  # TODO maybe put "All stat.." / number of stat zone like in graphs
-                    # ["Number of Holocaust Survivors (for current area choose)"],
+                html.H4(
                     [": כמות ניצולי השואה (עבור האזור הנבחר)"], style={'text-align': 'right', },
                     className="container_title",
                 ),
